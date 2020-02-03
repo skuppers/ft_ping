@@ -1,2 +1,2 @@
 # ft_ping
-A recreation of the famous command.
+A recreation of the famous ping command.
