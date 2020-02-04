@@ -7,6 +7,33 @@
 # define HOSTNAME 0 		/* LOCALHOST */
 # define PORTNAME "daytime" // Got no fucking idea
 
+uint16_t	ip_checksum(void *vdata, size_t length)
+{
+	//Cast data pointer for indexing
+	char *data = (char*)vdata;
+
+	//initialise accumulator
+	uint32_t acc = 0xffff;
+
+	// Handle 16bit blocks
+	for (size_t i = 0; i + 1 < length; i += 2) {
+		uint16_t word;
+		memcpy(&word, data + i, 2);
+		acc += ntohs(word);
+		if (acc > 0xffff)
+			acc -= 0xffff;
+	}
+	if (length & 1)
+	{
+		uint16_t word = 0;
+		memcpy(&word, data + length - 1, 1);
+		acc += ntohs(word);
+		if (acc > 0xffff)
+			acc -= 0xffff;
+	}
+	return (htons(~acc));
+}
+
 int main (__unused int ac, __unused char **av)
 {
 
@@ -42,14 +69,15 @@ int main (__unused int ac, __unused char **av)
 		req.type = 8;
 		req.code = 0;
 		req.checksum = 0;
-		req.un.echo.id = htons(rand());
+		req.un.echo.id = htons(0x1234);
 		req.un.echo.sequence = htons(1);
-//		req.checksum = ip_checksum(&req, req_size);
+		req.checksum = ip_checksum(&req, req_size);
 
 
-//		if ( sendto(clientSocket, , sizeof(), 0,
-//					res->ai_addr, res->ai_addrlen) == -1 ) {
-//			printf("Error sending datagram.\n");
-//			exit(42);
-//		}
+		if ( sendto(clientSocket, req, req_size, 0,
+					res->ai_addr, res->ai_addrlen) == -1 ) {
+			printf("Error sending datagram.\n");
+			exit(42);
+		}
+		printf("Successfully sent datagram! Yay!");
 }

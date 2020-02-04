@@ -6,7 +6,7 @@
 /*   By: skuppers <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/03 15:13:23 by skuppers          #+#    #+#             */
-/*   Updated: 2020/02/04 14:48:10 by skuppers         ###   ########.fr       */
+/*   Updated: 2020/02/04 14:52:16 by skuppers         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,7 @@
 # include <time.h>
 # include <netdb.h>
 # include <sys/uio.h>
-# include <netinet/in.h>
-# include <netinet/ip.h>
+# include <netinet/ip_icmp.h>
 
 #define TTL 64
 

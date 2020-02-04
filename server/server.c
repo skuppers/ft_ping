@@ -84,9 +84,9 @@ int main (__unused int ac, __unused char **av)
 			printf("Error w/ recvmsg().\n");
 			perror("Failed: ");
 	} else if (message.msg_flags & MSG_TRUNC) {
-			printf("Message truncated.\n");
+			printf("Recieved datagram but message is truncated.\n");
 	} else {
-			printf("Received datagram.\n");
+			printf("Received datagram. Bang bang.\n");
 	}
 	close(serverSocket);
 	exit(0);
