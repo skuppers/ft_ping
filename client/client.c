@@ -34,7 +34,7 @@ uint16_t	ip_checksum(void *vdata, size_t length)
 	return (htons(~acc));
 }
 
-int main (__unused int ac, __unused char **av)
+int main (int ac, char **av)
 {
 
 		/* CLIENT SOCKET ADDRESS CONFIGURATION */
@@ -44,13 +44,13 @@ int main (__unused int ac, __unused char **av)
 		struct addrinfo *res = 0;
 
 		memset(&hints, 0, sizeof(hints));
-		hints.ai_family = AF_UNSPEC;
+		hints.ai_family = AF_INET;
 		hints.ai_socktype = SOCK_DGRAM;
 		hints.ai_protocol = 0;
 		hints.ai_flags = AI_ADDRCONFIG;
 
 		int error = 0;
-		if ((error = getaddrinfo(HOSTNAME, PORTNAME, &hints, &res)) != 0)
+		if ((error = getaddrinfo(HOSTNAME, NULL, &hints, &res)) != 0)
 		{
 				printf("Error with getaddrinfo().\n");
 				exit(42);
@@ -79,5 +79,5 @@ int main (__unused int ac, __unused char **av)
 			printf("Error sending datagram.\n");
 			exit(42);
 		}
-		printf("Successfully sent datagram! Yay!");
+		printf("Successfully sent datagram! Yay!\n");
 }

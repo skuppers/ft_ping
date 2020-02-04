@@ -15,7 +15,7 @@ int main (__unused int ac, __unused char **av)
 	// Holds info about something
 	struct addrinfo hints;
 	memset(&hints, 0, sizeof(hints));
-	hints.ai_family = AF_UNSPEC;
+	hints.ai_family = AF_INET;
 	hints.ai_socktype = SOCK_DGRAM;
 	hints.ai_protocol = 0;
 	hints.ai_flags = AI_PASSIVE | AI_ADDRCONFIG;
@@ -23,7 +23,7 @@ int main (__unused int ac, __unused char **av)
 	struct addrinfo *res = 0;
 
 	int error = 0;
-	if ((error = getaddrinfo(HOSTNAME, PORTNAME, &hints, &res)) != 0)
+	if ((error = getaddrinfo(HOSTNAME, NULL, &hints, &res)) != 0)
 	{
 		printf("Error with getaddrinfo().\n");
 		exit(42);
