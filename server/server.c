@@ -16,7 +16,7 @@ int main (__unused int ac, __unused char **av)
 	struct addrinfo hints;
 	memset(&hints, 0, sizeof(hints));
 	hints.ai_family = AF_UNSPEC;
-	hints.ai_socktype = 0;
+	hints.ai_socktype = SOCK_DGRAM;
 	hints.ai_protocol = 0;
 	hints.ai_flags = AI_PASSIVE | AI_ADDRCONFIG;
 
