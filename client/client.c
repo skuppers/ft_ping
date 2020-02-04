@@ -30,24 +30,6 @@ int main (int ac, char **av)
 {
 
 		/* CLIENT SOCKET ADDRESS CONFIGURATION */
-
-		// Holds info about something
-		//		struct addrinfo hints;
-		//		struct addrinfo *res = 0;
-
-		//		memset(&hints, 0, sizeof(hints));
-		//		hints.ai_family = AF_INET;
-		//		hints.ai_socktype = SOCK_RAW;
-		//		hints.ai_protocol = IPPROTO_ICMP;
-		//		hints.ai_flags = AI_ADDRCONFIG;
-
-		//		int error = 0;
-		//		if ((error = getaddrinfo(HOSTNAME, NULL, &hints, &res)) != 0)
-		//		{
-		//				printf("Error with getaddrinfo().\n");
-		//				exit(42);
-		//		}\
-
 		int 					clientSocket;
 		char 					*ip_addr, *hostname;
 
@@ -83,26 +65,11 @@ int main (int ac, char **av)
 		pkt.header.checksum = ip_checksum(&pkt, sizeof(pkt));
 
 
-		//		struct sockaddr_in addr;
-		//		memset(&addr, 0, sizeof(addr));
-		//		addr.sin_family = AF_INET;
-		//		addr.sin_addr = ;
-		//		inet_aton("127.0.0.1", &address.sin_addr.s_addr);
-
-		/*		const size_t req_size = 8;
-				struct icmphdr req;
-				req.type = 8;
-				req.code = 0;
-				req.checksum = 0;
-				req.un.echo.id = htons(1);
-				req.un.echo.sequence = htons(3);
-				req.checksum = ip_checksum(&req, req_size);*/
-
 		struct addrinfo hints;
 		memset(&hints, 0, sizeof(hints));
 		hints.ai_family = AF_INET;
-		hints.ai_socktype = SOCK_RAW;
-		hints.ai_protocol = IPPROTO_ICMP;
+		hints.ai_socktype = 0;
+		hints.ai_protocol = 0;
 		hints.ai_flags = AI_ADDRCONFIG;
 
 		struct addrinfo *res = 0;
