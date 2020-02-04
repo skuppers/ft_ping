@@ -7,7 +7,7 @@
 # define HOSTNAME 0 		/* WILDCARD */
 # define PORTNAME "daytime" // Got no fucking idea
 
-int main (__unused int ac, __unused char **av)
+int main (int ac, char **av)
 {
 
 /* LOCAL SOCKET ADDRESS CONFIGURATION */
@@ -17,7 +17,7 @@ int main (__unused int ac, __unused char **av)
 	memset(&hints, 0, sizeof(hints));
 	hints.ai_family = AF_INET;
 	hints.ai_socktype = SOCK_DGRAM;
-	hints.ai_protocol = 0;
+	hints.ai_protocol = IPPROTO_ICMP;
 	hints.ai_flags = AI_PASSIVE | AI_ADDRCONFIG;
 
 	struct addrinfo *res = 0;
@@ -34,6 +34,8 @@ int main (__unused int ac, __unused char **av)
 	// create socket
 	int serverSocket = socket(res->ai_family, res->ai_socktype,
 					res->ai_protocol);
+
+
 	if (serverSocket == -1) {
 			printf("Error creating socket.\n");
 			exit(42);

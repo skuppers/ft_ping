@@ -7,31 +7,23 @@
 # define HOSTNAME 0 		/* LOCALHOST */
 # define PORTNAME "1337" // Got no fucking idea
 
-uint16_t	ip_checksum(void *vdata, size_t length)
+uint16_t	ip_checksum(void *b, size_t len)
 {
-		//Cast data pointer for indexing
-		char *data = (char*)vdata;
+		unsigned short *buf = b; // for 16 bit casting
+		unsigned int sum = 0;    // 1's over sum
+		uint16_t result;   // checksum
 
-		//initialise accumulator
-		uint32_t acc = 0xffff;
+		for ( sum = 0; len > 1; len -= 2 )
+				sum += *buf++;
 
-		// Handle 16bit blocks
-		for (size_t i = 0; i + 1 < length; i += 2) {
-				uint16_t word;
-				memcpy(&word, data + i, 2);
-				acc += ntohs(word);
-				if (acc > 0xffff)
-						acc -= 0xffff;
-		}
-		if (length & 1)
-		{
-				uint16_t word = 0;
-				memcpy(&word, data + length - 1, 1);
-				acc += ntohs(word);
-				if (acc > 0xffff)
-						acc -= 0xffff;
-		}
-		return (htons(~acc));
+		if ( len == 1 )
+				sum += *(unsigned char*)buf;
+
+		sum = (sum >> 16) + (sum & 0xFFFF);
+		sum += (sum >> 16);
+
+		result = ~sum;
+		return result;
 }
 
 int main (int ac, char **av)
@@ -74,9 +66,9 @@ int main (int ac, char **av)
 				exit(42);
 		}
 
-		int ip_ttl = 64;
+		int ip_ttl = 42;
 
-		setsockopt(clientSocket, SOL_IP, IP_TTL, ip_ttl, sizeof(ip_ttl));
+		setsockopt(clientSocket, SOL_IP, IP_TTL, &ip_ttl, sizeof(ip_ttl));
 		//		setsockopt(clientSocket, SOL_IP, SO_RCVTIMEO, , sizeof());
 
 		icmp_pkt pkt;
@@ -88,7 +80,7 @@ int main (int ac, char **av)
 				pkt.msg[i] = i + '0';
 		pkt.msg[i] = 0;
 		pkt.header.un.echo.sequence = 1;
-		pkt.header.checksum = 0;
+		pkt.header.checksum = ip_checksum(&pkt, sizeof(pkt));
 
 
 		//		struct sockaddr_in addr;
@@ -118,12 +110,12 @@ int main (int ac, char **av)
 		int error = 0;
 		if ((error = getaddrinfo(HOSTNAME, PORTNAME, &hints, &res)) != 0)
 		{
-			printf("Error with getaddrinfo().\n");
-			exit(42);
+				printf("Error with getaddrinfo().\n");
+				exit(42);
 		}
 
 		if ( sendto(clientSocket, &pkt, sizeof(pkt), 0,
-							res->ai_addr, res->ai_addrlen) == -1 ) {
+								res->ai_addr, res->ai_addrlen) == -1 ) {
 				printf("Error sending datagram.\n");
 				exit(42);
 		}
