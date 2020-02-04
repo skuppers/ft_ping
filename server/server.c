@@ -82,6 +82,7 @@ int main (__unused int ac, __unused char **av)
 	ssize_t count = recvmsg(serverSocket, &message, 0);
 	if (count == -1) {
 			printf("Error w/ recvmsg().\n");
+			perror("Failed: ");
 	} else if (message.msg_flags & MSG_TRUNC) {
 			printf("Message truncated.\n");
 	} else {
