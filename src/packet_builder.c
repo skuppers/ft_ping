@@ -6,7 +6,7 @@
 /*   By: skuppers <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/03 15:17:44 by skuppers          #+#    #+#             */
-/*   Updated: 2020/02/07 14:35:53 by skuppers         ###   ########.fr       */
+/*   Updated: 2020/02/07 14:55:13 by skuppers         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ t_icmppacket *forge_packet(t_data *param)
 		datafiller = 0;
 		while (datafiller < (param->pkt_size - sizeof(struct icmphdr)))
 				pkt->msg[datafiller++] = '0';
-		pkt->msg[datafiller] = 0;
+		pkt->msg[datafiller - 1] = 0;
 		pkt->header.checksum = pkt_checksum(pkt, sizeof(pkt));
 		return (pkt);
 }
