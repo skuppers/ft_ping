@@ -6,7 +6,7 @@
 /*   By: skuppers <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/07 13:34:50 by skuppers          #+#    #+#             */
-/*   Updated: 2020/02/07 13:54:25 by skuppers         ###   ########.fr       */
+/*   Updated: 2020/02/07 13:57:35 by skuppers         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,10 +39,10 @@ int		resolve_fqdn(t_data *param)
 	struct sockaddr_in *sadr = (struct sockaddr_in*)result->ai_addr;
 	struct in_addr *iadr = &(sadr->sin_addr);
 
-	if (inet_ntop(AF_INET, iadr, &buffer, sizeof(buffer)) != NULL)
+	if (inet_ntop(AF_INET, iadr, buffer, sizeof(buffer)) != NULL)
 	{
 		printf("\nResolved address: %s\n", buffer);
-
+		param->hostname = ft_strdup(buffer);
 	}
 	else
 	{

@@ -6,7 +6,7 @@
 /*   By: skuppers <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/03 15:13:23 by skuppers          #+#    #+#             */
-/*   Updated: 2020/02/07 13:42:32 by skuppers         ###   ########.fr       */
+/*   Updated: 2020/02/07 13:58:53 by skuppers         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 # include <time.h>
 # include <netdb.h>
 # include <sys/uio.h>
+# include <arpa/inet.h>
 # include <netinet/ip_icmp.h>
 # include <netinet/in.h>
 
@@ -52,6 +53,7 @@ typedef struct		s_data
 	unsigned int	src_address; // Use pton ou un truc du genre
 	unsigned int	pkt_size;
 	char			*fqdn;
+	char			*hostname;
 	struct sockaddr	*host;
 	socklen_t		hostlen;
 
@@ -60,5 +62,6 @@ typedef struct		s_data
 void				print_usage(void);
 uint8_t				parse_opt(int ac, char **av, t_data *param);
 t_icmppacket		*forge_packet(t_data *param);
+int					resolve_fqdn(t_data *param);
 
 #endif
