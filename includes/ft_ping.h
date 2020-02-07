@@ -6,7 +6,7 @@
 /*   By: skuppers <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/03 15:13:23 by skuppers          #+#    #+#             */
-/*   Updated: 2020/02/07 13:58:53 by skuppers         ###   ########.fr       */
+/*   Updated: 2020/02/07 14:16:55 by skuppers         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,9 @@ typedef struct		s_data
 }					t_data;
 
 void				print_usage(void);
+void 				print_resolve(t_data *param);
+void 				print_ping(t_data *param);
+void 				print_stats(t_data *param);
 uint8_t				parse_opt(int ac, char **av, t_data *param);
 t_icmppacket		*forge_packet(t_data *param);
 int					resolve_fqdn(t_data *param);

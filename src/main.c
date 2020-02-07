@@ -6,7 +6,7 @@
 /*   By: skuppers <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/03 15:13:01 by skuppers          #+#    #+#             */
-/*   Updated: 2020/02/07 14:02:57 by skuppers         ###   ########.fr       */
+/*   Updated: 2020/02/07 14:16:51 by skuppers         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 void	print_usage(void)
 {
-	printf("usage: ft_ping [-ovh] [-c count] [-m ttl]\n\
-					[-S src_address] [-s packetsize] host\n");
+	printf("usage: ft_ping [-ovh] [-c count] [-m ttl]\
+[-S src_address] [-s packetsize] host\n");
 }
 
 void	init_param(t_data *param)
@@ -46,16 +46,21 @@ int		main(int ac, char **av)
 
 	resolve_fqdn(&param);
 
-	printf("\nPING OPTIONS:\n");
-	printf("TTL: %d\n", param.ttl);
-	printf("Count: %d\n", param.count);
-	printf("Src address: %d\n", param.src_address);
-	printf("Packet size: %d\n", param.pkt_size);
-	printf("Host/FQDN: %s\n", param.fqdn);
-	printf("Host IP: %s\n\n", param.hostname);
+//	printf("\nPING OPTIONS:\n");
+//	printf("TTL: %d\n", param.ttl);
+//	printf("Count: %d\n", param.count);
+//	printf("Src address: %d\n", param.src_address);
+//	printf("Packet size: %d\n", param.pkt_size);
+//	printf("Host/FQDN: %s\n", param.fqdn);
+//	printf("Host IP: %s\n\n", param.hostname);
 
-
-
+	print_resolve(&param);
+	print_ping(&param);
+	sleep(1);
+	print_ping(&param);
+	sleep(1);
+	print_ping(&param);
+	print_stats(&param);
 
 	return (0);
 }
