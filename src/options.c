@@ -6,7 +6,7 @@
 /*   By: skuppers <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/07 08:55:41 by skuppers          #+#    #+#             */
-/*   Updated: 2020/02/07 11:19:09 by skuppers         ###   ########.fr       */
+/*   Updated: 2020/02/07 11:22:44 by skuppers         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,16 +92,18 @@ int32_t	check_flags(uint16_t i, char **av,
 				param->options |= OPT_HELP;
 
 			else if (av[i][idx] == 'c')
-				i = opt_check_count(av, i, param);
-
+			{	i = opt_check_count(av, i, param);
+				return (0);
+			}
 			else if (av[i][idx] == 'm')
-				i = opt_check_ttl(av, i, param);
-
+			{	i = opt_check_ttl(av, i, param);
+				return (0); }
 			else if (av[i][idx] == 'S')
-				i = opt_check_src(av, i, param);
-
+			{	i = opt_check_src(av, i, param);
+				return (0); }
 			else if (av[i][idx] == 's')
-				i = opt_check_pktsize(av, i, param);
+			{	i = opt_check_pktsize(av, i, param);
+				return (0); }
 			else
 				return (-42);
 			++idx;
