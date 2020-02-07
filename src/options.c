@@ -6,7 +6,7 @@
 /*   By: skuppers <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/07 08:55:41 by skuppers          #+#    #+#             */
-/*   Updated: 2020/02/07 10:14:49 by skuppers         ###   ########.fr       */
+/*   Updated: 2020/02/07 10:16:37 by skuppers         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ uint8_t	parse_opt(int ac, char **av, t_data *param)
 {
 	// activate option like '-h -c -v -m -o -S -s -W'
 	// return the FQDN or IP with regex
-	int32_t	i;
+	int32_t		i;
 	uint32_t	y;
 	uint32_t	length;
 
