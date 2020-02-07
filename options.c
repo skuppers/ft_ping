@@ -6,7 +6,7 @@
 /*   By: skuppers <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/07 08:55:41 by skuppers          #+#    #+#             */
-/*   Updated: 2020/02/07 09:00:00 by skuppers         ###   ########.fr       */
+/*   Updated: 2020/02/07 09:08:34 by skuppers         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,15 @@ uint8_t	parse_opt(int ac, char **av, t_data *param)
 	uint32_t i;
 
 	i = 0;
-	while (i < (uint32_t)(ac))
+	++(*av);
+	while (i < (uint32_t)(ac) && *av != NULL)
 	{
 		printf("Parsing argument |%s|\n", *av);
+
+		if (ft_strbeginswith())
+
+		++(*av);
+		++i;
 	}
 
 
