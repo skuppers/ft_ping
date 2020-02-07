@@ -6,17 +6,21 @@
 /*   By: skuppers <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/07 08:55:41 by skuppers          #+#    #+#             */
-/*   Updated: 2020/02/07 11:29:14 by skuppers         ###   ########.fr       */
+/*   Updated: 2020/02/07 11:37:23 by skuppers         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ping.h"
 
-
 int16_t	opt_check_count(char **av, uint16_t i, t_data *param)
 {
 	if (ft_strequ(av[i],"-c"))
 	{
+		if (av[i + 1] == NULL || ft_strequ(av[i + 1], "\0"))
+		{
+			print_usage();
+			return (-1);
+		}
 		if (ft_atoi(av[i + 1]) == 0)
 		{
 			printf("ft_ping: invalid count of packets to transmit: %s\n", av[i + 1]);
@@ -31,6 +35,11 @@ int16_t	opt_check_ttl(char **av, uint16_t i, t_data *param)
 {
 	if (ft_strequ(av[i], "-m"))
 	{
+		if (av[i + 1] == NULL || ft_strequ(av[i + 1], "\0"))
+		{
+			print_usage();
+			return (-1);
+		}
 		if (ft_atoi(av[i + 1]) == 0 || ft_atoi(av[i + 1]) > 255)
 		{
 			printf("ft_ping: invalid TTL: %s\n", av[i + 1]);
@@ -46,6 +55,11 @@ int16_t	opt_check_src(char **av, uint16_t i, t_data *param)
 {
 	if (ft_strequ(av[i],"-S"))
 	{
+		if (av[i + 1] == NULL || ft_strequ(av[i + 1], "\0"))
+		{
+			print_usage();
+			return (-1);
+		}
 		if (ft_atoi(av[i + 1]) == 0)
 		{
 			printf("ft_ping: invalid count of packets to transmit: %s\n", av[i + 1]);
@@ -60,13 +74,18 @@ int16_t	opt_check_pktsize(char **av, uint16_t i, t_data *param)
 {
 	if (ft_strequ(av[i],"-s"))
 	{
+		if (av[i + 1] == NULL || ft_strequ(av[i + 1], "\0"))
+		{
+			print_usage();
+			return (-1);
+		}
 		if (ft_atoi(av[i + 1]) == 0 | ft_atoi(av[i + 1]) > 65507)
 		{
 			printf("ft_ping: packet size too large: %s\n", av[i + 1]);
 			return (-1);
 		}
 		param->pkt_size = ft_atoi(av[i + 1]);
-		printf("Set pcket size to %d\n", param->pkt_size);
+		printf("Set packet size to %d\n", param->pkt_size);
 	}
 	return (i + 1);
 }
@@ -84,7 +103,7 @@ int32_t	check_flags(uint16_t i, char **av,
 		idx = 1;
 		while (idx < length && av[i][idx] != '\0')
 		{
-			printf("Parsing |%c|\n", av[i][idx]);
+//			printf("Parsing |%c|\n", av[i][idx]);
 			if (av[i][idx] == 'o')
 				param->options |= OPT_ONCE;
 			else if (av[i][idx] == 'v')
@@ -114,7 +133,7 @@ int32_t	check_flags(uint16_t i, char **av,
 		printf("Interpreted |%s| as FQND/HOST\n", av[i]);
 		// regex for fqdn or host ip
 	}
-	return (0);
+	return (i);
 }
 
 
@@ -135,11 +154,13 @@ uint8_t	parse_opt(int ac, char **av, t_data *param)
 		length = ft_strlen(av[i]);
 		printf("Parsing argument |%s|\n", av[i]);
 		i = check_flags(i, av, length, param);
-		printf("Returned %d\n", i);
+//		printf("Returned %d\n", i);
 
-		if (i == -42)
-		{ printf("Returned -42\n");
-			return (-1);}
+		if (i == -1)
+		{
+//				printf("Returned -42\n");
+				return (-1);
+		}
 		++i;
 	}
 

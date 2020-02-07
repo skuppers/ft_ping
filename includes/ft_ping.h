@@ -6,7 +6,7 @@
 /*   By: skuppers <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/03 15:13:23 by skuppers          #+#    #+#             */
-/*   Updated: 2020/02/07 11:19:52 by skuppers         ###   ########.fr       */
+/*   Updated: 2020/02/07 11:36:04 by skuppers         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ typedef struct		s_data
 	unsigned int	dst_address;
 }					t_data;
 
+void				print_usage(void);
 uint8_t				parse_opt(int ac, char **av, t_data *param);
 
 #endif
