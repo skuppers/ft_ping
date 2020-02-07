@@ -6,7 +6,7 @@
 /*   By: skuppers <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/03 15:13:01 by skuppers          #+#    #+#             */
-/*   Updated: 2020/02/07 14:16:51 by skuppers         ###   ########.fr       */
+/*   Updated: 2020/02/07 14:50:02 by skuppers         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,54 +14,94 @@
 
 void	print_usage(void)
 {
-	printf("usage: ft_ping [-ovh] [-c count] [-m ttl]\
-[-S src_address] [-s packetsize] host\n");
+		printf("usage: ft_ping [-ovh] [-c count] [-m ttl]\
+						[-S src_address] [-s packetsize] host\n");
 }
 
 void	init_param(t_data *param)
 {
-	param->options = 0;
-	param->ttl = 64;
-	param->count = 0;
-	param->src_address = 0;
-	param->pkt_size = 64;
-	param->fqdn = NULL;
-	param->hostname = NULL;
-	param->host = NULL;
+		param->options = 0;
+		param->ttl = 64;
+		param->count = 0;
+		param->src_address = 0;
+		param->pkt_size = 64;
+		param->fqdn = NULL;
+		param->hostname = NULL;
+		param->host = NULL;
 }
 
 int		main(int ac, char **av)
 {
-	t_data	param;
+		t_data	param;
 
-	if (ac < 2)
-	{
-		print_usage();
-		return(42);
-	}
+		if (ac < 2)
+		{
+				print_usage();
+				return(42);
+		}
 
-	init_param(&param);
-	if (parse_opt(ac, av, &param) != 0)
-		return (42);
+		init_param(&param);
+		if (parse_opt(ac, av, &param) != 0)
+				return (42);
 
-	resolve_fqdn(&param);
+		resolve_fqdn(&param);
 
-//	printf("\nPING OPTIONS:\n");
-//	printf("TTL: %d\n", param.ttl);
-//	printf("Count: %d\n", param.count);
-//	printf("Src address: %d\n", param.src_address);
-//	printf("Packet size: %d\n", param.pkt_size);
-//	printf("Host/FQDN: %s\n", param.fqdn);
-//	printf("Host IP: %s\n\n", param.hostname);
+		//	printf("\nPING OPTIONS:\n");
+		//	printf("TTL: %d\n", param.ttl);
+		//	printf("Count: %d\n", param.count);
+		//	printf("Src address: %d\n", param.src_address);
+		//	printf("Packet size: %d\n", param.pkt_size);
+		//	printf("Host/FQDN: %s\n", param.fqdn);
+		//	printf("Host IP: %s\n\n", param.hostname);
 
-	print_resolve(&param);
-	print_ping(&param);
-	sleep(1);
-	print_ping(&param);
-	sleep(1);
-	print_ping(&param);
-	print_stats(&param);
+		int socket = createSocket();
+		setSocketOptions(&param, socket);
 
-	return (0);
+		t_icmppacket *icmp_pkt;
+		icmp_pkt = forge_packet(&param);
+
+		//	start timer
+		//
+		//	send message    / handle errors
+		send_packet(&param, socket, icmp_pkt);
+		//
+		//	receive message / handle errors
+		char buffer[548];
+		struct sockaddr_storage src_addr;
+
+		struct iovec iov[1];
+		iov[0].iov_base=buffer;
+		iov[0].iov_len=sizeof(buffer);
+
+		struct msghdr message;
+		message.msg_name=&src_addr;
+		message.msg_namelen=sizeof(src_addr);
+		message.msg_iov=iov;
+		message.msg_iovlen=1;
+		message.msg_control=0;
+		message.msg_controllen=0;
+
+		ssize_t count = recvmsg(socket, &message, 0);
+		if (count==-1) {
+				printf("Fatal error zith recvmsg.\n");
+				exit(42);
+		} else if (message.msg_flags & MSG_TRUNC) {
+				printf("datagram too large for buffer: truncated.\n");
+		} else {
+//				handle_datagram(buffer,count);
+				printf("Received related datagram.\n");
+		}
+		//
+		//	calc RTT
+
+
+//		print_resolve(&param);
+//		print_ping(&param);
+//		sleep(1);
+//		print_ping(&param);
+//		sleep(1);
+//		print_ping(&param);
+//		print_stats(&param);
+
+		return (0);
 }
-

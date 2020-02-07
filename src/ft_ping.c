@@ -6,11 +6,19 @@
 /*   By: skuppers <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/07 08:22:15 by skuppers          #+#    #+#             */
-/*   Updated: 2020/02/07 12:47:10 by skuppers         ###   ########.fr       */
+/*   Updated: 2020/02/07 14:36:25 by skuppers         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ping.h"
+
+int send_packet(t_data *param, int socket, t_icmppacket *pkt)
+{
+	if (sendto(socket, pkt, sizeof(pkt), 0, param->host, param->hostlen) == -1)
+	{
+		printf("Error sending datagram. (sendto)\n");
+	}
+}
 
 int	createSocket(void)
 {
@@ -34,14 +42,9 @@ int setSocketOptions(t_data *param, int socket)
 
 int ft_ping(t_data *param)
 {
-	int 			socket;
-	t_icmppacket	*pkt;
-
-
-	socket = createSocket();
-	setSocketOptions(param, socket);
-
-	pkt = forge_packet(param);
-
-
+//	int 			socket;
+//	t_icmppacket	*pkt;
+//
+//	pkt = forge_packet(param);
+//	send_packet(param, socket, pkt);
 }

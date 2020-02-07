@@ -6,13 +6,18 @@
 /*   By: skuppers <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/03 15:17:44 by skuppers          #+#    #+#             */
-/*   Updated: 2020/02/07 12:46:33 by skuppers         ###   ########.fr       */
+/*   Updated: 2020/02/07 14:35:53 by skuppers         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ping.h"
 
-static uint16_t calcChecksum(void *pkt, size_t len)
+void	pkt_setsequence(t_icmppacket *pkt, int sequence)
+{
+	pkt->header.un.echo.sequence = sequence;
+}
+
+uint16_t pkt_checksum(void *pkt, size_t len)
 {
 		unsigned short	*buf;				// for 16 bit casting
 		unsigned int 	sum = 0;    		// 1's over sum
@@ -45,6 +50,6 @@ t_icmppacket *forge_packet(t_data *param)
 		while (datafiller < (param->pkt_size - sizeof(struct icmphdr)))
 				pkt->msg[datafiller++] = '0';
 		pkt->msg[datafiller] = 0;
-		pkt->header.checksum = calcChecksum(pkt, sizeof(pkt));
+		pkt->header.checksum = pkt_checksum(pkt, sizeof(pkt));
 		return (pkt);
 }
