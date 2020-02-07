@@ -6,7 +6,7 @@
 /*   By: skuppers <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/03 15:13:23 by skuppers          #+#    #+#             */
-/*   Updated: 2020/02/07 14:36:13 by skuppers         ###   ########.fr       */
+/*   Updated: 2020/02/07 15:35:19 by skuppers         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ void 				print_resolve(t_data *param);
 void 				print_ping(t_data *param);
 void 				print_stats(t_data *param);
 
-int					send_packet(t_dat *param, int socket, t_icmppacket *pkt);
+int					send_packet(t_data *param, int socket, t_icmppacket *pkt);
 
 int					createSocket(void);
 int					setSocketOptions(t_data *param, int socket);

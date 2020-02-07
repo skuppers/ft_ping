@@ -6,7 +6,7 @@
 /*   By: skuppers <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/03 15:13:01 by skuppers          #+#    #+#             */
-/*   Updated: 2020/02/07 15:34:18 by skuppers         ###   ########.fr       */
+/*   Updated: 2020/02/07 15:49:21 by skuppers         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,13 +60,8 @@ int		main(int ac, char **av)
 		t_icmppacket *icmp_pkt;
 		icmp_pkt = forge_packet(&param);
 
-//		printf("Sending packet\n.");
-		//	start timer
-		//
-		//	send message    / handle errors
 
-		//
-		//	receive message / handle errors
+
 		char buffer[548];
 		struct sockaddr_storage src_addr;
 
@@ -88,6 +83,7 @@ int		main(int ac, char **av)
 
 		int i = gettimeofday(&a, &z);
 		printf("Time sending (%d): | %ld | %d |\n", i, a.tv_sec, a.tv_usec);
+
 		send_packet(&param, socket, icmp_pkt);
 
 		ssize_t count = recvmsg(socket, &message, 0);
@@ -101,6 +97,7 @@ int		main(int ac, char **av)
 				printf("Received related datagram.\n");
 				int i = gettimeofday(&a, &z);
 				printf("Time received (%d): | %ld | %d |\n", i, a.tv_sec, a.tv_usec);
+
 		}
 		//
 		//	calc RTT
