@@ -6,7 +6,7 @@
 /*   By: skuppers <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/07 08:55:41 by skuppers          #+#    #+#             */
-/*   Updated: 2020/02/07 11:22:44 by skuppers         ###   ########.fr       */
+/*   Updated: 2020/02/07 11:29:14 by skuppers         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,57 +15,58 @@
 
 int16_t	opt_check_count(char **av, uint16_t i, t_data *param)
 {
-	if (av[i] == "-c")
+	if (ft_strequ(av[i],"-c"))
 	{
 		if (ft_atoi(av[i + 1]) == 0)
 		{
 			printf("ft_ping: invalid count of packets to transmit: %s\n", av[i + 1]);
 			return (-1);
 		}
-		else
-			param->count = ft_atoi(av[i + 1]);
+		param->count = ft_atoi(av[i + 1]);
+		printf("Set count to %d\n", param->count);
 	}
 	return (i + 1);
 }
 int16_t	opt_check_ttl(char **av, uint16_t i, t_data *param)
 {
-	if (av[i] == "-m")
+	if (ft_strequ(av[i], "-m"))
 	{
 		if (ft_atoi(av[i + 1]) == 0 || ft_atoi(av[i + 1]) > 255)
 		{
 			printf("ft_ping: invalid TTL: %s\n", av[i + 1]);
 			return (-1);
 		}
-		else
-			param->ttl = ft_atoi(av[i + 1]);
+		param->ttl = ft_atoi(av[i + 1]);
+		printf("Set TTL to %d\n", param->ttl);
+
 	}
 	return (i + 1);
 }
 int16_t	opt_check_src(char **av, uint16_t i, t_data *param)
 {
-	if (av[i] == "-S")
+	if (ft_strequ(av[i],"-S"))
 	{
 		if (ft_atoi(av[i + 1]) == 0)
 		{
 			printf("ft_ping: invalid count of packets to transmit: %s\n", av[i + 1]);
 			return (-1);
 		}
-		else
-			param->src_address = NULL; //ft_atoi(av[i + 1]);
+		param->src_address = 0; //ft_atoi(av[i + 1]);
+		printf("Set source to %d\n", param->src_address);
 	}
 	return (i + 1);
 }
 int16_t	opt_check_pktsize(char **av, uint16_t i, t_data *param)
 {
-	if (av[i] == "-s")
+	if (ft_strequ(av[i],"-s"))
 	{
 		if (ft_atoi(av[i + 1]) == 0 | ft_atoi(av[i + 1]) > 65507)
 		{
 			printf("ft_ping: packet size too large: %s\n", av[i + 1]);
 			return (-1);
 		}
-		else
-			param->pkt_size = ft_atoi(av[i + 1]);
+		param->pkt_size = ft_atoi(av[i + 1]);
+		printf("Set pcket size to %d\n", param->pkt_size);
 	}
 	return (i + 1);
 }
@@ -92,18 +93,17 @@ int32_t	check_flags(uint16_t i, char **av,
 				param->options |= OPT_HELP;
 
 			else if (av[i][idx] == 'c')
-			{	i = opt_check_count(av, i, param);
-				return (0);
+			{	return(opt_check_count(av, i, param));
 			}
 			else if (av[i][idx] == 'm')
-			{	i = opt_check_ttl(av, i, param);
-				return (0); }
+			{	return(opt_check_ttl(av, i, param));
+			 }
 			else if (av[i][idx] == 'S')
-			{	i = opt_check_src(av, i, param);
-				return (0); }
+			{	return(opt_check_src(av, i, param));
+			}
 			else if (av[i][idx] == 's')
-			{	i = opt_check_pktsize(av, i, param);
-				return (0); }
+			{	return(opt_check_pktsize(av, i, param));
+			}
 			else
 				return (-42);
 			++idx;
@@ -134,11 +134,12 @@ uint8_t	parse_opt(int ac, char **av, t_data *param)
 		y = 0;
 		length = ft_strlen(av[i]);
 		printf("Parsing argument |%s|\n", av[i]);
-		int returns = check_flags(i, av, length, param);
-		printf("Returned %d\n", returns);
+		i = check_flags(i, av, length, param);
+		printf("Returned %d\n", i);
 
 		if (i == -42)
-			return (-1);
+		{ printf("Returned -42\n");
+			return (-1);}
 		++i;
 	}
 
