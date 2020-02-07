@@ -6,7 +6,7 @@
 /*   By: skuppers <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/07 08:55:41 by skuppers          #+#    #+#             */
-/*   Updated: 2020/02/07 10:16:37 by skuppers         ###   ########.fr       */
+/*   Updated: 2020/02/07 10:28:31 by skuppers         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ uint32_t	check_flags(uint16_t i, char **av,
 	idx = 0;
 	opt_arg = 0;
 
-	if (ft_strbeginswith(av[i],"-") == 0)
+	if (av[i] != NULL && ft_strbeginswith(av[i],"-") == 1)
 	{
 		while (idx < length && av[i][idx] != '\0')
 		{
@@ -52,19 +52,18 @@ uint8_t	parse_opt(int ac, char **av, t_data *param)
 	uint32_t	y;
 	uint32_t	length;
 
-	i = 0;
+	i = 1;
 	++(*av);
 	length = 0;
-	while (i < ac)
+	while (i < ac && av[i] != NULL)
 	{
 		y = 0;
-		length = ft_strlen(*av);
-		printf("Parsing argument |%s|\n", *av);
-
+		length = ft_strlen(av[i]);
+		printf("Parsing argument |%s|\n", av[i]);
+		exit(0);
 		i = check_flags(i, av, length, param);
 		if (i == -42)
 			return (-1);
-		++(*av);
 		++i;
 	}
 
