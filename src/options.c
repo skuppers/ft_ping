@@ -6,7 +6,7 @@
 /*   By: skuppers <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/07 08:55:41 by skuppers          #+#    #+#             */
-/*   Updated: 2020/02/07 12:48:52 by skuppers         ###   ########.fr       */
+/*   Updated: 2020/02/07 13:36:13 by skuppers         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ int16_t	opt_check_count(char **av, uint16_t i, t_data *param)
 	{
 		if (av[i + 1] == NULL || ft_strequ(av[i + 1], "\0"))
 		{
+			printf("ft_ping: option requires an argument -- 'c'\n");
 			print_usage();
 			return (-1);
 		}

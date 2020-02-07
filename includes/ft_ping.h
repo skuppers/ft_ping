@@ -6,7 +6,7 @@
 /*   By: skuppers <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/03 15:13:23 by skuppers          #+#    #+#             */
-/*   Updated: 2020/02/07 12:48:56 by skuppers         ###   ########.fr       */
+/*   Updated: 2020/02/07 13:42:32 by skuppers         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,9 @@ typedef struct		s_data
 	unsigned int	src_address; // Use pton ou un truc du genre
 	unsigned int	pkt_size;
 	char			*fqdn;
-	char			*host;
+	struct sockaddr	*host;
+	socklen_t		hostlen;
+
 }					t_data;
 
 void				print_usage(void);

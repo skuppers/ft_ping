@@ -6,7 +6,7 @@
 /*   By: skuppers <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/03 15:13:01 by skuppers          #+#    #+#             */
-/*   Updated: 2020/02/07 12:48:57 by skuppers         ###   ########.fr       */
+/*   Updated: 2020/02/07 13:34:37 by skuppers         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	init_param(t_data *param)
 	param->src_address = 0;
 	param->pkt_size = 64;
 	param->fqdn = "placeholder";
-	param->dst_address = 0;
+	param->host = "placeholder";
 }
 
 int		main(int ac, char **av)
@@ -40,11 +40,8 @@ int		main(int ac, char **av)
 	}
 
 	init_param(&param);
-	//parse arguments & fill preliminary data
 	if (parse_opt(ac, av, &param) != 0)
 		return (42);
-
-
 
 	printf("\nPING OPTIONS:\n");
 	printf("TTL: %d\n", param.ttl);
@@ -52,7 +49,7 @@ int		main(int ac, char **av)
 	printf("Src address: %d\n", param.src_address);
 	printf("Packet size: %d\n", param.pkt_size);
 	printf("Host/FQDN: %s\n", param.fqdn);
-	printf("Host IP: %d\n\n", param.dst_address);
+	printf("Host IP: %s\n\n", param.host);
 
 
 
