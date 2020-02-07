@@ -6,7 +6,7 @@
 /*   By: skuppers <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/03 15:13:01 by skuppers          #+#    #+#             */
-/*   Updated: 2020/02/07 14:50:02 by skuppers         ###   ########.fr       */
+/*   Updated: 2020/02/07 14:52:59 by skuppers         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ int		main(int ac, char **av)
 		//	start timer
 		//
 		//	send message    / handle errors
+		printf("Sending packet\n.");
 		send_packet(&param, socket, icmp_pkt);
 		//
 		//	receive message / handle errors
