@@ -1,0 +1,495 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.8	//
+BASE_MAX	includes/ft_printf.h	/^# define BASE_MAX /;"	d
+BASE_MAX	includes/libft.h	/^# define BASE_MAX /;"	d
+BINARY	includes/ft_printf.h	/^# define BINARY /;"	d
+BLACK	Makefile	/^BLACK = \\033[0;30m$/;"	m
+BLUE	Makefile	/^BLUE = \\033[0;34m$/;"	m
+BLUE	includes/test.h	/^# define BLUE /;"	d
+BUFF_SIZE	includes/ft_printf.h	/^# define BUFF_SIZE /;"	d
+BUFF_SIZE	includes/output.h	/^# define BUFF_SIZE /;"	d
+CC	Makefile	/^CC = clang$/;"	m
+CFLAGS	Makefile	/^CFLAGS = $(WFLAGS)$/;"	m
+CLEANUP	Makefile	/^CLEANUP = rm -rf$/;"	m
+COMPILE	Makefile	/^COMPILE = $(CC) -c$/;"	m
+CONVERSION_H	includes/conversion.h	/^# define CONVERSION_H$/;"	d
+CYAN	Makefile	/^CYAN = \\033[0;36m$/;"	m
+DBNAME	Makefile	/^DBNAME = libftdb.a$/;"	m
+DEBUG	Makefile	/^DEBUG = $(CC) -g3 -c #-fsanitize=address,undefined$/;"	m
+DEFAULT_VECTOR_SCALE	includes/vector.h	/^# define DEFAULT_VECTOR_SCALE /;"	d
+DEFAULT_VECTOR_SIZE	includes/vector.h	/^# define DEFAULT_VECTOR_SIZE /;"	d
+DIRECTORY_H	includes/directory.h	/^# define DIRECTORY_H$/;"	d
+END_COLOR	includes/ft_printf.h	/^# define END_COLOR /;"	d
+ESC	includes/ft_printf.h	/^# define ESC /;"	d
+FAILURE	includes/hashmap.h	/^# define FAILURE /;"	d
+FAILURE	includes/libft.h	/^# define FAILURE /;"	d
+FALSE	includes/libft.h	/^# define FALSE /;"	d
+FGCOL	includes/ft_printf.h	/^# define FGCOL /;"	d
+FLAGS	includes/ft_printf.h	/^# define FLAGS /;"	d
+FLOAT	includes/ft_printf.h	/^# define FLOAT /;"	d
+FLUSH_MEMORY	includes/ft_malloc.h	/^# define FLUSH_MEMORY	/;"	d
+FT_MALLOC_H	includes/ft_malloc.h	/^# define FT_MALLOC_H$/;"	d
+FT_PRINTF_H	includes/ft_printf.h	/^# define FT_PRINTF_H$/;"	d
+GET_HEAD	includes/ft_malloc.h	/^# define GET_HEAD	/;"	d
+GET_NEXT_LINE_H	includes/get_next_line.h	/^# define GET_NEXT_LINE_H$/;"	d
+GREEN	Makefile	/^GREEN = \\033[32m$/;"	m
+GREEN	includes/test.h	/^# define GREEN /;"	d
+HASHMAP_H	includes/hashmap.h	/^# define HASHMAP_H$/;"	d
+HEXA	includes/ft_printf.h	/^# define HEXA /;"	d
+IFLAGS	Makefile	/^IFLAGS = -I$(PATHI)$/;"	m
+ISFALSE	includes/test.h	/^# define ISFALSE /;"	d
+ISTRUE	includes/test.h	/^# define ISTRUE /;"	d
+LIBFT_H	includes/libft.h	/^# define LIBFT_H$/;"	d
+LIST_H	includes/list.h	/^# define LIST_H$/;"	d
+MAX_FILL	includes/hashmap.h	/^# define MAX_FILL /;"	d
+MAX_HIT	srcs/hashmap/ft_hmap_hits.c	/^#define MAX_HIT	/;"	d	file:
+MEMORY_H	includes/memory.h	/^# define MEMORY_H$/;"	d
+MIN_FILL	includes/hashmap.h	/^# define MIN_FILL /;"	d
+MIN_MAP_SIZE	includes/hashmap.h	/^# define MIN_MAP_SIZE /;"	d
+MKDIR	Makefile	/^MKDIR = mkdir -p$/;"	m
+NAME	Makefile	/^NAME = libft.a$/;"	m
+NC	Makefile	/^NC = \\033[0m$/;"	m
+NOT_FOUND	srcs/hashmap/ft_hmap_hits.c	/^#define NOT_FOUND	/;"	d	file:
+OBJD	Makefile	/^OBJD = $(patsubst %.c, $(PATHO)db%.o, $(SRCS))$/;"	m
+OBJS	Makefile	/^OBJS = $(patsubst %.c, $(PATHO)%.o, $(SRCS))$/;"	m
+OCTAL	includes/ft_printf.h	/^# define OCTAL /;"	d
+ONELINE	Makefile	/^ONELINE =\\e[1A\\r$/;"	m
+OTHER	includes/ft_printf.h	/^# define OTHER /;"	d
+OTHER_H	includes/other.h	/^# define OTHER_H$/;"	d
+OUTPUT_H	includes/output.h	/^# define OUTPUT_H$/;"	d
+PATHI	Makefile	/^PATHI = includes\/$/;"	m
+PATHO	Makefile	/^PATHO = objs\/$/;"	m
+POW_128	includes/hashmap.h	/^# define POW_128 /;"	d
+PRINT	includes/ft_malloc.h	/^# define PRINT	/;"	d
+PURPLE	Makefile	/^PURPLE = \\033[0;35m$/;"	m
+RED	Makefile	/^RED = \\033[0;31m$/;"	m
+RED	includes/test.h	/^# define RED /;"	d
+SIGNED	includes/ft_printf.h	/^# define SIGNED /;"	d
+SILENCE	includes/ft_malloc.h	/^# define SILENCE	/;"	d
+SIZE	includes/ft_printf.h	/^# define SIZE /;"	d
+STR_H	includes/str.h	/^# define STR_H$/;"	d
+SUCCESS	includes/hashmap.h	/^# define SUCCESS /;"	d
+SUCCESS	includes/libft.h	/^# define SUCCESS /;"	d
+TEN	includes/ft_printf.h	/^# define TEN /;"	d
+TEST_H	includes/test.h	/^# define TEST_H$/;"	d
+TRUE	includes/libft.h	/^# define TRUE /;"	d
+TYPE	includes/ft_printf.h	/^# define TYPE /;"	d
+UNSIGNED	includes/ft_printf.h	/^# define UNSIGNED /;"	d
+VECTOR_BUFFER_SIZE	includes/str.h	/^# define VECTOR_BUFFER_SIZE /;"	d
+VECTOR_H	includes/vector.h	/^# define VECTOR_H$/;"	d
+WHITE	Makefile	/^WHITE = \\033[0;37m$/;"	m
+YELLOW	Makefile	/^YELLOW = \\033[0;33m$/;"	m
+YELLOW	includes/test.h	/^# define YELLOW /;"	d
+addr	includes/ft_malloc.h	/^	void		*addr;$/;"	m	struct:s_meminfo
+arg	includes/ft_printf.h	/^	t_args				arg;$/;"	m	struct:s_format
+binary	srcs/ft_printf/unsigned.c	/^void	binary(t_format *format)$/;"	f
+bit64_location	srcs/string/ft_strlen.c	/^static int64_t	bit64_location(const char *cp, const char *str, uint8_t is64bit)$/;"	f	file:
+buffer	includes/output.h	/^	char			*buffer;$/;"	m	struct:s_opt_buffer
+buffer	includes/output.h	/^	char			buffer[BUFF_SIZE];$/;"	m	struct:s_buffer
+buffer	includes/vector.h	/^	char			*buffer;$/;"	m	struct:s_vector
+character	includes/ft_printf.h	/^	char				character;$/;"	m	union:u_args
+character	srcs/ft_printf/other.c	/^void			character(t_format *format)$/;"	f
+color	includes/ft_printf.h	/^	char				*color;$/;"	m	struct:s_format
+color_len	includes/ft_printf.h	/^	int					color_len;$/;"	m	struct:s_format
+colors	srcs/ft_printf/widthprec.c	/^char		*colors(t_format *format, char *tmp)$/;"	f
+convert	includes/ft_printf.h	/^	t_convert			convert;$/;"	m	struct:s_format
+convert	srcs/ft_printf/digit.c	/^static char			*convert(t_format *format, long long value)$/;"	f	file:
+convert_sign	srcs/conversion/ft_convert_base.c	/^char				*convert_sign(char *nbr, char *base_from, char *base_to)$/;"	f
+convert_unsign	srcs/conversion/ft_convert_base.c	/^char				*convert_unsign(char *nbr, char *base_from, char *base_to)$/;"	f
+converter	srcs/conversion/ft_atoi.c	/^static	int	converter(const char *str, long result, int sign)$/;"	f	file:
+converter	srcs/conversion/ft_atoull_base.c	/^static void			converter(char *str, char *base, int len, \\$/;"	f	file:
+converter	srcs/conversion/ft_itoa.c	/^static	void	converter(char *buffer, long n, int i)$/;"	f	file:
+converter	srcs/conversion/ft_llitoa.c	/^static	void	converter(char *buffer, long long n, int i)$/;"	f	file:
+converter	srcs/conversion/ft_ullitoa.c	/^static	void	converter(char *buffer, unsigned long long n, int i)$/;"	f	file:
+converter	srcs/ft_printf/other.c	/^static char		*converter(t_format *format)$/;"	f	file:
+converter	srcs/output/ft_putnbr.c	/^static	void	converter(long nb)$/;"	f	file:
+converter	srcs/output/ft_putnbr_fd.c	/^static	void	converter(long nb, int fd)$/;"	f	file:
+create_list	srcs/directory/ft_dirlist.c	/^static int		create_list(DIR *current, char *path, t_list **lst)$/;"	f	file:
+cur	includes/get_next_line.h	/^	char			*cur;$/;"	m	struct:s_gnl_file
+data	includes/hashmap.h	/^	void		*data;$/;"	m	struct:s_hnode
+data	includes/list.h	/^	void			*data;$/;"	m	struct:s_list
+data_size	includes/list.h	/^	size_t			data_size;$/;"	m	struct:s_list
+diff	includes/ft_printf.h	/^	unsigned int		diff;$/;"	m	struct:s_format
+digit	srcs/ft_printf/digit.c	/^void				digit(t_format *format)$/;"	f
+dir_del	srcs/directory/ft_dirdel.c	/^static void	dir_del(void *file)$/;"	f	file:
+do_diff	srcs/vector/vct_replace_string.c	/^static void	do_diff(uint64_t tmp, t_vector *vector, uint64_t start_index,$/;"	f	file:
+doubles	srcs/ft_printf/doubles.c	/^void				doubles(t_format *format)$/;"	f
+doutput	srcs/ft_printf/output.c	/^int				doutput(const char *fmt, t_list *node, int fd)$/;"	f
+eraser	srcs/list/ft_lstdel.c	/^static t_list	*eraser(t_list *current, void (*del)(void *))$/;"	f	file:
+ereaser	srcs/list/ft_lstremove_if.c	/^t_list		*ereaser(t_list *current, void *data, t_cmp cmp, t_del del)$/;"	f
+extract_flags	srcs/ft_printf/extract.c	/^void		extract_flags(char **spec, t_format *format, va_list args)$/;"	f
+extract_precision	srcs/ft_printf/extract.c	/^void		extract_precision(char **spec, t_format *format, va_list args)$/;"	f
+extract_size	srcs/ft_printf/extract.c	/^void		extract_size(char **spec, t_format *format)$/;"	f
+extract_type	srcs/ft_printf/extract.c	/^int			extract_type(char **spec, t_format *format, va_list args)$/;"	f
+extract_width	srcs/ft_printf/extract.c	/^void		extract_width(char **spec, t_format *format, va_list args)$/;"	f
+failure	includes/test.h	/^	int			failure;$/;"	m	struct:s_result
+fd	includes/get_next_line.h	/^	int				fd;$/;"	m	struct:s_gnl_file
+fd	includes/str.h	/^	int				fd;$/;"	m	struct:s_file
+fd_manager	srcs/other/ft_getdelim.c	/^static t_file	*fd_manager(t_list **lst, const int fd, t_list *current)$/;"	f	file:
+fd_reader	srcs/other/ft_getdelim.c	/^static int		fd_reader(t_file *current, char *buffer, char *tmp, char delim)$/;"	f	file:
+file	includes/ft_malloc.h	/^	const char	*file;$/;"	m	struct:s_meminfo
+fill_float	srcs/ft_printf/doubles.c	/^static void			fill_float(t_format *format, char **tmp, long double value)$/;"	f	file:
+flag_color	includes/ft_printf.h	/^	char				flag_color;$/;"	m	struct:s_format
+flag_create	srcs/ft_printf/digit.c	/^static long long	flag_create(t_format *format, char *flag)$/;"	f	file:
+flag_create	srcs/ft_printf/doubles.c	/^static long double	flag_create(t_format *format, char *flag)$/;"	f	file:
+flag_hashtag	includes/ft_printf.h	/^	char				flag_hashtag;$/;"	m	struct:s_format
+flag_minus	includes/ft_printf.h	/^	char				flag_minus;$/;"	m	struct:s_format
+flag_plus	includes/ft_printf.h	/^	char				flag_plus;$/;"	m	struct:s_format
+flag_space	includes/ft_printf.h	/^	char				flag_space;$/;"	m	struct:s_format
+flag_zero	includes/ft_printf.h	/^	char				flag_zero;$/;"	m	struct:s_format
+format_delete	srcs/ft_printf/format.c	/^void			format_delete(void *data)$/;"	f
+format_init	srcs/ft_printf/format.c	/^static void		format_init(t_format *format)$/;"	f	file:
+format_list	srcs/ft_printf/format.c	/^t_list			*format_list(const char *format, va_list args)$/;"	f
+format_to_fd	srcs/ft_printf/output.c	/^static int		format_to_fd(const char **format, int fd)$/;"	f	file:
+format_to_str	srcs/ft_printf/output.c	/^static int		format_to_str(const char **format, char **dst)$/;"	f	file:
+free_hnode_lst	srcs/hashmap/ft_hmap_free_content.c	/^static void		free_hnode_lst(t_list **ptr, void (*del)(void *))$/;"	f	file:
+ft_abs	srcs/conversion/ft_abs.c	/^int	ft_abs(int c)$/;"	f
+ft_asprintf	srcs/ft_printf/ft_printf.c	/^int		ft_asprintf(char **dst, const char *format, ...)$/;"	f
+ft_atoi	srcs/conversion/ft_atoi.c	/^int			ft_atoi(const char *str)$/;"	f
+ft_atoll_base	srcs/conversion/ft_atoll_base.c	/^long long			ft_atoll_base(char *str, char *base)$/;"	f
+ft_atoull_base	srcs/conversion/ft_atoull_base.c	/^unsigned long long	ft_atoull_base(char *str, char *base)$/;"	f
+ft_base_check_and_strlen	srcs/conversion/ft_atoll_base.c	/^static long long	ft_base_check_and_strlen(char *base)$/;"	f	file:
+ft_bzero	srcs/memory/ft_bzero.c	/^void	ft_bzero(void *s, size_t n)$/;"	f
+ft_checkstat	srcs/directory/ft_checkstat.c	/^int			ft_checkstat(char *file, mode_t st_mode)$/;"	f
+ft_chr	srcs/string/ft_strtrim.c	/^static char			*ft_chr(const char *s, int c)$/;"	f	file:
+ft_convert_base	srcs/conversion/ft_convert_base.c	/^char				*ft_convert_base(char *nbr, char *base_from, char *base_to)$/;"	f
+ft_create_hnode	srcs/hashmap/ft_hmap_insert.c	/^static int		ft_create_hnode(t_list **alst, char *key, void *data)$/;"	f	file:
+ft_del_hnode	srcs/hashmap/ft_hmap_remove.c	/^void			ft_del_hnode(void *node, void (*del)(void *))$/;"	f
+ft_dirdel	srcs/directory/ft_dirdel.c	/^void		ft_dirdel(t_list **dirlist)$/;"	f
+ft_dirlist	srcs/directory/ft_dirlist.c	/^int				ft_dirlist(t_list **dirlist, char *path)$/;"	f
+ft_dprintf	srcs/ft_printf/ft_printf.c	/^int		ft_dprintf(int fd, const char *format, ...)$/;"	f
+ft_fill_line_with_rest	srcs/get_next_line/get_next_line.c	/^static void	ft_fill_line_with_rest(t_gnl_file *file)$/;"	f	file:
+ft_freetab	srcs/tab/ft_freetab.c	/^void		ft_freetab(char ***tab)$/;"	f
+ft_get_two_pw	srcs/hashmap/ft_hmap_resize.c	/^size_t		ft_get_two_pw(size_t nb)$/;"	f
+ft_getargslst	srcs/list/ft_getargslst.c	/^t_list		*ft_getargslst(int ac, char **av)$/;"	f
+ft_getargstab	srcs/tab/ft_getargstab.c	/^char	**ft_getargstab(int ac, char **av)$/;"	f
+ft_getdelim	srcs/other/ft_getdelim.c	/^int				ft_getdelim(const int fd, char **line, char delim)$/;"	f
+ft_getopt	srcs/other/ft_getopt.c	/^int				ft_getopt(int ac, char **av, const char *optstr)$/;"	f
+ft_hash_str	srcs/hashmap/ft_hash_str.c	/^uint32_t		ft_hash_str(char *key, size_t tab_size)$/;"	f
+ft_hmap_collision	srcs/hashmap/ft_hmap_collision.c	/^size_t		ft_hmap_collision(t_hash *hashmap)$/;"	f
+ft_hmap_collision_rate	srcs/hashmap/ft_hmap_collision.c	/^size_t		ft_hmap_collision_rate(t_hash *hashmap)$/;"	f
+ft_hmap_filled	srcs/hashmap/ft_hmap_resize.c	/^size_t		ft_hmap_filled(t_hash *hashmap)$/;"	f
+ft_hmap_filled_norm	srcs/hashmap/ft_hmap_resize.c	/^size_t		ft_hmap_filled_norm(t_hash *hashmap)$/;"	f
+ft_hmap_free_content	srcs/hashmap/ft_hmap_free_content.c	/^void			ft_hmap_free_content(t_hash *hashmap, void (*del)(void *))$/;"	f
+ft_hmap_getdata	srcs/hashmap/ft_hmap_getdata.c	/^void	*ft_hmap_getdata(t_hash *hashmap, char *key)$/;"	f
+ft_hmap_hits	srcs/hashmap/ft_hmap_hits.c	/^int8_t		ft_hmap_hits(t_hash *hashmap, char *key)$/;"	f
+ft_hmap_init	srcs/hashmap/ft_hmap_init.c	/^t_hash	ft_hmap_init(size_t size)$/;"	f
+ft_hmap_insert	srcs/hashmap/ft_hmap_insert.c	/^int				ft_hmap_insert(t_hash *hashmap, char *key, void *data)$/;"	f
+ft_hmap_remove	srcs/hashmap/ft_hmap_remove.c	/^int				ft_hmap_remove(t_hash *hashmap, char *key, void (*del)(void *))$/;"	f
+ft_hmap_resize	srcs/hashmap/ft_hmap_resize.c	/^int			ft_hmap_resize(t_hash *hashmap, size_t nw_size)$/;"	f
+ft_init	srcs/memory/ft_memalloc.c	/^static void	ft_init(void *s, size_t n)$/;"	f	file:
+ft_init	srcs/string/ft_strclr.c	/^static void		ft_init(void *s, size_t n)$/;"	f	file:
+ft_init	srcs/string/ft_strnew.c	/^static void	ft_init(void *s, size_t n)$/;"	f	file:
+ft_is_in_base	srcs/conversion/ft_atoll_base.c	/^static long long	ft_is_in_base(char *str, char c)$/;"	f	file:
+ft_isalnum	srcs/other/ft_isalnum.c	/^int		ft_isalnum(int c)$/;"	f
+ft_isalpha	srcs/other/ft_isalpha.c	/^int		ft_isalpha(int c)$/;"	f
+ft_isascii	srcs/other/ft_isascii.c	/^int		ft_isascii(int c)$/;"	f
+ft_isdigit	srcs/other/ft_isdigit.c	/^int		ft_isdigit(int c)$/;"	f
+ft_isnumeric	srcs/string/ft_isnumeric.c	/^uint8_t			ft_isnumeric(char *str)$/;"	f
+ft_isprint	srcs/other/ft_isprint.c	/^int		ft_isprint(int c)$/;"	f
+ft_itoa	srcs/conversion/ft_itoa.c	/^char			*ft_itoa(int n)$/;"	f
+ft_len	srcs/string/ft_strclr.c	/^static size_t	ft_len(const char *s)$/;"	f	file:
+ft_llitoa	srcs/conversion/ft_llitoa.c	/^char			*ft_llitoa(long long n)$/;"	f
+ft_lstadd	srcs/list/ft_lstadd.c	/^void	ft_lstadd(t_list **alst, t_list *new)$/;"	f
+ft_lstaddback	srcs/list/ft_lstaddback.c	/^int		ft_lstaddback(t_list **alst, t_list *new)$/;"	f
+ft_lstcmp	srcs/list/ft_lstcmp.c	/^int		ft_lstcmp(t_list *lst1, t_list *lst2, int (*f)(void *, void *))$/;"	f
+ft_lstdel	srcs/list/ft_lstdel.c	/^void			*ft_lstdel(t_list **alst, void (*del)(void *))$/;"	f
+ft_lstdelfirst	srcs/list/ft_lstdelfirst.c	/^int		ft_lstdelfirst(t_list **alst, void (*del)(void *))$/;"	f
+ft_lstdelnext	srcs/list/ft_lstdelnext.c	/^void	ft_lstdelnext(t_list *current, void f(void *))$/;"	f
+ft_lstdelone	srcs/list/ft_lstdelone.c	/^void	ft_lstdelone(t_list **alst, void (*del)(void *))$/;"	f
+ft_lstfilter	srcs/list/ft_lstfilter.c	/^t_list		*ft_lstfilter(t_list *lst, void *to_find, t_cmp filter, t_cmp cpy)$/;"	f
+ft_lstfind	srcs/list/ft_lstfind.c	/^t_list	*ft_lstfind(t_list *lst, void *to_find, int (*f)(void *, void *))$/;"	f
+ft_lstiter	srcs/list/ft_lstiter.c	/^void	ft_lstiter(t_list *lst, void (*f)(void *data))$/;"	f
+ft_lstiter_ctx	srcs/list/ft_lstiter_ctx.c	/^int		ft_lstiter_ctx(t_list *lst, void *context$/;"	f
+ft_lstlen	srcs/list/ft_lstlen.c	/^size_t		ft_lstlen(t_list *lst)$/;"	f
+ft_lstmap	srcs/list/ft_lstmap.c	/^t_list	*ft_lstmap(t_list *lst, void *context, t_lstmap func, t_del del)$/;"	f
+ft_lstmerge	srcs/list/ft_lstmerge.c	/^t_list	*ft_lstmerge(t_list **alst, t_list *blst)$/;"	f
+ft_lstnew	srcs/list/ft_lstnew.c	/^t_list		*ft_lstnew(void const *data, size_t data_size)$/;"	f
+ft_lstremove_if	srcs/list/ft_lstremove_if.c	/^int			ft_lstremove_if(t_list **lst, void *data, t_cmp cmp, t_del del)$/;"	f
+ft_lstrev	srcs/list/ft_lstrev.c	/^void			ft_lstrev(t_list **alst)$/;"	f
+ft_lstsplit_if	srcs/list/ft_lstsplit_if.c	/^t_list			*ft_lstsplit_if(t_list **lst, void *context, t_cmp cmp)$/;"	f
+ft_lsttotab	srcs/list/ft_lsttotab.c	/^char	**ft_lsttotab(t_list *lst, char *(*f)(void *))$/;"	f
+ft_memalloc	srcs/memory/ft_memalloc.c	/^void		*ft_memalloc(size_t size)$/;"	f
+ft_memccpy	srcs/memory/ft_memccpy.c	/^void	*ft_memccpy(void *dst, const void *src, int c, size_t n)$/;"	f
+ft_memchr	srcs/memory/ft_memchr.c	/^void	*ft_memchr(const void *s, int c, size_t n)$/;"	f
+ft_memcmp	srcs/memory/ft_memcmp.c	/^int		ft_memcmp(const void *s1, const void *s2, size_t n)$/;"	f
+ft_memcpy	srcs/memory/ft_memcpy.c	/^void	*ft_memcpy(void *dst, const void *src, size_t n)$/;"	f
+ft_memdel	srcs/memory/ft_memdel.c	/^void	ft_memdel(void **ap)$/;"	f
+ft_memmove	srcs/memory/ft_memmove.c	/^void	*ft_memmove(void *dst, const void *src, size_t n)$/;"	f
+ft_memset	srcs/memory/ft_memset.c	/^void	*ft_memset(void *b, int c, size_t len)$/;"	f
+ft_mergesort	srcs/list/ft_mergesort.c	/^void			ft_mergesort(t_list **lst, int (*cmp)(void *, void *))$/;"	f
+ft_ncpy	srcs/string/ft_strsub.c	/^static char	*ft_ncpy(char *dst, const char *src, size_t len)$/;"	f	file:
+ft_ncpy	srcs/string/ft_strtrim.c	/^static char			*ft_ncpy(char *dst, const char *src, size_t len)$/;"	f	file:
+ft_norm_hash	srcs/hashmap/ft_hash_str.c	/^static uint32_t	ft_norm_hash(uint32_t hash, size_t tab_size)$/;"	f	file:
+ft_print_hashmap	srcs/hashmap/ft_hmap_print.c	/^void			ft_print_hashmap(t_hash *hashmap)$/;"	f
+ft_print_hashmap_p	srcs/hashmap/ft_hmap_print.c	/^void			ft_print_hashmap_p(t_hash *hashmap)$/;"	f
+ft_printf	srcs/ft_printf/ft_printf.c	/^int		ft_printf(const char *format, ...)$/;"	f
+ft_putchar	srcs/output/ft_putchar.c	/^void	ft_putchar(char c)$/;"	f
+ft_putchar_fd	srcs/output/ft_putchar_fd.c	/^void	ft_putchar_fd(char c, int fd)$/;"	f
+ft_putendl	srcs/output/ft_putendl.c	/^void	ft_putendl(char const *s)$/;"	f
+ft_putendl_fd	srcs/output/ft_putendl_fd.c	/^void	ft_putendl_fd(char const *s, int fd)$/;"	f
+ft_putnbr	srcs/output/ft_putnbr.c	/^void			ft_putnbr(int n)$/;"	f
+ft_putnbr_fd	srcs/output/ft_putnbr_fd.c	/^void			ft_putnbr_fd(int n, int fd)$/;"	f
+ft_putnstr	srcs/output/ft_putnstr.c	/^void	ft_putnstr(char *str, size_t n)$/;"	f
+ft_putstr	srcs/output/ft_putstr.c	/^int		ft_putstr(char const *str)$/;"	f
+ft_putstr_fd	srcs/output/ft_putstr_fd.c	/^int		ft_putstr_fd(char const *str, int fd)$/;"	f
+ft_read	srcs/get_next_line/get_next_line.c	/^static int	ft_read(t_gnl_file *file)$/;"	f	file:
+ft_ringbuffer	srcs/output/ft_ringbuffer.c	/^int				ft_ringbuffer(char *str, int fd)$/;"	f
+ft_ringflush	srcs/output/ft_ringbuffer.c	/^static int		ft_ringflush(t_buffer *ring, int fd)$/;"	f	file:
+ft_showtab	srcs/tab/ft_showtab.c	/^void	ft_showtab(char **t)$/;"	f
+ft_simplified_hash_print	srcs/hashmap/ft_hmap_print.c	/^void			ft_simplified_hash_print(t_hash *hashmap)$/;"	f
+ft_stckdestroy	srcs/list/ft_stckdestroy.c	/^void	ft_stckdestroy(t_stack *stack, void (*f)(void *))$/;"	f
+ft_stckinit	srcs/list/ft_stckinit.c	/^void	ft_stckinit(t_stack *stack)$/;"	f
+ft_stckpop	srcs/list/ft_stckpop.c	/^void	*ft_stckpop(t_stack *stack)$/;"	f
+ft_stckpopnode	srcs/list/ft_stckpopnode.c	/^t_list	*ft_stckpopnode(t_stack *stack)$/;"	f
+ft_stckpush	srcs/list/ft_stckpush.c	/^int		ft_stckpush(t_stack *stack, void *data, size_t size)$/;"	f
+ft_stckpushnode	srcs/list/ft_stckpushnode.c	/^int		ft_stckpushnode(t_stack *stack, t_list *node)$/;"	f
+ft_stcksize	srcs/list/ft_stcksize.c	/^size_t	ft_stcksize(t_stack *stack)$/;"	f
+ft_stcktop	srcs/list/ft_stcktop.c	/^void	*ft_stcktop(t_stack *stack)$/;"	f
+ft_strbeginswith	srcs/string/ft_strbeginswith.c	/^int	ft_strbeginswith(const char *string, char *prefix)$/;"	f
+ft_strcat	srcs/string/ft_strcat.c	/^char	*ft_strcat(char *s1, const char *s2)$/;"	f
+ft_strcheck	srcs/string/ft_strcheck.c	/^int		ft_strcheck(char *str, int (*f)(int))$/;"	f
+ft_strchr	srcs/string/ft_strchr.c	/^char	*ft_strchr(const char *s, int c)$/;"	f
+ft_strclr	srcs/string/ft_strclr.c	/^void			ft_strclr(char *c)$/;"	f
+ft_strcmp	srcs/string/ft_strcmp.c	/^int		ft_strcmp(const char *s1, const char *s2)$/;"	f
+ft_strcpy	srcs/string/ft_strcpy.c	/^char	*ft_strcpy(char *dst, const char *src)$/;"	f
+ft_strcspn	srcs/string/ft_strcspn.c	/^size_t		ft_strcspn(const char *s, const char *charset)$/;"	f
+ft_strdel	srcs/string/ft_strdel.c	/^void	ft_strdel(char **as)$/;"	f
+ft_strdup	srcs/string/ft_strdup.c	/^char	*ft_strdup(const char *s1)$/;"	f
+ft_strendswith	srcs/string/ft_strendswith.c	/^int	ft_strendswith(char *string, char *suffix)$/;"	f
+ft_strequ	srcs/string/ft_strequ.c	/^int		ft_strequ(char const *s1, char const *s2)$/;"	f
+ft_strinsert	srcs/string/ft_strinsert.c	/^char		*ft_strinsert(char **str, char c, size_t index)$/;"	f
+ft_striter	srcs/string/ft_striter.c	/^void	ft_striter(char *s, void (*f)(char *))$/;"	f
+ft_striteri	srcs/string/ft_striteri.c	/^void	ft_striteri(char *s, void (*f)(unsigned int, char *))$/;"	f
+ft_strjoin	srcs/string/ft_strjoin.c	/^char		*ft_strjoin(char const *s1, char const *s2)$/;"	f
+ft_strjoin_protected	srcs/get_next_line/get_next_line.c	/^static char	*ft_strjoin_protected(char const *s1, char const *s2)$/;"	f	file:
+ft_strlcat	srcs/string/ft_strlcat.c	/^size_t	ft_strlcat(char *dest, const char *src, size_t size)$/;"	f
+ft_strlen	srcs/string/ft_strlen.c	/^size_t			ft_strlen(const char *str)$/;"	f
+ft_strlower	srcs/string/ft_strlower.c	/^void	ft_strlower(char *str)$/;"	f
+ft_strmap	srcs/string/ft_strmap.c	/^char	*ft_strmap(char const *s, char (*f)(char))$/;"	f
+ft_strmapi	srcs/string/ft_strmapi.c	/^char	*ft_strmapi(char const *s, char (*f)(unsigned int, char))$/;"	f
+ft_strncat	srcs/string/ft_strncat.c	/^char	*ft_strncat(char *s1, const char *s2, size_t n)$/;"	f
+ft_strncmp	srcs/string/ft_strncmp.c	/^int		ft_strncmp(const char *s1, const char *s2, size_t n)$/;"	f
+ft_strncpy	srcs/string/ft_strncpy.c	/^char	*ft_strncpy(char *dst, const char *src, size_t len)$/;"	f
+ft_strnequ	srcs/string/ft_strnequ.c	/^int		ft_strnequ(char const *s1, char const *s2, size_t n)$/;"	f
+ft_strnew	srcs/string/ft_strnew.c	/^char		*ft_strnew(size_t size)$/;"	f
+ft_strnstr	srcs/string/ft_strnstr.c	/^char	*ft_strnstr(const char *haystack, const char *needle, size_t len)$/;"	f
+ft_strrchr	srcs/string/ft_strrchr.c	/^char			*ft_strrchr(const char *s, int c)$/;"	f
+ft_strrev	srcs/string/ft_strrev.c	/^char	*ft_strrev(char *str)$/;"	f
+ft_strsplit	srcs/string/ft_strsplit.c	/^char		**ft_strsplit(char const *s, char *c)$/;"	f
+ft_strspn	srcs/string/ft_strspn.c	/^size_t		ft_strspn(const char *s, const char *charset)$/;"	f
+ft_strstr	srcs/string/ft_strstr.c	/^char	*ft_strstr(const char *haystack, const char *needle)$/;"	f
+ft_strsub	srcs/string/ft_strsub.c	/^char		*ft_strsub(char const *s, unsigned int start, size_t len)$/;"	f
+ft_strtrim	srcs/string/ft_strtrim.c	/^char				*ft_strtrim(char const *s)$/;"	f
+ft_strupper	srcs/string/ft_strupper.c	/^void	ft_strupper(char *str)$/;"	f
+ft_sub	srcs/string/ft_strtrim.c	/^static char			*ft_sub(char const *s, unsigned int start, size_t len)$/;"	f	file:
+ft_taboneach	srcs/tab/ft_taboneach.c	/^int			ft_taboneach(char **current, void *context$/;"	f
+ft_tabsize	srcs/tab/ft_tabsize.c	/^int		ft_tabsize(char **tab)$/;"	f
+ft_tabtolst	srcs/other/ft_tabtolst.c	/^t_list	*ft_tabtolst(char **tab)$/;"	f
+ft_tolower	srcs/other/ft_tolower.c	/^int		ft_tolower(int c)$/;"	f
+ft_toupper	srcs/other/ft_toupper.c	/^int		ft_toupper(int c)$/;"	f
+ft_ullitoa	srcs/conversion/ft_ullitoa.c	/^char			*ft_ullitoa(unsigned long long int n)$/;"	f
+ft_vasprintf	srcs/ft_printf/ft_printf.c	/^int		ft_vasprintf(char **dst, const char *format, va_list args)$/;"	f
+ft_vctlen	srcs/string/ft_vctlen.c	/^size_t	ft_vctlen(t_vector *vct)$/;"	f
+ft_vctnew	srcs/string/ft_vctnew.c	/^t_vector	*ft_vctnew(size_t optional_size)$/;"	f
+ft_vctrescale	srcs/string/ft_vctrescale.c	/^int		ft_vctrescale(t_vector *vector)$/;"	f
+ft_vctreset	srcs/string/ft_vctreset.c	/^int		ft_vctreset(t_vector *vct)$/;"	f
+ft_vdprintf	srcs/ft_printf/ft_printf.c	/^int		ft_vdprintf(const char *format, va_list args, int fd)$/;"	f
+function	includes/ft_malloc.h	/^	const char	*function;$/;"	m	struct:s_meminfo
+g_test_results	includes/test.h	/^t_result		g_test_results;$/;"	v
+generate_summary	srcs/test/setup_test.c	/^void	generate_summary(t_list **summary, t_result result)$/;"	f
+get_next_line	srcs/get_next_line/get_next_line.c	/^int			get_next_line(const int fd, char **line)$/;"	f
+head	includes/list.h	/^	t_list			*head;$/;"	m	struct:s_stack
+hexadecimal	srcs/ft_printf/unsigned.c	/^void	hexadecimal(t_format *format)$/;"	f
+hi	includes/str.h	/^	unsigned long int	hi;$/;"	m	struct:s_magic
+hits	includes/hashmap.h	/^	uint32_t	hits;$/;"	m	struct:s_hnode
+holder	includes/ft_printf.h	/^	char				*holder;$/;"	m	struct:s_format
+id	includes/ft_printf.h	/^	char				id;$/;"	m	struct:s_format
+index	includes/output.h	/^	unsigned int	index;$/;"	m	struct:s_buffer
+index	includes/output.h	/^	unsigned int	index;$/;"	m	struct:s_opt_buffer
+info	includes/directory.h	/^	t_stat				info;$/;"	m	struct:s_status
+init_signal_catcher	srcs/test/framework.c	/^static void		init_signal_catcher(void)$/;"	f	file:
+integer	includes/ft_printf.h	/^	int					integer;$/;"	m	union:u_args
+intmax	includes/ft_printf.h	/^	intmax_t			intmax;$/;"	m	union:u_args
+key	includes/hashmap.h	/^	char		*key;$/;"	m	struct:s_hnode
+l_double	includes/ft_printf.h	/^	long double			l_double;$/;"	m	union:u_args
+l_integer	includes/ft_printf.h	/^	long int			l_integer;$/;"	m	union:u_args
+line	includes/ft_malloc.h	/^	int			line;$/;"	m	struct:s_meminfo
+ll_integer	includes/ft_printf.h	/^	long long int		ll_integer;$/;"	m	union:u_args
+lo	includes/str.h	/^	unsigned long int	lo;$/;"	m	struct:s_magic
+load_test	srcs/test/framework.c	/^int				load_test(t_stack *head, char *name, int (*f)(void))$/;"	f
+locate_eol	srcs/string/ft_strlen.c	/^static uint64_t	locate_eol(t_magic *magic, const unsigned long int *lw_ptr$/;"	f	file:
+lw	includes/str.h	/^	unsigned long int	lw;$/;"	m	struct:s_magic
+map	includes/hashmap.h	/^	t_list		**map;$/;"	m	struct:s_hash
+map_size	includes/hashmap.h	/^	size_t		map_size;$/;"	m	struct:s_hash
+mapper	srcs/list/ft_lstmap.c	/^int		mapper(t_list *lst, t_list **map, void *context, t_lstmap func)$/;"	f
+merge_lists	srcs/list/ft_mergesort.c	/^static t_list	*merge_lists(t_list *a, t_list *b, int (*cmp)(void *, void *))$/;"	f	file:
+name	includes/directory.h	/^	char				*name;$/;"	m	struct:s_status
+name	includes/test.h	/^	char		*name;$/;"	m	struct:s_result
+name	includes/test.h	/^	char		*name;$/;"	m	struct:s_test
+next	includes/list.h	/^	struct s_list	*next;$/;"	m	struct:s_list	typeref:struct:s_list::s_list
+numlen	srcs/conversion/ft_itoa.c	/^static int		numlen(long n)$/;"	f	file:
+numlen	srcs/conversion/ft_llitoa.c	/^static int		numlen(long long n)$/;"	f	file:
+numlen	srcs/conversion/ft_ullitoa.c	/^static int		numlen(unsigned long long n)$/;"	f	file:
+octal	srcs/ft_printf/unsigned.c	/^void	octal(t_format *format)$/;"	f
+output	includes/ft_printf.h	/^	char				*output;$/;"	m	struct:s_format
+parent_manager	srcs/test/framework.c	/^static void		parent_manager(int print_on)$/;"	f	file:
+parser	srcs/ft_printf/format.c	/^static t_list	*parser(char *spec, va_list args)$/;"	f	file:
+parser	srcs/other/ft_getopt.c	/^static char		parser(int ac, char **av, const char *optstr, char **opt)$/;"	f	file:
+parser	srcs/string/ft_strsplit.c	/^static int	parser(char const *s, char *c)$/;"	f	file:
+partition	srcs/list/ft_mergesort.c	/^static void		partition(t_list *lst, t_list **front, t_list **back)$/;"	f	file:
+path	includes/directory.h	/^	char				*path;$/;"	m	struct:s_status
+pointer	includes/ft_printf.h	/^	void				*pointer;$/;"	m	union:u_args
+pointer	srcs/ft_printf/other.c	/^void			pointer(t_format *format)$/;"	f
+precision	includes/ft_printf.h	/^	int					precision;$/;"	m	struct:s_format
+precision	srcs/ft_printf/widthprec.c	/^char		*precision(t_format *format, char *tmp)$/;"	f
+prefix	srcs/ft_printf/widthprec.c	/^char		*prefix(t_format *format, char *tmp)$/;"	f
+prepare_masks	srcs/string/ft_strlen.c	/^static void		prepare_masks(t_magic *magic)$/;"	f	file:
+print_map_info	srcs/hashmap/ft_hmap_print.c	/^static void		print_map_info(t_hash *hashmap)$/;"	f	file:
+print_pad	includes/hashmap.h	/^	size_t		print_pad;$/;"	m	struct:s_hash
+print_test_header	srcs/test/display_test.c	/^void	print_test_header(void)$/;"	f
+print_test_result	srcs/test/display_test.c	/^void	print_test_result(t_list *node)$/;"	f
+print_test_separator	srcs/test/display_test.c	/^void	print_test_separator(int print_on)$/;"	f
+print_test_summary	srcs/test/display_test.c	/^void	print_test_summary(t_list *summary)$/;"	f
+ptrdiff	includes/ft_printf.h	/^	ptrdiff_t			ptrdiff;$/;"	m	union:u_args
+push_back	srcs/other/ft_getopt.c	/^static int		push_back(char *to_push)$/;"	f	file:
+relocate_hash	srcs/hashmap/ft_hmap_resize.c	/^static void	relocate_hash(t_hash *hashmap, t_list **new, size_t nw_size)$/;"	f	file:
+remove_data	srcs/hashmap/ft_hmap_remove.c	/^static int		remove_data(t_hash *hashmap, t_list *ptr$/;"	f	file:
+remove_first	srcs/hashmap/ft_hmap_remove.c	/^static int		remove_first(t_hash *hashmap, uint32_t hash$/;"	f	file:
+resize_check	srcs/hashmap/ft_hmap_remove.c	/^static int		resize_check(t_hash *hashmap)$/;"	f	file:
+rest	includes/get_next_line.h	/^	char			*rest;$/;"	m	struct:s_gnl_file
+return_manager	srcs/list/ft_lstremove_if.c	/^static int	return_manager(int mask)$/;"	f	file:
+reversal	srcs/list/ft_lstrev.c	/^static t_list	*reversal(t_list *previous, t_list *current, t_list *next)$/;"	f	file:
+room	includes/output.h	/^	unsigned int	room;$/;"	m	struct:s_buffer
+round_double	srcs/ft_printf/doubles.c	/^static char			*round_double(long double value)$/;"	f	file:
+run_test	srcs/test/framework.c	/^t_result		run_test(t_stack *tests, char *name, int print_on)$/;"	f
+s_buffer	includes/output.h	/^typedef struct		s_buffer$/;"	s
+s_conv	srcs/conversion/ft_convert_base.c	/^static void			s_conv(long long nb, char *base, int index, char *buffer)$/;"	f	file:
+s_double	includes/ft_printf.h	/^	double				s_double;$/;"	m	union:u_args
+s_file	includes/str.h	/^typedef struct		s_file$/;"	s
+s_format	includes/ft_printf.h	/^struct					s_format$/;"	s
+s_gnl_file	includes/get_next_line.h	/^typedef struct		s_gnl_file$/;"	s
+s_hash	includes/hashmap.h	/^typedef struct	s_hash$/;"	s
+s_hnode	includes/hashmap.h	/^typedef struct	s_hnode$/;"	s
+s_list	includes/list.h	/^typedef struct		s_list$/;"	s
+s_magic	includes/str.h	/^typedef struct		s_magic$/;"	s
+s_meminfo	includes/ft_malloc.h	/^typedef struct	s_meminfo$/;"	s
+s_opt_buffer	includes/output.h	/^typedef struct		s_opt_buffer$/;"	s
+s_result	includes/test.h	/^typedef struct	s_result$/;"	s
+s_short	includes/ft_printf.h	/^	short				s_short;$/;"	m	union:u_args
+s_stack	includes/list.h	/^typedef struct		s_stack$/;"	s
+s_status	includes/directory.h	/^typedef struct			s_status$/;"	s
+s_test	includes/test.h	/^typedef struct	s_test$/;"	s
+s_vector	includes/vector.h	/^typedef struct		s_vector$/;"	s
+scale	includes/vector.h	/^	uint16_t		scale;$/;"	m	struct:s_vector
+search	srcs/string/ft_strrchr.c	/^static	char	*search(const char *s, int c, int len)$/;"	f	file:
+segbus	includes/test.h	/^	int			segbus;$/;"	m	struct:s_result
+segv	includes/test.h	/^	int			segv;$/;"	m	struct:s_result
+set_test	srcs/test/setup_test.c	/^void	set_test(t_list **lst, t_result results)$/;"	f
+set_vct	srcs/vector/vct_new.c	/^static void	set_vct(t_vector *new, char *buffer)$/;"	f	file:
+shift_left	srcs/vector/vct_shift_tool.c	/^void		shift_left(t_vector *vector, uint64_t start)$/;"	f
+shift_nleft	srcs/vector/vct_shift_tool.c	/^void		shift_nleft(t_vector *vector, uint64_t start, uint32_t offset)$/;"	f
+shift_nright	srcs/vector/vct_shift_tool.c	/^void		shift_nright(t_vector *vector, uint64_t start, uint32_t offset)$/;"	f
+shift_right	srcs/vector/vct_shift_tool.c	/^void		shift_right(t_vector *vector, uint64_t start)$/;"	f
+sigabort	includes/test.h	/^	int			sigabort;$/;"	m	struct:s_result
+sigfpe	includes/test.h	/^	int			sigfpe;$/;"	m	struct:s_result
+sigkill	includes/test.h	/^	int			sigkill;$/;"	m	struct:s_result
+signal_catch	srcs/test/framework.c	/^static void		signal_catch(int signal)$/;"	f	file:
+signing	srcs/ft_printf/widthprec.c	/^char		*signing(t_format *format, char *tmp, char flag)$/;"	f
+size	includes/ft_malloc.h	/^	size_t		size;$/;"	m	struct:s_meminfo
+size	includes/ft_printf.h	/^	char				*size;$/;"	m	struct:s_format
+size	includes/list.h	/^	size_t			size;$/;"	m	struct:s_stack
+size	includes/vector.h	/^	uint64_t		size;$/;"	m	struct:s_vector
+sizet	includes/ft_printf.h	/^	size_t				sizet;$/;"	m	union:u_args
+soutput	srcs/ft_printf/output.c	/^int				soutput(char **dst, const char *fmt, t_list *node)$/;"	f
+split	srcs/list/ft_lstsplit_if.c	/^static t_list	*split(t_list *current, t_list **new, void *context, t_cmp cmp)$/;"	f	file:
+ssizet	includes/ft_printf.h	/^	ssize_t				ssizet;$/;"	m	union:u_args
+stack_fct	includes/ft_malloc.h	/^	char		**stack_fct;$/;"	m	struct:s_meminfo
+stack_size	includes/ft_malloc.h	/^	size_t		stack_size;$/;"	m	struct:s_meminfo
+state	includes/get_next_line.h	/^	int				state;$/;"	m	struct:s_gnl_file
+status	includes/str.h	/^	int				status;$/;"	m	struct:s_file
+str	includes/str.h	/^	char			*str;$/;"	m	struct:s_file
+str_colors	srcs/ft_printf/other.c	/^static char		*str_colors(t_format *format, char *tmp)$/;"	f	file:
+string	includes/ft_printf.h	/^	char				*string;$/;"	m	union:u_args
+string	srcs/ft_printf/other.c	/^void			string(t_format *format)$/;"	f
+strmgmt	srcs/other/ft_getdelim.c	/^static int		strmgmt(t_file *current, char **line, char *sub, char delim)$/;"	f	file:
+success	includes/test.h	/^	int			success;$/;"	m	struct:s_result
+t_args	includes/ft_printf.h	/^}						t_args;$/;"	t	typeref:union:u_args
+t_buffer	includes/output.h	/^}					t_buffer;$/;"	t	typeref:struct:s_buffer
+t_cmp	includes/list.h	/^typedef int			(*t_cmp)(void *, void *);$/;"	t
+t_convert	includes/ft_printf.h	/^typedef void			(*t_convert)(t_format *);$/;"	t
+t_del	includes/list.h	/^typedef void		(*t_del)(void *);$/;"	t
+t_dirent	includes/directory.h	/^typedef struct dirent	t_dirent;$/;"	t	typeref:struct:dirent
+t_file	includes/str.h	/^}					t_file;$/;"	t	typeref:struct:s_file
+t_format	includes/ft_printf.h	/^typedef struct s_format	t_format;$/;"	t	typeref:struct:s_format
+t_gnl_file	includes/get_next_line.h	/^}					t_gnl_file;$/;"	t	typeref:struct:s_gnl_file
+t_hash	includes/hashmap.h	/^}				t_hash;$/;"	t	typeref:struct:s_hash
+t_hnode	includes/hashmap.h	/^}				t_hnode;$/;"	t	typeref:struct:s_hnode
+t_list	includes/list.h	/^}					t_list;$/;"	t	typeref:struct:s_list
+t_lstmap	includes/list.h	/^typedef void		*(*t_lstmap)(void *, void *);$/;"	t
+t_lstmod	includes/list.h	/^typedef void		*(*t_lstmod)(void *);$/;"	t
+t_magic	includes/str.h	/^}					t_magic;$/;"	t	typeref:struct:s_magic
+t_meminfo	includes/ft_malloc.h	/^}				t_meminfo;$/;"	t	typeref:struct:s_meminfo
+t_opt_buffer	includes/output.h	/^}					t_opt_buffer;$/;"	t	typeref:struct:s_opt_buffer
+t_result	includes/test.h	/^}				t_result;$/;"	t	typeref:struct:s_result
+t_stack	includes/list.h	/^}					t_stack;$/;"	t	typeref:struct:s_stack
+t_stat	includes/directory.h	/^typedef struct stat		t_stat;$/;"	t	typeref:struct:stat
+t_status	includes/directory.h	/^}						t_status;$/;"	t	typeref:struct:s_status
+t_test	includes/test.h	/^}				t_test;$/;"	t	typeref:struct:s_test
+t_vector	includes/vector.h	/^}					t_vector;$/;"	t	typeref:struct:s_vector
+test	includes/test.h	/^	int			(*test)(void);$/;"	m	struct:s_test
+time	includes/ft_malloc.h	/^	char		time[23];$/;"	m	struct:s_meminfo
+trimmer	srcs/string/ft_strtrim.c	/^static char const	*trimmer(char const *s, int *len)$/;"	f	file:
+type	includes/ft_printf.h	/^	char				type;$/;"	m	struct:s_format
+type_float	srcs/ft_printf/type.c	/^void				type_float(t_format *format, va_list args)$/;"	f
+type_other	srcs/ft_printf/type.c	/^void				type_other(t_format *format, va_list args)$/;"	f
+type_signed_integer	srcs/ft_printf/type.c	/^void				type_signed_integer(t_format *format, va_list args)$/;"	f
+type_unsigned_integer	srcs/ft_printf/type.c	/^void				type_unsigned_integer(t_format *format, va_list args)$/;"	f
+u_args	includes/ft_printf.h	/^typedef union			u_args$/;"	u
+u_character	includes/ft_printf.h	/^	unsigned char		u_character;$/;"	m	union:u_args
+u_conv	srcs/conversion/ft_convert_base.c	/^static void			u_conv(unsigned long long nb, char *base, int id, char *buf)$/;"	f	file:
+u_integer	includes/ft_printf.h	/^	unsigned int		u_integer;$/;"	m	union:u_args
+u_integer	srcs/ft_printf/unsigned.c	/^void	u_integer(t_format *format)$/;"	f
+u_intmax	includes/ft_printf.h	/^	uintmax_t			u_intmax;$/;"	m	union:u_args
+u_short	includes/ft_printf.h	/^	unsigned short		u_short;$/;"	m	union:u_args
+ul_integer	includes/ft_printf.h	/^	unsigned long		ul_integer;$/;"	m	union:u_args
+ull_integer	includes/ft_printf.h	/^	unsigned long long	ull_integer;$/;"	m	union:u_args
+unsigned_convert	srcs/ft_printf/unsigned.c	/^char	*unsigned_convert(t_format *format)$/;"	f
+unsigned_converter	srcs/ft_printf/type.c	/^static t_convert	unsigned_converter(t_format *format)$/;"	f	file:
+used	includes/hashmap.h	/^	size_t		used;$/;"	m	struct:s_hash
+valid	includes/ft_printf.h	/^	char				valid;$/;"	m	struct:s_format
+vct_add	srcs/vector/vct_add.c	/^int8_t	vct_add(t_vector *vector, char c)$/;"	f
+vct_charat	srcs/vector/vct_charat.c	/^char	vct_charat(t_vector *vct, uint64_t index)$/;"	f
+vct_cut	srcs/vector/vct_cut.c	/^int8_t	vct_cut(t_vector *vector)$/;"	f
+vct_del	srcs/vector/vct_del.c	/^void		vct_del(t_vector **vector)$/;"	f
+vct_del_char	srcs/vector/vct_delchar.c	/^int8_t	vct_del_char(t_vector *vector, uint64_t index)$/;"	f
+vct_del_string	srcs/vector/vct_del_string.c	/^int8_t	vct_del_string(t_vector *vector,$/;"	f
+vct_dup	srcs/vector/vct_dup.c	/^t_vector	*vct_dup(t_vector *vect)$/;"	f
+vct_dups	srcs/vector/vct_dups.c	/^t_vector	*vct_dups(char *str)$/;"	f
+vct_get_string	srcs/vector/vct_getstring.c	/^char	*vct_get_string(t_vector *vector)$/;"	f
+vct_getcopy	srcs/vector/vct_getcopy.c	/^char	*vct_getcopy(t_vector *vector)$/;"	f
+vct_insert_char	srcs/vector/vct_insert_char.c	/^int8_t	vct_insert_char(t_vector *vector, char c, uint64_t index)$/;"	f
+vct_insert_string	srcs/vector/vct_insert_string.c	/^int8_t	vct_insert_string(t_vector *vector,$/;"	f
+vct_len	srcs/vector/vct_len.c	/^uint64_t			vct_len(t_vector *vector)$/;"	f
+vct_ncat	srcs/vector/vct_ncat.c	/^int8_t		vct_ncat(t_vector *dest, t_vector *source,$/;"	f
+vct_ncpy	srcs/vector/vct_ncpy.c	/^int8_t	vct_ncpy(t_vector *dest, t_vector *source,$/;"	f
+vct_new	srcs/vector/vct_new.c	/^t_vector	*vct_new(uint64_t size)$/;"	f
+vct_pop	srcs/vector/vct_pop.c	/^int8_t	vct_pop(t_vector *vector)$/;"	f
+vct_push	srcs/vector/vct_push.c	/^int8_t	vct_push(t_vector *vector, char c)$/;"	f
+vct_replace_char	srcs/vector/vct_replace_char.c	/^int8_t	vct_replace_char(t_vector *vector, char c, uint64_t index)$/;"	f
+vct_replace_string	srcs/vector/vct_replace_string.c	/^int8_t		vct_replace_string(t_vector *vector,$/;"	f
+vct_reset	srcs/vector/vct_reset.c	/^int8_t		vct_reset(t_vector *vector)$/;"	f
+vct_resize	srcs/vector/vct_resize.c	/^int8_t	vct_resize(t_vector *vector, uint64_t new_size)$/;"	f
+vct_scale	srcs/vector/vct_scale.c	/^int8_t	vct_scale(t_vector *vector)$/;"	f
+vct_scat	srcs/vector/vct_scat.c	/^int8_t	vct_scat(t_vector *dest, char *source,$/;"	f
+vct_scpy	srcs/vector/vct_scpy.c	/^int8_t	vct_scpy(t_vector *dest, char *source,$/;"	f
+vct_set_scale	srcs/vector/vct_set_scale.c	/^void	vct_set_scale(t_vector *vector, uint16_t scale)$/;"	f
+vct_size	srcs/vector/vct_size.c	/^uint64_t	vct_size(t_vector *vector)$/;"	f
+vct_sub	srcs/vector/vct_sub.c	/^char	*vct_sub(t_vector *vector, uint64_t start, uint64_t len)$/;"	f
+width	includes/ft_printf.h	/^	int					width;$/;"	m	struct:s_format
+width	srcs/ft_printf/widthprec.c	/^char		*width(t_format *format, char *tmp)$/;"	f
+writer	srcs/string/ft_strsplit.c	/^static int	writer(char const *s, char *c, char ***tab, int word)$/;"	f	file:

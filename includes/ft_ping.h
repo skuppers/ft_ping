@@ -6,7 +6,7 @@
 /*   By: skuppers <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/03 15:13:23 by skuppers          #+#    #+#             */
-/*   Updated: 2020/02/07 08:56:27 by skuppers         ###   ########.fr       */
+/*   Updated: 2020/02/07 10:03:30 by skuppers         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@
 # include <sys/uio.h>
 # include <netinet/ip_icmp.h>
 # include <netinet/in.h>
+
+#include "libft.h"
 
 #define OPT_HELP 	0x01
 #define OPT_VERBOSE 0x02

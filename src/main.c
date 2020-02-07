@@ -6,7 +6,7 @@
 /*   By: skuppers <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/03 15:13:01 by skuppers          #+#    #+#             */
-/*   Updated: 2020/02/07 08:59:27 by skuppers         ###   ########.fr       */
+/*   Updated: 2020/02/07 09:39:08 by skuppers         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	print_usage(void)
 {
 	printf("usage: ft_ping [-ovh] [-c count] [-m ttl]\n\
-					\t[-S src_address] [-s packetsize] host");
+					[-S src_address] [-s packetsize] host\n");
 }
 
 int		main(int ac, char **av)
