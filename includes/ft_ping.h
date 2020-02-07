@@ -6,7 +6,7 @@
 /*   By: skuppers <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/03 15:13:23 by skuppers          #+#    #+#             */
-/*   Updated: 2020/02/07 11:36:04 by skuppers         ###   ########.fr       */
+/*   Updated: 2020/02/07 12:48:56 by skuppers         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,6 @@
 
 #define OPT_HELP 	0x01
 #define OPT_VERBOSE 0x02
-
-
 #define OPT_ONCE	0x04
 #define OPT_WAITIME 0x08 // maybe not
 #define OPT_PKTSIZE 0x10
@@ -40,6 +38,12 @@
 
 #define TTL 64
 
+typedef struct		s_icmppacket
+{
+	struct icmphdr	header;
+	char			*msg;
+}					t_icmppacket;
+
 typedef struct		s_data
 {
 	unsigned char	options;
@@ -47,12 +51,12 @@ typedef struct		s_data
 	unsigned int	count;
 	unsigned int	src_address; // Use pton ou un truc du genre
 	unsigned int	pkt_size;
-
 	char			*fqdn;
-	unsigned int	dst_address;
+	char			*host;
 }					t_data;
 
 void				print_usage(void);
 uint8_t				parse_opt(int ac, char **av, t_data *param);
+t_icmppacket		*forge_packet(t_data *param);
 
 #endif

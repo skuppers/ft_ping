@@ -6,7 +6,7 @@
 /*   By: skuppers <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/07 08:55:41 by skuppers          #+#    #+#             */
-/*   Updated: 2020/02/07 11:37:23 by skuppers         ###   ########.fr       */
+/*   Updated: 2020/02/07 12:48:52 by skuppers         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ int16_t	opt_check_src(char **av, uint16_t i, t_data *param)
 		}
 		if (ft_atoi(av[i + 1]) == 0)
 		{
-			printf("ft_ping: invalid count of packets to transmit: %s\n", av[i + 1]);
+			printf("ft_ping: invalid source ip: %s\n", av[i + 1]);
 			return (-1);
 		}
 		param->src_address = 0; //ft_atoi(av[i + 1]);
@@ -130,8 +130,9 @@ int32_t	check_flags(uint16_t i, char **av,
 	}
 	else
 	{
-		printf("Interpreted |%s| as FQND/HOST\n", av[i]);
-		// regex for fqdn or host ip
+		param->fqdn = av[i];
+//		printf("Interpreted |%s| as FQND/HOST\n", av[i]);
+// regex for fqdn or host ip
 	}
 	return (i);
 }
@@ -152,7 +153,7 @@ uint8_t	parse_opt(int ac, char **av, t_data *param)
 	{
 		y = 0;
 		length = ft_strlen(av[i]);
-		printf("Parsing argument |%s|\n", av[i]);
+//		printf("Parsing argument |%s|\n", av[i]);
 		i = check_flags(i, av, length, param);
 //		printf("Returned %d\n", i);
 
@@ -167,4 +168,3 @@ uint8_t	parse_opt(int ac, char **av, t_data *param)
 
 	return (0);
 }
-
