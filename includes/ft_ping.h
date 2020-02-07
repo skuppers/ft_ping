@@ -6,7 +6,7 @@
 /*   By: skuppers <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/03 15:13:23 by skuppers          #+#    #+#             */
-/*   Updated: 2020/02/04 16:34:33 by skuppers         ###   ########.fr       */
+/*   Updated: 2020/02/07 08:56:27 by skuppers         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,38 @@
 # include <sys/types.h>
 # include <sys/cdefs.h>
 # include <unistd.h>
+# include <stdio.h>
 # include <time.h>
 # include <netdb.h>
 # include <sys/uio.h>
 # include <netinet/ip_icmp.h>
 # include <netinet/in.h>
 
+#define OPT_HELP 	0x01
+#define OPT_VERBOSE 0x02
+
+
+#define OPT_ONCE	0x04
+#define OPT_WAITIME 0x08 // maybe not
+#define OPT_PKTSIZE 0x10
+#define OPT_SOURCE	0x20
+#define OPT_COUNT	0x40 // require argument
+#define OPT_TTL		0x80
+
 #define TTL 64
+
+typedef struct		s_data
+{
+	unsigned char	options;
+	unsigned char	ttl;
+	unsigned int	count;
+	unsigned int	src_address; // Use pton ou un truc du genre
+	unsigned int	pkt_size;
+
+	char			*fqdn;
+	unsigned int	dst_address;
+}					t_data;
+
+uint8_t				parse_opt(int ac, char **av, t_data *param);
 
 #endif
