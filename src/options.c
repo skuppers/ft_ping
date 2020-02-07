@@ -6,7 +6,7 @@
 /*   By: skuppers <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/07 08:55:41 by skuppers          #+#    #+#             */
-/*   Updated: 2020/02/07 13:36:13 by skuppers         ###   ########.fr       */
+/*   Updated: 2020/02/07 14:02:44 by skuppers         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,8 +141,6 @@ int32_t	check_flags(uint16_t i, char **av,
 
 uint8_t	parse_opt(int ac, char **av, t_data *param)
 {
-	// activate option like '-h -c -v -m -o -S -s -W'
-	// return the FQDN or IP with regex
 	int32_t		i;
 	uint32_t	y;
 	uint32_t	length;
@@ -154,18 +152,15 @@ uint8_t	parse_opt(int ac, char **av, t_data *param)
 	{
 		y = 0;
 		length = ft_strlen(av[i]);
-//		printf("Parsing argument |%s|\n", av[i]);
 		i = check_flags(i, av, length, param);
-//		printf("Returned %d\n", i);
-
 		if (i == -1)
-		{
-//				printf("Returned -42\n");
 				return (-1);
-		}
 		++i;
 	}
-
-
+	if (param->fqdn == NULL)
+	{
+		print_usage();
+		return (-1);
+	}
 	return (0);
 }

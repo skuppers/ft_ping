@@ -6,7 +6,7 @@
 /*   By: skuppers <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/03 15:13:01 by skuppers          #+#    #+#             */
-/*   Updated: 2020/02/07 13:59:06 by skuppers         ###   ########.fr       */
+/*   Updated: 2020/02/07 14:02:57 by skuppers         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,8 @@ void	init_param(t_data *param)
 	param->count = 0;
 	param->src_address = 0;
 	param->pkt_size = 64;
-	param->fqdn = "placeholder";
-	param->hostname = "placeholder";
+	param->fqdn = NULL;
+	param->hostname = NULL;
 	param->host = NULL;
 }
 
