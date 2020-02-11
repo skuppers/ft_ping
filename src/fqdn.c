@@ -12,41 +12,40 @@
 
 #include "ft_ping.h"
 
+void	resolve_error(void)
+{
+	printf("ft_ping: Fatal error when resolving hostname.\n");
+	exit(42);
+}
+
+void	prepare_hints(struct addrinfo *hints)
+{	
+	hints->ai_family = AF_INET;
+	hints->ai_socktype = 0;
+	hints->ai_protocol = 0;
+	hints->ai_flags = AI_ADDRCONFIG;
+}
+
 int		resolve_fqdn(t_data *param)
 {
-	int error;
-	struct addrinfo hints;
-	struct addrinfo *result;
-
-	error = 0;
-	memset(&hints, 0, sizeof(hints));
-	hints.ai_family = AF_INET;
-	hints.ai_socktype = 0;
-	hints.ai_protocol = 0;
-	hints.ai_flags = AI_ADDRCONFIG;
-
-	result = 0;
-	if ((error = getaddrinfo(param->fqdn, "1337", &hints, &result)) != 0)
-	{
-		printf("ft_ping: Fatal error when resolving hostname. (getaddrinfo).\n");
-		exit(42);
-	}
 	char buffer[64];
-
+	struct addrinfo		hints;
+	struct addrinfo		*result;
+	struct sockaddr_in	*sadr;
+	struct in_addr		*iadr;
+	
+	result = 0;
+	memset(&hints, 0, sizeof(hints));
+	prepare_hints(&hints);
+	if ((getaddrinfo(param->fqdn, "1337", &hints, &result)) != 0)
+		resolve_error();
 	param->host = result->ai_addr;
 	param->hostlen = result->ai_addrlen;
-
-	struct sockaddr_in *sadr = (struct sockaddr_in*)result->ai_addr;
-	struct in_addr *iadr = &(sadr->sin_addr);
-
+	sadr = (struct sockaddr_in*)result->ai_addr;
+	iadr = &(sadr->sin_addr);
 	if (inet_ntop(AF_INET, iadr, buffer, sizeof(buffer)) != NULL)
-	{
-		printf("\nResolved address: %s\n", buffer);
 		param->hostname = ft_strdup(buffer);
-	}
 	else
-	{
-		printf("Error getting resolved address\n");
-	}
+		resolve_error();
 	return (0);
 }

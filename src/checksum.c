@@ -16,7 +16,7 @@ int gen_checksum(void *data, size_t length)
 {
 		unsigned short	*buffer;
 		unsigned int	sum;
-		unit16_t		result;
+//		unit16_t		result;
 
 
 }

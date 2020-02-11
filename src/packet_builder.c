@@ -24,6 +24,7 @@ uint16_t pkt_checksum(void *pkt, size_t len)
 		uint16_t 		result;   			// checksum
 
 		buf = pkt;
+		printf("Checksumming %d bytes.\n", len);
 		for ( sum = 0; len > 1; len -= 2 )
 				sum += *buf++;
 		if ( len == 1 )
@@ -41,15 +42,16 @@ t_icmppacket *forge_packet(t_data *param)
 		char			*msg;
 		unsigned long	datafiller;
 
-		pkt = ft_memalloc(param->pkt_size);
+		pkt = ft_memalloc(8);
+		pkt->msg = ft_strnew(param->pkt_size);
 		pkt->header.type = ICMP_ECHO;
 		pkt->header.un.echo.id = getpid();
 		pkt->header.un.echo.sequence = 1;
 		pkt->header.checksum = 0;
 		datafiller = 0;
-		while (datafiller < (param->pkt_size - sizeof(struct icmphdr)))
-				pkt->msg[datafiller++] = '0';
-		pkt->msg[datafiller - 1] = 0;
-		pkt->header.checksum = pkt_checksum(pkt, sizeof(pkt));
+		while (datafiller < (param->pkt_size))
+				pkt->msg[datafiller++] = 'a' + datafiller;
+		pkt->msg[datafiller] = 0;
+		
 		return (pkt);
 }

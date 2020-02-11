@@ -10,41 +10,104 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <sys/time.h>
 #include "ft_ping.h"
 
-int send_packet(t_data *param, int socket, t_icmppacket *pkt)
+void	prep_response(struct msghdr *mess, int socket)
 {
-	if (sendto(socket, pkt, sizeof(pkt), 0, param->host, param->hostlen) == -1)
-	{
-		printf("Error sending datagram. (sendto)\n");
-	}
-}
 
-int	createSocket(void)
-{
-		int clientsocket;
+	char 					buffer[1500];
+	struct iovec 			iov[1];
+	struct msghdr			message;
+	struct sockaddr_storage src_addr;
+	ssize_t					count;
+	
+	iov[0].iov_base = buffer;
+	iov[0].iov_len = sizeof(buffer);
+	message.msg_name = &src_addr;
+	message.msg_namelen = sizeof(src_addr);
+	message.msg_iov = iov;
+	message.msg_iovlen = 1;
+	message.msg_control = 0;
+	message.msg_controllen = 0;
+	count = recvmsg(socket, &message, 0);
+	perror("recvmsg: ");
 
-		clientsocket = socket(AF_INET, SOCK_RAW, IPPROTO_ICMP);
-		if (clientsocket == -1)
+		if (count == -1) 
 		{
-				printf("Error creating socket. Are you root?\n");
+				printf("Fatal error with recvmsg.\n");
 				exit(42);
 		}
-		return (clientsocket);
+		else if (message.msg_flags & MSG_TRUNC) 
+		{
+				printf("Datagram too large for buffer: truncated.\n");
+		}
+		else
+		{
+//				handle_datagram(buffer,count);
+				printf("Received related datagram.");
+				//int i = gettimeofday(&a, &z);
+				//printf(" | %ld | %d |\n", a.tv_sec, a.tv_usec);
+		}
+		pg_timer(1);
 }
 
-int setSocketOptions(t_data *param, int socket)
+void	ping_while(t_data *param, int socket)
 {
-		setsockopt(socket, SOL_IP, IP_TTL, &(param->ttl), sizeof(param->ttl));
-		//	setsockopt(socket, SOL_IP, SO_RCVTIMEOUT, &(param));
-		return (0);
+	int 			i;
+
+	struct timeval	a;
+	struct timezone z;
+//	int				time;
+
+	t_icmppacket	*icmp_pkt;
+//	struct msghdr	response;
+	
+
+	i = 0;
+	while (i < param->count && param->sigint == 0)
+	{
+		icmp_pkt = forge_packet(param);
+		pkt_setsequence(icmp_pkt, i + 1);
+		icmp_pkt->header.checksum = pkt_checksum(icmp_pkt, 8 + param->pkt_size); //check this
+		
+//		prep_response(&message);
+
+	//	alarm(1);
+		gettimeofday(&a, &z);
+		printf("Time sending (%d): | %ld | %d | --- ", i, a.tv_sec, a.tv_usec);
+
+		send_packet(param, socket, icmp_pkt);
+
+		prep_response(NULL, socket);
+
+		if (param->timeout != 0)
+		{
+			printf("Request timeout. \n");
+			alarm(0);
+			return ;
+		}
+	
+		++i;
+	}
 }
 
 int ft_ping(t_data *param)
 {
-//	int 			socket;
-//	t_icmppacket	*pkt;
-//
-//	pkt = forge_packet(param);
-//	send_packet(param, socket, pkt);
+	int socket;
+
+
+	socket = createSocket();
+	setSocketOptions(param, socket);
+
+	//if (param->options & OPT_FLOOD)
+	//	ping_flood();
+
+	//else if (param->count != 0)
+		ping_while(param, socket);
+
+	//else
+	//	ping_loop(param, socket);
+
+	return (0);
 }

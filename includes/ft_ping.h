@@ -14,10 +14,12 @@
 # define FT_PING_H
 
 # include <signal.h>
+# include <stdlib.h>
 # include <sys/socket.h>
 # include <sys/types.h>
 # include <sys/cdefs.h>
 # include <unistd.h>
+# include <getopt.h>
 # include <stdio.h>
 # include <time.h>
 # include <netdb.h>
@@ -28,16 +30,14 @@
 
 #include "libft.h"
 
-#define OPT_HELP 	0x01
-#define OPT_VERBOSE 0x02
-#define OPT_ONCE	0x04
-#define OPT_WAITIME 0x08 // maybe not
-#define OPT_PKTSIZE 0x10
-#define OPT_SOURCE	0x20
-#define OPT_COUNT	0x40 // require argument
-#define OPT_TTL		0x80
+#define OPT_HELP 	0x01 // -h
+#define OPT_VERBOSE 0x02 // -v
+#define OPT_SILENT	0x04 // -q
+#define OPT_FLOOD	0x08 // -f see manual
 
-#define TTL 64
+#define BASE_TTL		64
+#define HDR_SZ			8
+#define BASE_PAYLOAD	56
 
 typedef struct		s_icmppacket
 {
@@ -47,19 +47,26 @@ typedef struct		s_icmppacket
 
 typedef struct		s_data
 {
-	unsigned char	options;
+	uint8_t			options;
+	uint8_t			timeout;
+	uint8_t			sigint;	
+
 	unsigned char	ttl;
 	unsigned int	count;
-	unsigned int	src_address; // Use pton ou un truc du genre
 	unsigned int	pkt_size;
+
 	char			*fqdn;
 	char			*hostname;
+
 	struct sockaddr	*host;
+
 	socklen_t		hostlen;
 
 }					t_data;
 
-void				print_usage(void);
+t_data				*g_param;	//global
+
+void				print_usage(uint8_t exit);
 void 				print_resolve(t_data *param);
 void 				print_ping(t_data *param);
 void 				print_stats(t_data *param);
@@ -70,11 +77,15 @@ int					createSocket(void);
 int					setSocketOptions(t_data *param, int socket);
 
 int					ft_ping(t_data *param);
-uint8_t				parse_opt(int ac, char **av, t_data *param);
+uint32_t			parse_opt(int ac, char **av, t_data *param);
 t_icmppacket		*forge_packet(t_data *param);
 int					resolve_fqdn(t_data *param);
 
 void				pkt_setsequence(t_icmppacket *pkt, int sequence);
 uint16_t			pkt_checksum(void *pkt, size_t len);
 
+void				sigint_handle(int signo);
+void				sigalrm_handle(int signo);
+
+void				pg_timer(int interval);
 #endif
