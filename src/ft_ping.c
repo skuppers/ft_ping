@@ -6,7 +6,7 @@
 /*   By: skuppers <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/07 08:22:15 by skuppers          #+#    #+#             */
-/*   Updated: 2020/02/13 16:02:50 by skuppers         ###   ########.fr       */
+/*   Updated: 2020/02/13 16:41:38 by skuppers         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,8 @@ void	ping_while(t_data *param, int socket, t_timer *timer)
 		send_packet(param, socket, icmp_pkt);
 
 		receive_packet(param, socket);
+
+
 		stop_timer(timer);
 		store_timings(timer, param->timings, sequence);
 		print_ping(param, icmp_pkt, timer);

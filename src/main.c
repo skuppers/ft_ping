@@ -6,7 +6,7 @@
 /*   By: skuppers <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/03 15:13:01 by skuppers          #+#    #+#             */
-/*   Updated: 2020/02/13 16:01:35 by skuppers         ###   ########.fr       */
+/*   Updated: 2020/02/13 16:41:31 by skuppers         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,6 @@ int		main(int ac, char **av)
 
 		signal(SIGINT, sigint_handle);
 		signal(SIGALRM, sigalrm_handle);
-
 
 		print_resolve(&param);
 		ft_ping(&param);

@@ -6,12 +6,13 @@
 /*   By: skuppers <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/13 10:26:15 by skuppers          #+#    #+#             */
-/*   Updated: 2020/02/13 16:19:44 by skuppers         ###   ########.fr       */
+/*   Updated: 2020/02/13 16:50:12 by skuppers         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <sys/time.h>
 #include "ft_ping.h"
+#include <errno.h>
 
 int send_packet(t_data *param, int socket, t_icmppacket *pkt)
 {
@@ -38,14 +39,13 @@ int		receive_packet(t_data *param, int socket)
 	message.msg_iovlen = 1;
 	message.msg_control = 0;
 	message.msg_controllen = 0;
-
 	alarm(1);
-	if ((count = recvmsg(socket, &message, 0)) == -1)
-	{	return (-1); alarm(0); }
-	else if (message.msg_flags & MSG_TRUNC)
-		return (42);
-	param->pkt_recvd++;
+	count = recvmsg(socket, &message, MSG_DONTWAIT);
+	while ((count <= 0 && errno == EINTR) && param->timeout == 0)
+		count = recvmsg(socket, &message, MSG_DONTWAIT);
 	alarm(0);
+	param->timeout = 0;
+	param->pkt_recvd++;
 	return (0);
 }
 
