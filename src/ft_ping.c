@@ -6,7 +6,7 @@
 /*   By: skuppers <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/07 08:22:15 by skuppers          #+#    #+#             */
-/*   Updated: 2020/02/13 15:42:35 by skuppers         ###   ########.fr       */
+/*   Updated: 2020/02/13 15:46:18 by skuppers         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@
 void	store_timings(t_timer *timer, float *timings, int sequence)
 {
 	timings[sequence - 1] = timer->rtt_sec;
-//	printf("Stored %f @ %d\n", timer->rtt_sec, sequence);
 }
 
 void	ping_loop(t_data *param, int socket, t_timer *timer)
@@ -49,7 +48,31 @@ void	ping_loop(t_data *param, int socket, t_timer *timer)
 
 void	ping_while(t_data *param, int socket, t_timer *timer)
 {
-	(void) param; (void) socket; (void) timer;
+	uint32_t		sequence;
+	t_icmppacket	*icmp_pkt;
+
+	sequence = 1;
+	while (param->sigint == 0 && sequence <= param->count)
+	{
+		icmp_pkt = forge_packet(param);
+		pkt_setsequence(icmp_pkt, sequence);
+		pkt_fix_checksum(icmp_pkt, icmp_pkt, HDR_SZ + param->pkt_size);
+
+		clear_timer(timer);
+		start_timer(timer);
+		send_packet(param, socket, icmp_pkt);
+
+		receive_packet(param, socket);
+		stop_timer(timer);
+		store_timings(timer, param->timings, sequence);
+		print_ping(param, icmp_pkt, timer);
+
+		update_statistics(param, timer);
+		++sequence;
+
+		ping_timer(1);
+	}
+
 }
 
 int ft_ping(t_data *param)

@@ -6,7 +6,7 @@
 /*   By: skuppers <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/07 14:05:02 by skuppers          #+#    #+#             */
-/*   Updated: 2020/02/13 15:42:29 by skuppers         ###   ########.fr       */
+/*   Updated: 2020/02/13 15:44:40 by skuppers         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,6 @@ void	get_stddev(t_data *param)
 		if (dev < 0)
 				dev = -dev;
 		param->std_deviation += dev;
-		printf("Added %f to std_deviation. total: %f\n", dev, param->std_deviation);
-
 		++iterator;
 	}
 	param->std_deviation = (float)(param->std_deviation / param->pkt_recvd);
@@ -56,7 +54,7 @@ void	print_stats(t_data *param)
 
 	param->rtt_avg = (param->rtt_avg / param->pkt_recvd);
 	get_stddev(param);
-	printf("rtt min/avg/max/mdev = %.3f/%.3f/%.3f/%.2f ms\n",
+	printf("rtt min/avg/max/mdev = %.3f/%.3f/%.3f/%.3f ms\n",
 					param->rtt_min,
 					param->rtt_avg,
 					param->rtt_max,
