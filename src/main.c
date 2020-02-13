@@ -6,7 +6,7 @@
 /*   By: skuppers <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/03 15:13:01 by skuppers          #+#    #+#             */
-/*   Updated: 2020/02/13 14:08:35 by skuppers         ###   ########.fr       */
+/*   Updated: 2020/02/13 14:29:29 by skuppers         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	print_usage(uint8_t exits)
 
 void	init_param(t_data *param)
 {
-		memset(param, 0, sizeof(&param));
+		memset(param, 0, sizeof(*param));
 		param->ttl = 64;
 		param->pkt_size = 64;
 }
