@@ -6,7 +6,7 @@
 /*   By: skuppers <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/03 15:17:44 by skuppers          #+#    #+#             */
-/*   Updated: 2020/02/13 10:38:36 by skuppers         ###   ########.fr       */
+/*   Updated: 2020/02/13 11:09:35 by skuppers         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,11 @@ void		stop_timer(t_timer *t)
 	}
 	t->recv_sec = stop.tv_sec;
 	t->recv_usec = stop.tv_usec;
-	printf("Msg send @ %llu - %llu. Received @ %llu - %llu. RTT: .\n",
-					t->send_sec, t->send_usec, t->recv_sec, t->recv_usec);
+	t->rtt_sec = (t->recv_sec - t->send_sec);
+	t->rtt_usec = (t->recv_usec - t->send_usec);
+	printf("Msg send @ %llu - %llu. Received @ %llu - %llu. RTT: %llu.%llu ms.\n",
+					t->send_sec, t->send_usec, t->recv_sec, t->recv_usec,
+					t->rtt_sec, t->rtt_usec);
 }
 
 void		ping_timer(int interval)

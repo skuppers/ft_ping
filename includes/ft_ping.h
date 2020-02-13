@@ -6,7 +6,7 @@
 /*   By: skuppers <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/03 15:13:23 by skuppers          #+#    #+#             */
-/*   Updated: 2020/02/13 10:38:43 by skuppers         ###   ########.fr       */
+/*   Updated: 2020/02/13 11:07:15 by skuppers         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,8 @@ typedef struct		s_timer
 	uint64_t		send_usec;
 	uint64_t		recv_sec;
 	uint64_t		recv_usec;
-	uint64_t		rtt;
+	uint64_t		rtt_sec;
+	uint64_t		rtt_usec;
 }					t_timer;
 
 t_data				*g_param;	//global
