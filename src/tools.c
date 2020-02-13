@@ -6,7 +6,7 @@
 /*   By: skuppers <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/03 15:17:44 by skuppers          #+#    #+#             */
-/*   Updated: 2020/02/13 12:08:11 by skuppers         ###   ########.fr       */
+/*   Updated: 2020/02/13 12:09:15 by skuppers         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,10 +49,8 @@ void		start_timer(t_timer *t)
 		printf("Fatal error getting time.\n");
 		exit(42);
 	}
-	t->send_sec = start.tv_sec + (double)(0.00001f * (double)start.tv_usec);
-	printf("Send Time : %f | %f -- %f\n", (double)start.tv_sec,
-					(double)(0.00001f * start.tv_usec),
-					t->send_sec);
+	t->send_sec = start.tv_sec + (double)(0.000001f * (double)start.tv_usec);
+	printf("Send Time : %f\n", t->send_sec);
 }
 
 void		stop_timer(t_timer *t)
