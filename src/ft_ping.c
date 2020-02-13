@@ -6,7 +6,7 @@
 /*   By: skuppers <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/07 08:22:15 by skuppers          #+#    #+#             */
-/*   Updated: 2020/02/13 11:40:37 by skuppers         ###   ########.fr       */
+/*   Updated: 2020/02/13 12:25:33 by skuppers         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,11 @@ void	ping_loop(t_data *param, int socket, t_timer *timer)
 
 		stop_timer(timer);
 
-		update_statistics(param, timer);
+		print_ping(param, icmp_pkt, timer);
+
+				update_statistics(param, timer);
 		++sequence;
+
 		ping_timer(1);
 	}
 }

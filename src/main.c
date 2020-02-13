@@ -6,7 +6,7 @@
 /*   By: skuppers <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/03 15:13:01 by skuppers          #+#    #+#             */
-/*   Updated: 2020/02/13 11:13:41 by skuppers         ###   ########.fr       */
+/*   Updated: 2020/02/13 12:20:48 by skuppers         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,14 @@ void	init_param(t_data *param)
 		param->fqdn = NULL;
 		param->hostname = NULL;
 		param->host = NULL;
+
+		param->pkt_send = 0;
+		param->pkt_recvd = 0;
+
+		param->rtt_min = 0;
+		param->rtt_max = 0;
+		param->rtt_avg = 0;
+		param->std_deviation = 0;
 }
 
 int		main(int ac, char **av)

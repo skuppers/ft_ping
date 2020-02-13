@@ -6,7 +6,7 @@
 /*   By: skuppers <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/07 14:05:02 by skuppers          #+#    #+#             */
-/*   Updated: 2020/02/13 12:02:21 by skuppers         ###   ########.fr       */
+/*   Updated: 2020/02/13 12:25:19 by skuppers         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,12 @@ void	print_resolve(t_data *param)
 						param->pkt_size);
 }
 
-void	print_ping(t_data *param)
+void	print_ping(t_data *param, t_icmppacket *pkt, t_timer *t)
 {
+	(void)pkt;
 	printf("%d bytes from %s: icmp_seq=%d ttl=%d time=%f ms\n",
-					param->pkt_size, param->hostname, 42, param->ttl, 1.420f);
+					param->pkt_size, param->hostname,
+					pkt->header.un.echo.sequence, param->ttl, t->rtt_sec);
 }
 
 void	print_stats(t_data *param)

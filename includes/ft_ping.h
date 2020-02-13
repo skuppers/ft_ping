@@ -6,7 +6,7 @@
 /*   By: skuppers <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/03 15:13:23 by skuppers          #+#    #+#             */
-/*   Updated: 2020/02/13 12:04:14 by skuppers         ###   ########.fr       */
+/*   Updated: 2020/02/13 12:25:17 by skuppers         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ t_data				*g_param;	//global
 
 void				print_usage(uint8_t exit);
 void 				print_resolve(t_data *param);
-void 				print_ping(t_data *param);
+void 				print_ping(t_data *param, t_icmppacket *pkt, t_timer *t);
 
 void				update_statistics(t_data *param, t_timer *timer);
 void 				print_stats(t_data *param);

@@ -6,7 +6,7 @@
 /*   By: skuppers <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/03 15:17:44 by skuppers          #+#    #+#             */
-/*   Updated: 2020/02/13 12:10:46 by skuppers         ###   ########.fr       */
+/*   Updated: 2020/02/13 12:19:12 by skuppers         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,7 @@ void		start_timer(t_timer *t)
 		printf("Fatal error getting time.\n");
 		exit(42);
 	}
-	t->send_sec = start.tv_sec + (double)(0.000001f * (double)start.tv_usec);
-//	printf("Send Time : %f\n", t->send_sec);
+	t->send_sec = start.tv_sec + (double)(0.001f * (double)start.tv_usec);
 }
 
 void		stop_timer(t_timer *t)
@@ -62,11 +61,11 @@ void		stop_timer(t_timer *t)
 		printf("Fatal error getting time.\n");
 		exit(42);
 	}
-	t->recv_sec = stop.tv_sec + (double)(0.000001f * (double)stop.tv_usec);
+	t->recv_sec = stop.tv_sec + (double)(0.001f * (double)stop.tv_usec);
 	t->rtt_sec = (double)(t->recv_sec - t->send_sec);
 
-	printf("Msg send @ %f. Received @ %f. RTT: %f ms.\n",
-					t->send_sec, t->recv_sec, t->rtt_sec);
+//	printf("Msg send @ %f. Received @ %f. RTT: %f ms.\n",
+//					t->send_sec, t->recv_sec, t->rtt_sec);
 }
 
 void		ping_timer(int interval)
