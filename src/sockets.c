@@ -6,7 +6,7 @@
 /*   By: skuppers <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/13 10:26:15 by skuppers          #+#    #+#             */
-/*   Updated: 2020/02/13 16:08:03 by skuppers         ###   ########.fr       */
+/*   Updated: 2020/02/13 16:15:23 by skuppers         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,7 @@ int setSocketOptions(t_data *param, int socket)
 		timeout.tv_sec = 1;
 		timeout.tv_usec = 0;
 		setsockopt(socket, SOL_IP, IP_TTL, &(param->ttl), sizeof(param->ttl));
-		setsockopt(socket, SOL_IP, SO_RCVTIMEO, &timeout, sizeof(timeout));
+		if (setsockopt(socket, SOL_IP, SO_RCVTIMEO, (char*)&timeout, sizeof(timeout)))
+				printf("Error setting timeout on socket\n");
 		return (0);
 }
