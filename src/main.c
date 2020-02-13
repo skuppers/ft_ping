@@ -6,7 +6,7 @@
 /*   By: skuppers <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/03 15:13:01 by skuppers          #+#    #+#             */
-/*   Updated: 2020/02/13 09:43:34 by skuppers         ###   ########.fr       */
+/*   Updated: 2020/02/13 11:12:55 by skuppers         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ int		main(int ac, char **av)
 			printf("Host/FQDN: 		%s\n", param.fqdn);
 			printf("Host IP: 		%s\n\n", param.hostname);
 
-//		signal(SIGINT, sigint_handle);
+		signal(SIGINT, sigint_handle);
 //		signal(SIGALRM, sigalrm_handle);
 
 
