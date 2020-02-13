@@ -6,7 +6,7 @@
 /*   By: skuppers <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/07 08:22:15 by skuppers          #+#    #+#             */
-/*   Updated: 2020/02/13 15:02:51 by skuppers         ###   ########.fr       */
+/*   Updated: 2020/02/13 15:35:39 by skuppers         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 void	store_timings(t_timer *timer, float *timings, int sequence)
 {
 	timings[sequence] = timer->rtt_sec;
+	printf("Stored %f @ %d\n", timer->rtt_sec, sequence);
 }
 
 void	ping_loop(t_data *param, int socket, t_timer *timer)
