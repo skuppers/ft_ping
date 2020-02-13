@@ -6,7 +6,7 @@
 /*   By: skuppers <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/07 14:05:02 by skuppers          #+#    #+#             */
-/*   Updated: 2020/02/13 15:11:09 by skuppers         ###   ########.fr       */
+/*   Updated: 2020/02/13 15:15:50 by skuppers         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,16 +28,20 @@ void	print_ping(t_data *param, t_icmppacket *pkt, t_timer *t)
 
 void	get_stddev(t_data *param)
 {
-	int iterator;
+	int		iterator;
+	float	dev;
 
 	iterator = 0;
+	dev = 0;
 	while (param->timings[iterator] != 0)
 	{
-		param->std_deviation += ft_abs(
-						(param->timings[iterator] - param->rtt_avg));
+		dev = (param->timings[iterator] - param->rtt_avg);
+		if (dev < 0)
+				dev = -dev;
+		param->std_deviation += dev;
 		++iterator;
 	}
-	param->std_deviation = (param->std_deviation / param->pkt_recvd);
+	param->std_deviation = (float)(param->std_deviation / param->pkt_recvd);
 }
 
 void	print_stats(t_data *param)
