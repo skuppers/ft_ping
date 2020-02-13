@@ -6,7 +6,7 @@
 /*   By: skuppers <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/13 10:26:15 by skuppers          #+#    #+#             */
-/*   Updated: 2020/02/13 17:01:33 by skuppers         ###   ########.fr       */
+/*   Updated: 2020/02/13 18:08:47 by skuppers         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,11 @@ int		receive_packet(t_data *param, int socket)
 	message.msg_controllen = 0;
 	param->timeout = 0;
 	alarm(1);
+
+	// Handle count in display
+
 	count = recvmsg(socket, &message, MSG_DONTWAIT);
-	while ((count <= 0 && errno == EINTR) && param->timeout == 0)
+	while (param->timeout == 0 && param->sigint == 0)
 		count = recvmsg(socket, &message, MSG_DONTWAIT);
 	alarm(0);
 	if (count == -1)
