@@ -6,7 +6,7 @@
 /*   By: skuppers <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/03 15:13:23 by skuppers          #+#    #+#             */
-/*   Updated: 2020/02/07 15:35:19 by skuppers         ###   ########.fr       */
+/*   Updated: 2020/02/13 10:35:37 by skuppers         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@
 #define OPT_SILENT	0x04 // -q
 #define OPT_FLOOD	0x08 // -f see manual
 
+#define IOV_BUFFER_SZ	1500 // MTU
 #define BASE_TTL		64
 #define HDR_SZ			8
 #define BASE_PAYLOAD	56
@@ -49,7 +50,7 @@ typedef struct		s_data
 {
 	uint8_t			options;
 	uint8_t			timeout;
-	uint8_t			sigint;	
+	uint8_t			sigint;
 
 	unsigned char	ttl;
 	unsigned int	count;
@@ -64,6 +65,15 @@ typedef struct		s_data
 
 }					t_data;
 
+typedef struct		s_timer
+{
+	uint64_t		send_sec;
+	uint64_t		send_usec;
+	uint64_t		recv_sec;
+	uint64_t		recv_usec;
+	uint64_t		rtt;
+}					t_timer;
+
 t_data				*g_param;	//global
 
 void				print_usage(uint8_t exit);
@@ -72,6 +82,7 @@ void 				print_ping(t_data *param);
 void 				print_stats(t_data *param);
 
 int					send_packet(t_data *param, int socket, t_icmppacket *pkt);
+int					receive_packet(struct msghdr *msg, int socket);
 
 int					createSocket(void);
 int					setSocketOptions(t_data *param, int socket);
@@ -82,10 +93,15 @@ t_icmppacket		*forge_packet(t_data *param);
 int					resolve_fqdn(t_data *param);
 
 void				pkt_setsequence(t_icmppacket *pkt, int sequence);
-uint16_t			pkt_checksum(void *pkt, size_t len);
+void				pkt_fix_checksum(t_icmppacket *pkts, void *pkt, size_t len);
 
 void				sigint_handle(int signo);
 void				sigalrm_handle(int signo);
 
 void				pg_timer(int interval);
+
+void				start_timer(t_timer *t);
+void				stop_timer(t_timer *t);
+
+
 #endif

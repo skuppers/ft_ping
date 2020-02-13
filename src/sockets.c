@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_ping.c                                          :+:      :+:    :+:   */
+/*   sockets.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: skuppers <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/02/07 08:22:15 by skuppers          #+#    #+#             */
-/*   Updated: 2020/02/07 14:52:32 by skuppers         ###   ########.fr       */
+/*   Created: 2020/02/13 10:26:15 by skuppers          #+#    #+#             */
+/*   Updated: 2020/02/13 10:26:17 by skuppers         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,24 @@ int send_packet(t_data *param, int socket, t_icmppacket *pkt)
 	{
 		printf("Error sending datagram. (sendto)\n");
 	}
+}
+
+int		receive_packet(struct msghdr *msg, int socket)
+{
+	int count;
+
+	if ((count = recvmsg(socket, msg, 0)) == -1)
+	{
+		printf("Fatal error zoth recvmsg.\n");
+		return (-1);
+	}
+	else if (msg->msg_flags & MSG_TRUNC)
+	{
+		printf("Message truncated.\n");
+		return (-1);
+	}
+	printf("Received related datagram.\n");
+	return (0);
 }
 
 int	createSocket(void)

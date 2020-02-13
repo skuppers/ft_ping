@@ -6,7 +6,7 @@
 /*   By: skuppers <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/03 15:13:01 by skuppers          #+#    #+#             */
-/*   Updated: 2020/02/07 15:49:21 by skuppers         ###   ########.fr       */
+/*   Updated: 2020/02/13 09:43:34 by skuppers         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,13 +16,12 @@ void	print_usage(uint8_t exits)
 {
 		printf(" usage: ft_ping [-hvf] [-c count] [-m ttl]"
 				" [-s packetsize] <host>\n");
-		if (exit != 0)
+		if (exits != 0)
 			exit(exits);
 }
 
 void	init_param(t_data *param)
 {
-
 		param->options = 0;
 		param->ttl = 64;
 		param->count = 0;
@@ -55,30 +54,13 @@ int		main(int ac, char **av)
 			printf("Host/FQDN: 		%s\n", param.fqdn);
 			printf("Host IP: 		%s\n\n", param.hostname);
 
-		signal(SIGINT, sigint_handle);
-		signal(SIGALRM, sigalrm_handle);
+//		signal(SIGINT, sigint_handle);
+//		signal(SIGALRM, sigalrm_handle);
 
 
 		print_resolve(&param);
 		ft_ping(&param);
 		print_stats(&param);
-
-
-/*		
-		if (count==-1) {
-				printf("Fatal error zith recvmsg.\n");
-				exit(42);
-		} else if (message.msg_flags & MSG_TRUNC) {
-				printf("datagram too large for buffer: truncated.\n");
-		} else {
-//				handle_datagram(buffer,count);
-				printf("Received related datagram.\n");
-				int i = gettimeofday(&a, &z);
-				printf("Time received (%d): | %ld | %d |\n", i, a.tv_sec, a.tv_usec);
-
-		}*/
-		//
-		//	calc RTT
 
 		return (0);
 }
