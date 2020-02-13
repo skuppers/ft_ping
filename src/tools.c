@@ -6,7 +6,7 @@
 /*   By: skuppers <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/03 15:17:44 by skuppers          #+#    #+#             */
-/*   Updated: 2020/02/13 10:35:40 by skuppers         ###   ########.fr       */
+/*   Updated: 2020/02/13 10:38:36 by skuppers         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ void		stop_timer(t_timer *t)
 					t->send_sec, t->send_usec, t->recv_sec, t->recv_usec);
 }
 
-void		pg_timer(int interval)
+void		ping_timer(int interval)
 {
 	struct timeval tv_current;
 	struct timeval tv_next;

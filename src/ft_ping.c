@@ -6,7 +6,7 @@
 /*   By: skuppers <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/07 08:22:15 by skuppers          #+#    #+#             */
-/*   Updated: 2020/02/13 10:35:38 by skuppers         ###   ########.fr       */
+/*   Updated: 2020/02/13 10:38:39 by skuppers         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ void	ping_loop(t_data *param, int socket)
 		stop_timer(&timer);
 
 		// calc RTT
-
+		ping_timer(1);
 //		free_packet(icmp_pkt);
 		++sequence;
 	}
@@ -138,10 +138,10 @@ int ft_ping(t_data *param)
 	//	ping_flood();
 
 	//else if (param->count != 0)
-		ping_while(param, socket);
+	//	ping_while(param, socket);
 
 	//else
-	//	ping_loop(param, socket);
+		ping_loop(param, socket);
 
 	return (0);
 }

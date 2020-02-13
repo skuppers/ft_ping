@@ -6,7 +6,7 @@
 /*   By: skuppers <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/03 15:13:23 by skuppers          #+#    #+#             */
-/*   Updated: 2020/02/13 10:35:37 by skuppers         ###   ########.fr       */
+/*   Updated: 2020/02/13 10:38:43 by skuppers         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ void				pkt_fix_checksum(t_icmppacket *pkts, void *pkt, size_t len);
 void				sigint_handle(int signo);
 void				sigalrm_handle(int signo);
 
-void				pg_timer(int interval);
+void				ping_timer(int interval);
 
 void				start_timer(t_timer *t);
 void				stop_timer(t_timer *t);
