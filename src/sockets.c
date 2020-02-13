@@ -6,7 +6,7 @@
 /*   By: skuppers <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/13 10:26:15 by skuppers          #+#    #+#             */
-/*   Updated: 2020/02/13 11:33:31 by skuppers         ###   ########.fr       */
+/*   Updated: 2020/02/13 16:08:03 by skuppers         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,11 @@ int	createSocket(void)
 
 int setSocketOptions(t_data *param, int socket)
 {
+		struct timeval timeout;
+
+		timeout.tv_sec = 1;
+		timeout.tv_usec = 0;
 		setsockopt(socket, SOL_IP, IP_TTL, &(param->ttl), sizeof(param->ttl));
-		//	setsockopt(socket, SOL_IP, SO_RCVTIMEOUT, &(param));
+		setsockopt(socket, SOL_IP, SO_RCVTIMEO, &timeout, sizeof(timeout));
 		return (0);
 }
