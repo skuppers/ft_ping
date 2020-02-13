@@ -6,7 +6,7 @@
 /*   By: skuppers <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/03 15:17:44 by skuppers          #+#    #+#             */
-/*   Updated: 2020/02/13 14:16:04 by skuppers         ###   ########.fr       */
+/*   Updated: 2020/02/13 15:02:40 by skuppers         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void		update_statistics(t_data *param, t_timer *timer)
 	if (param->rtt_max == 0 || timer->rtt_sec > param->rtt_max)
 		param->rtt_max = timer->rtt_sec;
 
-//	param->rtt_avg =
+	param->rtt_avg += (float)timer->rtt_sec;
 }
 
 void		clear_timer(t_timer *timer)
@@ -64,9 +64,6 @@ void		stop_timer(t_timer *t)
 	}
 	t->recv_sec = stop.tv_sec + (double)(0.001f * (double)stop.tv_usec);
 	t->rtt_sec = (double)(t->recv_sec - t->send_sec);
-
-//	printf("Msg send @ %f. Received @ %f. RTT: %f ms.\n",
-//					t->send_sec, t->recv_sec, t->rtt_sec);
 }
 
 void		ping_timer(int interval)
@@ -75,13 +72,14 @@ void		ping_timer(int interval)
 	struct timeval tv_next;
 
 	if (gettimeofday(&tv_current, NULL) < 0)
-	        printf(" --- Fatal Error - Kernel Panic ---\n");//	ft_error_str_exit("Error gettimeofday\n");
+	        printf(" --- Fatal Error - Kernel Panic ---\n");
 	tv_next = tv_current;
 	tv_next.tv_sec += interval;
-	while (tv_current.tv_sec < tv_next.tv_sec ||
-			tv_current.tv_usec < tv_next.tv_usec)
+	while ((tv_current.tv_sec < tv_next.tv_sec ||
+			tv_current.tv_usec < tv_next.tv_usec) &&
+			g_param->sigint == 0)
 	{
 		if (gettimeofday(&tv_current, NULL) < 0)
-		    printf(" --- Fatal Error - Kernel Panic ---\n");//	ft_error_str_exit("Error gettimeofday\n");
+		    printf(" --- Fatal Error - Kernel Panic ---\n");
 	}
 }

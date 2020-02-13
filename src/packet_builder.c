@@ -6,7 +6,7 @@
 /*   By: skuppers <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/03 15:17:44 by skuppers          #+#    #+#             */
-/*   Updated: 2020/02/13 10:02:58 by skuppers         ###   ########.fr       */
+/*   Updated: 2020/02/13 14:59:09 by skuppers         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@ void	pkt_fix_checksum(t_icmppacket *packet, void *pkt, size_t len)
 		uint16_t 		result;   			// checksum
 
 		buf = pkt;
-//		printf("Checksumming %d bytes.\n", len);
 		for ( sum = 0; len > 1; len -= 2 )
 				sum += *buf++;
 		if ( len == 1 )
@@ -44,7 +43,6 @@ void			free_packet(t_icmppacket *pkt)
 t_icmppacket	*forge_packet(t_data *param)
 {
 		t_icmppacket	*pkt;
-//		char			*msg;
 		unsigned long	datafiller;
 
 		pkt = ft_memalloc(8);

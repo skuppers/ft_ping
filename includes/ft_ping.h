@@ -6,7 +6,7 @@
 /*   By: skuppers <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/03 15:13:23 by skuppers          #+#    #+#             */
-/*   Updated: 2020/02/13 12:25:17 by skuppers         ###   ########.fr       */
+/*   Updated: 2020/02/13 14:56:40 by skuppers         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,7 @@ typedef struct		s_data
 	float			rtt_avg;
 
 	float			std_deviation;
+	float			timings[4096];
 }					t_data;
 
 typedef struct		s_timer
