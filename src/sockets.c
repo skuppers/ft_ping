@@ -6,7 +6,7 @@
 /*   By: skuppers <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/13 10:26:15 by skuppers          #+#    #+#             */
-/*   Updated: 2020/02/13 11:03:01 by skuppers         ###   ########.fr       */
+/*   Updated: 2020/02/13 11:05:51 by skuppers         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,35 +25,24 @@ int		receive_packet(struct msghdr *msg, int socket)
 {
 	(void) msg;
 	int 					count;
-	struct msghdr			*message;
+	struct msghdr			message;
 	struct iovec 			iov[1];
-	char 					*buffer; //[1500];
+	char 					buffer[1500];
 	struct sockaddr_storage src_addr;
-
-	message = ft_memalloc(sizeof(struct msghdr));
-	buffer = ft_strnew(IOV_BUFFER_SZ);
 
 	iov[0].iov_base = buffer;
 	iov[0].iov_len = IOV_BUFFER_SZ;
-
-	message->msg_name = &src_addr;
-	message->msg_namelen = sizeof(src_addr);
-	message->msg_iov = iov;
-	message->msg_iovlen = 1;
-	message->msg_control = 0;
-	message->msg_controllen = 0;
-
-	if ((count = recvmsg(socket, message, 0)) == -1)
-	{
-		printf("Fatal error zoth recvmsg.\n");
+	message.msg_name = &src_addr;
+	message.msg_namelen = sizeof(src_addr);
+	message.msg_iov = iov;
+	message.msg_iovlen = 1;
+	message.msg_control = 0;
+	message.msg_controllen = 0;
+	if ((count = recvmsg(socket, &message, 0)) == -1)
 		return (-1);
-	}
-	else if (message->msg_flags & MSG_TRUNC)
-	{
-		printf("Message truncated.\n");
-		return (-1);
-	}
-	printf("Received related datagram.\n");
+	else if (message.msg_flags & MSG_TRUNC)
+		return (42);
+//	printf("Received related datagram.\n");
 	return (0);
 }
 
