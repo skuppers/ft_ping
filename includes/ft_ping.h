@@ -6,7 +6,7 @@
 /*   By: skuppers <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/03 15:13:23 by skuppers          #+#    #+#             */
-/*   Updated: 2020/02/13 11:12:40 by skuppers         ###   ########.fr       */
+/*   Updated: 2020/02/13 11:49:16 by skuppers         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,28 +51,29 @@ typedef struct		s_data
 	uint8_t			options;
 	uint8_t			timeout;
 	uint8_t			sigint;
-
 	unsigned char	ttl;
 	unsigned int	count;
 	unsigned int	pkt_size;
-
 	char			*fqdn;
 	char			*hostname;
-
 	struct sockaddr	*host;
-
 	socklen_t		hostlen;
 
+	uint32_t		pkt_send;
+	uint32_t		pkt_recvd;
+
+	float			rtt_min;
+	float			rtt_max;
+	float			rtt_avg;
+
+	float			std_deviation;
 }					t_data;
 
 typedef struct		s_timer
 {
-	uint64_t		send_sec;
-	uint64_t		send_usec;
-	uint64_t		recv_sec;
-	uint64_t		recv_usec;
-	uint64_t		rtt_sec;
-	uint64_t		rtt_usec;
+	float			send_sec;
+	float			recv_sec;
+	float			rtt_sec;
 }					t_timer;
 
 t_data				*g_param;	//global
@@ -80,10 +81,12 @@ t_data				*g_param;	//global
 void				print_usage(uint8_t exit);
 void 				print_resolve(t_data *param);
 void 				print_ping(t_data *param);
+
+void				update_statistics(t_data *param, t_timer *timer);
 void 				print_stats(t_data *param);
 
 int					send_packet(t_data *param, int socket, t_icmppacket *pkt);
-int					receive_packet(struct msghdr *msg, int socket);
+int					receive_packet(t_data *param, int socket);
 
 int					createSocket(void);
 int					setSocketOptions(t_data *param, int socket);
@@ -100,9 +103,8 @@ void				sigint_handle(int signo);
 void				sigalrm_handle(int signo);
 
 void				ping_timer(int interval);
-
+void				clear_timer(t_timer *t);
 void				start_timer(t_timer *t);
 void				stop_timer(t_timer *t);
-
 
 #endif

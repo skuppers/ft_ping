@@ -6,7 +6,7 @@
 /*   By: skuppers <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/13 10:26:15 by skuppers          #+#    #+#             */
-/*   Updated: 2020/02/13 11:08:47 by skuppers         ###   ########.fr       */
+/*   Updated: 2020/02/13 11:33:31 by skuppers         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,15 +15,15 @@
 
 int send_packet(t_data *param, int socket, t_icmppacket *pkt)
 {
-	if (sendto(socket, pkt, HDR_SZ + ft_strlen(pkt->msg), 0, param->host, param->hostlen) == -1)
-	{
+	if (sendto(socket, pkt, HDR_SZ + ft_strlen(pkt->msg),
+							0, param->host, param->hostlen) == -1)
 		printf("Error sending datagram. (sendto)\n");
-	}
+	else
+		param->pkt_send++;
 }
 
-int		receive_packet(struct msghdr *msg, int socket)
+int		receive_packet(t_data *param, int socket)
 {
-	(void) msg;
 	int 					count;
 	struct msghdr			message;
 	struct iovec 			iov[1];
@@ -42,7 +42,7 @@ int		receive_packet(struct msghdr *msg, int socket)
 		return (-1);
 	else if (message.msg_flags & MSG_TRUNC)
 		return (42);
-//	printf("Received related datagram.\n");
+	param->pkt_recvd++;
 	return (0);
 }
 

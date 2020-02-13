@@ -6,7 +6,7 @@
 /*   By: skuppers <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/03 15:17:44 by skuppers          #+#    #+#             */
-/*   Updated: 2020/02/13 11:13:32 by skuppers         ###   ########.fr       */
+/*   Updated: 2020/02/13 11:59:50 by skuppers         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,23 @@ void    sigalrm_handle(int signo)
     g_param->timeout = 1;
 }
 
+void		update_statistics(t_data *param, t_timer *timer)
+{
+	if (param->rtt_min == 0 || timer->rtt_sec < param->rtt_min)
+		param->rtt_min = timer->rtt_sec;
+	if (param->rtt_max == 0 || timer->rtt_sec > param->rtt_max)
+		param->rtt_max = timer->rtt_sec;
+
+//	param->rtt_avg =
+}
+
+void		clear_timer(t_timer *timer)
+{
+	timer->send_sec = 0;
+	timer->recv_sec = 0;
+	timer->rtt_sec = 0;
+}
+
 void		start_timer(t_timer *t)
 {
 	struct timeval	start;
@@ -32,8 +49,8 @@ void		start_timer(t_timer *t)
 		printf("Fatal error getting time.\n");
 		exit(42);
 	}
-	t->send_sec = start.tv_sec;
-	t->send_usec = start.tv_usec;
+	t->send_sec = start.tv_sec + (0.000001f * start.tv_usec);
+//	printf("Send Time : %f\n", t->send_sec);
 }
 
 void		stop_timer(t_timer *t)
@@ -45,13 +62,11 @@ void		stop_timer(t_timer *t)
 		printf("Fatal error getting time.\n");
 		exit(42);
 	}
-	t->recv_sec = stop.tv_sec;
-	t->recv_usec = stop.tv_usec;
+	t->recv_sec = stop.tv_sec + (0.000001f * stop.tv_usec);
 	t->rtt_sec = (t->recv_sec - t->send_sec);
-	t->rtt_usec = (t->recv_usec - t->send_usec);
-	printf("Msg send @ %llu - %llu. Received @ %llu - %llu. RTT: %llu.%llu ms.\n",
-					t->send_sec, t->send_usec, t->recv_sec, t->recv_usec,
-					t->rtt_sec, t->rtt_usec);
+
+	printf("Msg send @ %.3f. Received @ %.3f. RTT: %.3f ms.\n",
+					t->send_sec, t->recv_sec, t->rtt_sec);
 }
 
 void		ping_timer(int interval)
