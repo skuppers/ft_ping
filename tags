@@ -6,6 +6,8 @@
 !_TAG_PROGRAM_VERSION	5.8	//
 BASE_MAX	libft/includes/ft_printf.h	/^# define BASE_MAX /;"	d
 BASE_MAX	libft/includes/libft.h	/^# define BASE_MAX /;"	d
+BASE_PAYLOAD	includes/ft_ping.h	/^#define BASE_PAYLOAD	/;"	d
+BASE_TTL	includes/ft_ping.h	/^#define BASE_TTL	/;"	d
 BINARY	libft/includes/ft_printf.h	/^# define BINARY /;"	d
 BLACK	libft/Makefile	/^BLACK = \\033[0;30m$/;"	m
 BLUE	libft/Makefile	/^BLUE = \\033[0;34m$/;"	m
@@ -18,8 +20,6 @@ CLEANUP	libft/Makefile	/^CLEANUP = rm -rf$/;"	m
 COMPILE	libft/Makefile	/^COMPILE = $(CC) -c$/;"	m
 CONVERSION_H	libft/includes/conversion.h	/^# define CONVERSION_H$/;"	d
 CYAN	libft/Makefile	/^CYAN = \\033[0;36m$/;"	m
-DATASIZE	client/client.c	/^# define DATASIZE /;"	d	file:
-DATASIZE	server/server.c	/^# define DATASIZE /;"	d	file:
 DBNAME	libft/Makefile	/^DBNAME = libftdb.a$/;"	m
 DEBUG	libft/Makefile	/^DEBUG = $(CC) -g3 -c #-fsanitize=address,undefined$/;"	m
 DEFAULT_VECTOR_SCALE	libft/includes/vector.h	/^# define DEFAULT_VECTOR_SCALE /;"	d
@@ -42,10 +42,10 @@ GET_NEXT_LINE_H	libft/includes/get_next_line.h	/^# define GET_NEXT_LINE_H$/;"	d
 GREEN	libft/Makefile	/^GREEN = \\033[32m$/;"	m
 GREEN	libft/includes/test.h	/^# define GREEN /;"	d
 HASHMAP_H	libft/includes/hashmap.h	/^# define HASHMAP_H$/;"	d
+HDR_SZ	includes/ft_ping.h	/^#define HDR_SZ	/;"	d
 HEXA	libft/includes/ft_printf.h	/^# define HEXA /;"	d
-HOSTNAME	client/client.c	/^# define HOSTNAME /;"	d	file:
-HOSTNAME	server/server.c	/^# define HOSTNAME /;"	d	file:
 IFLAGS	libft/Makefile	/^IFLAGS = -I$(PATHI)$/;"	m
+IOV_BUFFER_SZ	includes/ft_ping.h	/^#define IOV_BUFFER_SZ	/;"	d
 ISFALSE	libft/includes/test.h	/^# define ISFALSE /;"	d
 ISTRUE	libft/includes/test.h	/^# define ISTRUE /;"	d
 LIBFT_H	libft/includes/libft.h	/^# define LIBFT_H$/;"	d
@@ -63,21 +63,15 @@ OBJD	libft/Makefile	/^OBJD = $(patsubst %.c, $(PATHO)db%.o, $(SRCS))$/;"	m
 OBJS	libft/Makefile	/^OBJS = $(patsubst %.c, $(PATHO)%.o, $(SRCS))$/;"	m
 OCTAL	libft/includes/ft_printf.h	/^# define OCTAL /;"	d
 ONELINE	libft/Makefile	/^ONELINE =\\e[1A\\r$/;"	m
-OPT_COUNT	includes/ft_ping.h	/^#define OPT_COUNT	/;"	d
+OPT_FLOOD	includes/ft_ping.h	/^#define OPT_FLOOD	/;"	d
 OPT_HELP	includes/ft_ping.h	/^#define OPT_HELP /;"	d
-OPT_ONCE	includes/ft_ping.h	/^#define OPT_ONCE	/;"	d
-OPT_PKTSIZE	includes/ft_ping.h	/^#define OPT_PKTSIZE /;"	d
-OPT_SOURCE	includes/ft_ping.h	/^#define OPT_SOURCE	/;"	d
-OPT_TTL	includes/ft_ping.h	/^#define OPT_TTL	/;"	d
+OPT_SILENT	includes/ft_ping.h	/^#define OPT_SILENT	/;"	d
 OPT_VERBOSE	includes/ft_ping.h	/^#define OPT_VERBOSE /;"	d
-OPT_WAITIME	includes/ft_ping.h	/^#define OPT_WAITIME /;"	d
 OTHER	libft/includes/ft_printf.h	/^# define OTHER /;"	d
 OTHER_H	libft/includes/other.h	/^# define OTHER_H$/;"	d
 OUTPUT_H	libft/includes/output.h	/^# define OUTPUT_H$/;"	d
 PATHI	libft/Makefile	/^PATHI = includes\/$/;"	m
 PATHO	libft/Makefile	/^PATHO = objs\/$/;"	m
-PORTNAME	client/client.c	/^# define PORTNAME /;"	d	file:
-PORTNAME	server/server.c	/^# define PORTNAME /;"	d	file:
 POW_128	libft/includes/hashmap.h	/^# define POW_128 /;"	d
 PRINT	libft/includes/ft_malloc.h	/^# define PRINT	/;"	d
 PURPLE	libft/Makefile	/^PURPLE = \\033[0;35m$/;"	m
@@ -92,7 +86,6 @@ SUCCESS	libft/includes/libft.h	/^# define SUCCESS /;"	d
 TEN	libft/includes/ft_printf.h	/^# define TEN /;"	d
 TEST_H	libft/includes/test.h	/^# define TEST_H$/;"	d
 TRUE	libft/includes/libft.h	/^# define TRUE /;"	d
-TTL	includes/ft_ping.h	/^#define TTL /;"	d
 TYPE	libft/includes/ft_printf.h	/^# define TYPE /;"	d
 UNSIGNED	libft/includes/ft_printf.h	/^# define UNSIGNED /;"	d
 VECTOR_BUFFER_SIZE	libft/includes/str.h	/^# define VECTOR_BUFFER_SIZE /;"	d
@@ -109,7 +102,6 @@ buffer	libft/includes/output.h	/^	char			buffer[BUFF_SIZE];$/;"	m	struct:s_buffe
 buffer	libft/includes/vector.h	/^	char			*buffer;$/;"	m	struct:s_vector
 character	libft/includes/ft_printf.h	/^	char				character;$/;"	m	union:u_args
 character	libft/srcs/ft_printf/other.c	/^void			character(t_format *format)$/;"	f
-check_flags	src/options.c	/^int32_t	check_flags(uint16_t i, char **av,$/;"	f
 color	libft/includes/ft_printf.h	/^	char				*color;$/;"	m	struct:s_format
 color_len	libft/includes/ft_printf.h	/^	int					color_len;$/;"	m	struct:s_format
 colors	libft/srcs/ft_printf/widthprec.c	/^char		*colors(t_format *format, char *tmp)$/;"	f
@@ -126,7 +118,7 @@ converter	libft/srcs/ft_printf/other.c	/^static char		*converter(t_format *forma
 converter	libft/srcs/output/ft_putnbr.c	/^static	void	converter(long nb)$/;"	f	file:
 converter	libft/srcs/output/ft_putnbr_fd.c	/^static	void	converter(long nb, int fd)$/;"	f	file:
 count	includes/ft_ping.h	/^	unsigned int	count;$/;"	m	struct:s_data
-createSocket	src/ft_ping.c	/^int	createSocket(void)$/;"	f
+createSocket	src/sockets.c	/^int	createSocket(void)$/;"	f
 create_list	libft/srcs/directory/ft_dirlist.c	/^static int		create_list(DIR *current, char *path, t_list **lst)$/;"	f	file:
 cur	libft/includes/get_next_line.h	/^	char			*cur;$/;"	m	struct:s_gnl_file
 data	libft/includes/hashmap.h	/^	void		*data;$/;"	m	struct:s_hnode
@@ -140,6 +132,7 @@ doubles	libft/srcs/ft_printf/doubles.c	/^void				doubles(t_format *format)$/;"	f
 doutput	libft/srcs/ft_printf/output.c	/^int				doutput(const char *fmt, t_list *node, int fd)$/;"	f
 eraser	libft/srcs/list/ft_lstdel.c	/^static t_list	*eraser(t_list *current, void (*del)(void *))$/;"	f	file:
 ereaser	libft/srcs/list/ft_lstremove_if.c	/^t_list		*ereaser(t_list *current, void *data, t_cmp cmp, t_del del)$/;"	f
+err	src/options.c	/^void	err(void)$/;"	f
 extract_flags	libft/srcs/ft_printf/extract.c	/^void		extract_flags(char **spec, t_format *format, va_list args)$/;"	f
 extract_precision	libft/srcs/ft_printf/extract.c	/^void		extract_precision(char **spec, t_format *format, va_list args)$/;"	f
 extract_size	libft/srcs/ft_printf/extract.c	/^void		extract_size(char **spec, t_format *format)$/;"	f
@@ -160,7 +153,7 @@ flag_minus	libft/includes/ft_printf.h	/^	char				flag_minus;$/;"	m	struct:s_form
 flag_plus	libft/includes/ft_printf.h	/^	char				flag_plus;$/;"	m	struct:s_format
 flag_space	libft/includes/ft_printf.h	/^	char				flag_space;$/;"	m	struct:s_format
 flag_zero	libft/includes/ft_printf.h	/^	char				flag_zero;$/;"	m	struct:s_format
-forge_packet	src/packet_builder.c	/^t_icmppacket *forge_packet(t_data *param)$/;"	f
+forge_packet	src/packet_builder.c	/^t_icmppacket	*forge_packet(t_data *param)$/;"	f
 format_delete	libft/srcs/ft_printf/format.c	/^void			format_delete(void *data)$/;"	f
 format_init	libft/srcs/ft_printf/format.c	/^static void		format_init(t_format *format)$/;"	f	file:
 format_list	libft/srcs/ft_printf/format.c	/^t_list			*format_list(const char *format, va_list args)$/;"	f
@@ -168,6 +161,7 @@ format_to_fd	libft/srcs/ft_printf/output.c	/^static int		format_to_fd(const char
 format_to_str	libft/srcs/ft_printf/output.c	/^static int		format_to_str(const char **format, char **dst)$/;"	f	file:
 fqdn	includes/ft_ping.h	/^	char			*fqdn;$/;"	m	struct:s_data
 free_hnode_lst	libft/srcs/hashmap/ft_hmap_free_content.c	/^static void		free_hnode_lst(t_list **ptr, void (*del)(void *))$/;"	f	file:
+free_packet	src/packet_builder.c	/^void			free_packet(t_icmppacket *pkt)$/;"	f
 ft_abs	libft/srcs/conversion/ft_abs.c	/^int	ft_abs(int c)$/;"	f
 ft_asprintf	libft/srcs/ft_printf/ft_printf.c	/^int		ft_asprintf(char **dst, const char *format, ...)$/;"	f
 ft_atoi	libft/srcs/conversion/ft_atoi.c	/^int			ft_atoi(const char *str)$/;"	f
@@ -322,6 +316,7 @@ ft_vctrescale	libft/srcs/string/ft_vctrescale.c	/^int		ft_vctrescale(t_vector *v
 ft_vctreset	libft/srcs/string/ft_vctreset.c	/^int		ft_vctreset(t_vector *vct)$/;"	f
 ft_vdprintf	libft/srcs/ft_printf/ft_printf.c	/^int		ft_vdprintf(const char *format, va_list args, int fd)$/;"	f
 function	libft/includes/ft_malloc.h	/^	const char	*function;$/;"	m	struct:s_meminfo
+g_param	includes/ft_ping.h	/^t_data				*g_param;	\/\/global$/;"	v
 g_test_results	libft/includes/test.h	/^t_result		g_test_results;$/;"	v
 gen_checksum	src/checksum.c	/^int gen_checksum(void *data, size_t length)$/;"	f
 generate_summary	libft/srcs/test/setup_test.c	/^void	generate_summary(t_list **summary, t_result result)$/;"	f
@@ -343,7 +338,6 @@ init_param	src/main.c	/^void	init_param(t_data *param)$/;"	f
 init_signal_catcher	libft/srcs/test/framework.c	/^static void		init_signal_catcher(void)$/;"	f	file:
 integer	libft/includes/ft_printf.h	/^	int					integer;$/;"	m	union:u_args
 intmax	libft/includes/ft_printf.h	/^	intmax_t			intmax;$/;"	m	union:u_args
-ip_checksum	client/client.c	/^uint16_t	ip_checksum(void *b, size_t len)$/;"	f
 key	libft/includes/hashmap.h	/^	char		*key;$/;"	m	struct:s_hnode
 l_double	libft/includes/ft_printf.h	/^	long double			l_double;$/;"	m	union:u_args
 l_integer	libft/includes/ft_printf.h	/^	long int			l_integer;$/;"	m	union:u_args
@@ -353,8 +347,6 @@ lo	libft/includes/str.h	/^	unsigned long int	lo;$/;"	m	struct:s_magic
 load_test	libft/srcs/test/framework.c	/^int				load_test(t_stack *head, char *name, int (*f)(void))$/;"	f
 locate_eol	libft/srcs/string/ft_strlen.c	/^static uint64_t	locate_eol(t_magic *magic, const unsigned long int *lw_ptr$/;"	f	file:
 lw	libft/includes/str.h	/^	unsigned long int	lw;$/;"	m	struct:s_magic
-main	client/client.c	/^int main (int ac, char **av)$/;"	f
-main	server/server.c	/^int main (int ac, char **av)$/;"	f
 main	src/main.c	/^int		main(int ac, char **av)$/;"	f
 map	libft/includes/hashmap.h	/^	t_list		**map;$/;"	m	struct:s_hash
 map_size	libft/includes/hashmap.h	/^	size_t		map_size;$/;"	m	struct:s_hash
@@ -369,21 +361,18 @@ numlen	libft/srcs/conversion/ft_itoa.c	/^static int		numlen(long n)$/;"	f	file:
 numlen	libft/srcs/conversion/ft_llitoa.c	/^static int		numlen(long long n)$/;"	f	file:
 numlen	libft/srcs/conversion/ft_ullitoa.c	/^static int		numlen(unsigned long long n)$/;"	f	file:
 octal	libft/srcs/ft_printf/unsigned.c	/^void	octal(t_format *format)$/;"	f
-opt_check_count	src/options.c	/^int16_t	opt_check_count(char **av, uint16_t i, t_data *param)$/;"	f
-opt_check_pktsize	src/options.c	/^int16_t	opt_check_pktsize(char **av, uint16_t i, t_data *param)$/;"	f
-opt_check_src	src/options.c	/^int16_t	opt_check_src(char **av, uint16_t i, t_data *param)$/;"	f
-opt_check_ttl	src/options.c	/^int16_t	opt_check_ttl(char **av, uint16_t i, t_data *param)$/;"	f
-options	includes/ft_ping.h	/^	unsigned char	options;$/;"	m	struct:s_data
+options	includes/ft_ping.h	/^	uint8_t			options;$/;"	m	struct:s_data
 output	libft/includes/ft_printf.h	/^	char				*output;$/;"	m	struct:s_format
 parent_manager	libft/srcs/test/framework.c	/^static void		parent_manager(int print_on)$/;"	f	file:
-parse_opt	options.c	/^uint8_t	parse_opt(int ac, char **av, t_data *param)$/;"	f
-parse_opt	src/options.c	/^uint8_t	parse_opt(int ac, char **av, t_data *param)$/;"	f
+parse_opt	src/options.c	/^uint32_t	parse_opt(int ac, char **av, t_data *param)$/;"	f
 parser	libft/srcs/ft_printf/format.c	/^static t_list	*parser(char *spec, va_list args)$/;"	f	file:
 parser	libft/srcs/other/ft_getopt.c	/^static char		parser(int ac, char **av, const char *optstr, char **opt)$/;"	f	file:
 parser	libft/srcs/string/ft_strsplit.c	/^static int	parser(char const *s, char *c)$/;"	f	file:
 partition	libft/srcs/list/ft_mergesort.c	/^static void		partition(t_list *lst, t_list **front, t_list **back)$/;"	f	file:
 path	libft/includes/directory.h	/^	char				*path;$/;"	m	struct:s_status
-pkt_checksum	src/packet_builder.c	/^uint16_t pkt_checksum(void *pkt, size_t len)$/;"	f
+ping_loop	src/ft_ping.c	/^void	ping_loop(t_data *param, int socket)$/;"	f
+ping_timer	src/tools.c	/^void		ping_timer(int interval)$/;"	f
+pkt_fix_checksum	src/packet_builder.c	/^void	pkt_fix_checksum(t_icmppacket *packet, void *pkt, size_t len)$/;"	f
 pkt_setsequence	src/packet_builder.c	/^void	pkt_setsequence(t_icmppacket *pkt, int sequence)$/;"	f
 pkt_size	includes/ft_ping.h	/^	unsigned int	pkt_size;$/;"	m	struct:s_data
 pointer	libft/includes/ft_printf.h	/^	void				*pointer;$/;"	m	union:u_args
@@ -391,6 +380,8 @@ pointer	libft/srcs/ft_printf/other.c	/^void			pointer(t_format *format)$/;"	f
 precision	libft/includes/ft_printf.h	/^	int					precision;$/;"	m	struct:s_format
 precision	libft/srcs/ft_printf/widthprec.c	/^char		*precision(t_format *format, char *tmp)$/;"	f
 prefix	libft/srcs/ft_printf/widthprec.c	/^char		*prefix(t_format *format, char *tmp)$/;"	f
+prep_response	src/ft_ping.c	/^struct msghdr	*prep_response(void)$/;"	f
+prepare_hints	src/fqdn.c	/^void	prepare_hints(struct addrinfo *hints)$/;"	f
 prepare_masks	libft/srcs/string/ft_strlen.c	/^static void		prepare_masks(t_magic *magic)$/;"	f	file:
 print_map_info	libft/srcs/hashmap/ft_hmap_print.c	/^static void		print_map_info(t_hash *hashmap)$/;"	f	file:
 print_pad	libft/includes/hashmap.h	/^	size_t		print_pad;$/;"	m	struct:s_hash
@@ -401,19 +392,24 @@ print_test_header	libft/srcs/test/display_test.c	/^void	print_test_header(void)$
 print_test_result	libft/srcs/test/display_test.c	/^void	print_test_result(t_list *node)$/;"	f
 print_test_separator	libft/srcs/test/display_test.c	/^void	print_test_separator(int print_on)$/;"	f
 print_test_summary	libft/srcs/test/display_test.c	/^void	print_test_summary(t_list *summary)$/;"	f
-print_usage	src/main.c	/^void	print_usage(void)$/;"	f
+print_usage	src/main.c	/^void	print_usage(uint8_t exits)$/;"	f
 ptrdiff	libft/includes/ft_printf.h	/^	ptrdiff_t			ptrdiff;$/;"	m	union:u_args
 push_back	libft/srcs/other/ft_getopt.c	/^static int		push_back(char *to_push)$/;"	f	file:
+receive_packet	src/sockets.c	/^int		receive_packet(struct msghdr *msg, int socket)$/;"	f
+recv_sec	includes/ft_ping.h	/^	uint64_t		recv_sec;$/;"	m	struct:s_timer
+recv_usec	includes/ft_ping.h	/^	uint64_t		recv_usec;$/;"	m	struct:s_timer
 relocate_hash	libft/srcs/hashmap/ft_hmap_resize.c	/^static void	relocate_hash(t_hash *hashmap, t_list **new, size_t nw_size)$/;"	f	file:
 remove_data	libft/srcs/hashmap/ft_hmap_remove.c	/^static int		remove_data(t_hash *hashmap, t_list *ptr$/;"	f	file:
 remove_first	libft/srcs/hashmap/ft_hmap_remove.c	/^static int		remove_first(t_hash *hashmap, uint32_t hash$/;"	f	file:
 resize_check	libft/srcs/hashmap/ft_hmap_remove.c	/^static int		resize_check(t_hash *hashmap)$/;"	f	file:
+resolve_error	src/fqdn.c	/^void	resolve_error(void)$/;"	f
 resolve_fqdn	src/fqdn.c	/^int		resolve_fqdn(t_data *param)$/;"	f
 rest	libft/includes/get_next_line.h	/^	char			*rest;$/;"	m	struct:s_gnl_file
 return_manager	libft/srcs/list/ft_lstremove_if.c	/^static int	return_manager(int mask)$/;"	f	file:
 reversal	libft/srcs/list/ft_lstrev.c	/^static t_list	*reversal(t_list *previous, t_list *current, t_list *next)$/;"	f	file:
 room	libft/includes/output.h	/^	unsigned int	room;$/;"	m	struct:s_buffer
 round_double	libft/srcs/ft_printf/doubles.c	/^static char			*round_double(long double value)$/;"	f	file:
+rtt	includes/ft_ping.h	/^	uint64_t		rtt;$/;"	m	struct:s_timer
 run_test	libft/srcs/test/framework.c	/^t_result		run_test(t_stack *tests, char *name, int print_on)$/;"	f
 s_buffer	libft/includes/output.h	/^typedef struct		s_buffer$/;"	s
 s_conv	libft/srcs/conversion/ft_convert_base.c	/^static void			s_conv(long long nb, char *base, int index, char *buffer)$/;"	f	file:
@@ -434,13 +430,16 @@ s_short	libft/includes/ft_printf.h	/^	short				s_short;$/;"	m	union:u_args
 s_stack	libft/includes/list.h	/^typedef struct		s_stack$/;"	s
 s_status	libft/includes/directory.h	/^typedef struct			s_status$/;"	s
 s_test	libft/includes/test.h	/^typedef struct	s_test$/;"	s
+s_timer	includes/ft_ping.h	/^typedef struct		s_timer$/;"	s
 s_vector	libft/includes/vector.h	/^typedef struct		s_vector$/;"	s
 scale	libft/includes/vector.h	/^	uint16_t		scale;$/;"	m	struct:s_vector
 search	libft/srcs/string/ft_strrchr.c	/^static	char	*search(const char *s, int c, int len)$/;"	f	file:
 segbus	libft/includes/test.h	/^	int			segbus;$/;"	m	struct:s_result
 segv	libft/includes/test.h	/^	int			segv;$/;"	m	struct:s_result
-send_packet	src/ft_ping.c	/^int send_packet(t_data *param, int socket, t_icmppacket *pkt)$/;"	f
-setSocketOptions	src/ft_ping.c	/^int setSocketOptions(t_data *param, int socket)$/;"	f
+send_packet	src/sockets.c	/^int send_packet(t_data *param, int socket, t_icmppacket *pkt)$/;"	f
+send_sec	includes/ft_ping.h	/^	uint64_t		send_sec;$/;"	m	struct:s_timer
+send_usec	includes/ft_ping.h	/^	uint64_t		send_usec;$/;"	m	struct:s_timer
+setSocketOptions	src/sockets.c	/^int setSocketOptions(t_data *param, int socket)$/;"	f
 set_test	libft/srcs/test/setup_test.c	/^void	set_test(t_list **lst, t_result results)$/;"	f
 set_vct	libft/srcs/vector/vct_new.c	/^static void	set_vct(t_vector *new, char *buffer)$/;"	f	file:
 shift_left	libft/srcs/vector/vct_shift_tool.c	/^void		shift_left(t_vector *vector, uint64_t start)$/;"	f
@@ -448,7 +447,10 @@ shift_nleft	libft/srcs/vector/vct_shift_tool.c	/^void		shift_nleft(t_vector *vec
 shift_nright	libft/srcs/vector/vct_shift_tool.c	/^void		shift_nright(t_vector *vector, uint64_t start, uint32_t offset)$/;"	f
 shift_right	libft/srcs/vector/vct_shift_tool.c	/^void		shift_right(t_vector *vector, uint64_t start)$/;"	f
 sigabort	libft/includes/test.h	/^	int			sigabort;$/;"	m	struct:s_result
+sigalrm_handle	src/tools.c	/^void    sigalrm_handle(int signo)$/;"	f
 sigfpe	libft/includes/test.h	/^	int			sigfpe;$/;"	m	struct:s_result
+sigint	includes/ft_ping.h	/^	uint8_t			sigint;$/;"	m	struct:s_data
+sigint_handle	src/tools.c	/^void    sigint_handle(int signo)$/;"	f
 sigkill	libft/includes/test.h	/^	int			sigkill;$/;"	m	struct:s_result
 signal_catch	libft/srcs/test/framework.c	/^static void		signal_catch(int signal)$/;"	f	file:
 signing	libft/srcs/ft_printf/widthprec.c	/^char		*signing(t_format *format, char *tmp, char flag)$/;"	f
@@ -459,12 +461,13 @@ size	libft/includes/vector.h	/^	uint64_t		size;$/;"	m	struct:s_vector
 sizet	libft/includes/ft_printf.h	/^	size_t				sizet;$/;"	m	union:u_args
 soutput	libft/srcs/ft_printf/output.c	/^int				soutput(char **dst, const char *fmt, t_list *node)$/;"	f
 split	libft/srcs/list/ft_lstsplit_if.c	/^static t_list	*split(t_list *current, t_list **new, void *context, t_cmp cmp)$/;"	f	file:
-src_address	includes/ft_ping.h	/^	unsigned int	src_address; \/\/ Use pton ou un truc du genre$/;"	m	struct:s_data
 ssizet	libft/includes/ft_printf.h	/^	ssize_t				ssizet;$/;"	m	union:u_args
 stack_fct	libft/includes/ft_malloc.h	/^	char		**stack_fct;$/;"	m	struct:s_meminfo
 stack_size	libft/includes/ft_malloc.h	/^	size_t		stack_size;$/;"	m	struct:s_meminfo
+start_timer	src/tools.c	/^void		start_timer(t_timer *t)$/;"	f
 state	libft/includes/get_next_line.h	/^	int				state;$/;"	m	struct:s_gnl_file
 status	libft/includes/str.h	/^	int				status;$/;"	m	struct:s_file
+stop_timer	src/tools.c	/^void		stop_timer(t_timer *t)$/;"	f
 str	libft/includes/str.h	/^	char			*str;$/;"	m	struct:s_file
 str_colors	libft/srcs/ft_printf/other.c	/^static char		*str_colors(t_format *format, char *tmp)$/;"	f	file:
 string	libft/includes/ft_printf.h	/^	char				*string;$/;"	m	union:u_args
@@ -495,9 +498,11 @@ t_stack	libft/includes/list.h	/^}					t_stack;$/;"	t	typeref:struct:s_stack
 t_stat	libft/includes/directory.h	/^typedef struct stat		t_stat;$/;"	t	typeref:struct:stat
 t_status	libft/includes/directory.h	/^}						t_status;$/;"	t	typeref:struct:s_status
 t_test	libft/includes/test.h	/^}				t_test;$/;"	t	typeref:struct:s_test
+t_timer	includes/ft_ping.h	/^}					t_timer;$/;"	t	typeref:struct:s_timer
 t_vector	libft/includes/vector.h	/^}					t_vector;$/;"	t	typeref:struct:s_vector
 test	libft/includes/test.h	/^	int			(*test)(void);$/;"	m	struct:s_test
 time	libft/includes/ft_malloc.h	/^	char		time[23];$/;"	m	struct:s_meminfo
+timeout	includes/ft_ping.h	/^	uint8_t			timeout;$/;"	m	struct:s_data
 trimmer	libft/srcs/string/ft_strtrim.c	/^static char const	*trimmer(char const *s, int *len)$/;"	f	file:
 ttl	includes/ft_ping.h	/^	unsigned char	ttl;$/;"	m	struct:s_data
 type	libft/includes/ft_printf.h	/^	char				type;$/;"	m	struct:s_format

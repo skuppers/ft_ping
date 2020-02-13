@@ -6,7 +6,7 @@
 /*   By: skuppers <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/13 10:26:15 by skuppers          #+#    #+#             */
-/*   Updated: 2020/02/13 10:26:17 by skuppers         ###   ########.fr       */
+/*   Updated: 2020/02/13 11:03:01 by skuppers         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,14 +23,32 @@ int send_packet(t_data *param, int socket, t_icmppacket *pkt)
 
 int		receive_packet(struct msghdr *msg, int socket)
 {
-	int count;
+	(void) msg;
+	int 					count;
+	struct msghdr			*message;
+	struct iovec 			iov[1];
+	char 					*buffer; //[1500];
+	struct sockaddr_storage src_addr;
 
-	if ((count = recvmsg(socket, msg, 0)) == -1)
+	message = ft_memalloc(sizeof(struct msghdr));
+	buffer = ft_strnew(IOV_BUFFER_SZ);
+
+	iov[0].iov_base = buffer;
+	iov[0].iov_len = IOV_BUFFER_SZ;
+
+	message->msg_name = &src_addr;
+	message->msg_namelen = sizeof(src_addr);
+	message->msg_iov = iov;
+	message->msg_iovlen = 1;
+	message->msg_control = 0;
+	message->msg_controllen = 0;
+
+	if ((count = recvmsg(socket, message, 0)) == -1)
 	{
 		printf("Fatal error zoth recvmsg.\n");
 		return (-1);
 	}
-	else if (msg->msg_flags & MSG_TRUNC)
+	else if (message->msg_flags & MSG_TRUNC)
 	{
 		printf("Message truncated.\n");
 		return (-1);
