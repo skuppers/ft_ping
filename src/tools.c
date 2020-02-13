@@ -6,7 +6,7 @@
 /*   By: skuppers <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/03 15:17:44 by skuppers          #+#    #+#             */
-/*   Updated: 2020/02/13 12:19:12 by skuppers         ###   ########.fr       */
+/*   Updated: 2020/02/13 14:16:04 by skuppers         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ void		update_statistics(t_data *param, t_timer *timer)
 {
 	if (param->rtt_min == 0 || timer->rtt_sec < param->rtt_min)
 		param->rtt_min = timer->rtt_sec;
+
 	if (param->rtt_max == 0 || timer->rtt_sec > param->rtt_max)
 		param->rtt_max = timer->rtt_sec;
 

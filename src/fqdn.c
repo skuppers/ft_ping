@@ -6,7 +6,7 @@
 /*   By: skuppers <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/07 13:34:50 by skuppers          #+#    #+#             */
-/*   Updated: 2020/02/07 13:57:35 by skuppers         ###   ########.fr       */
+/*   Updated: 2020/02/13 14:07:22 by skuppers         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	resolve_error(void)
 }
 
 void	prepare_hints(struct addrinfo *hints)
-{	
+{
 	hints->ai_family = AF_INET;
 	hints->ai_socktype = 0;
 	hints->ai_protocol = 0;
@@ -28,12 +28,12 @@ void	prepare_hints(struct addrinfo *hints)
 
 int		resolve_fqdn(t_data *param)
 {
-	char buffer[64];
+	char				buffer[64];
 	struct addrinfo		hints;
 	struct addrinfo		*result;
 	struct sockaddr_in	*sadr;
 	struct in_addr		*iadr;
-	
+
 	result = 0;
 	memset(&hints, 0, sizeof(hints));
 	prepare_hints(&hints);

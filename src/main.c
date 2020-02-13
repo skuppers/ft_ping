@@ -6,7 +6,7 @@
 /*   By: skuppers <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/03 15:13:01 by skuppers          #+#    #+#             */
-/*   Updated: 2020/02/13 12:20:48 by skuppers         ###   ########.fr       */
+/*   Updated: 2020/02/13 14:08:35 by skuppers         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,23 +22,9 @@ void	print_usage(uint8_t exits)
 
 void	init_param(t_data *param)
 {
-		param->options = 0;
+		memset(param, 0, sizeof(&param));
 		param->ttl = 64;
-		param->count = 0;
 		param->pkt_size = 64;
-		param->timeout = 0;
-		param->sigint = 0;
-		param->fqdn = NULL;
-		param->hostname = NULL;
-		param->host = NULL;
-
-		param->pkt_send = 0;
-		param->pkt_recvd = 0;
-
-		param->rtt_min = 0;
-		param->rtt_max = 0;
-		param->rtt_avg = 0;
-		param->std_deviation = 0;
 }
 
 int		main(int ac, char **av)
@@ -55,12 +41,12 @@ int		main(int ac, char **av)
 		resolve_fqdn(&param);
 
 
-			printf("\nPING OPTIONS: %x\n", param.options);
-			printf("TTL: 			%d\n", param.ttl);
-			printf("Count: 			%d\n", param.count);
-			printf("Packet size: 	%d\n", param.pkt_size);
-			printf("Host/FQDN: 		%s\n", param.fqdn);
-			printf("Host IP: 		%s\n\n", param.hostname);
+//			printf("\nPING OPTIONS: %x\n", param.options);
+//			printf("TTL: 			%d\n", param.ttl);
+//			printf("Count: 			%d\n", param.count);
+//			printf("Packet size: 	%d\n", param.pkt_size);
+//			printf("Host/FQDN: 		%s\n", param.fqdn);
+//			printf("Host IP: 		%s\n\n", param.hostname);
 
 		signal(SIGINT, sigint_handle);
 //		signal(SIGALRM, sigalrm_handle);

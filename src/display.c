@@ -6,7 +6,7 @@
 /*   By: skuppers <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/07 14:05:02 by skuppers          #+#    #+#             */
-/*   Updated: 2020/02/13 12:25:19 by skuppers         ###   ########.fr       */
+/*   Updated: 2020/02/13 14:19:09 by skuppers         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,9 +29,11 @@ void	print_ping(t_data *param, t_icmppacket *pkt, t_timer *t)
 void	print_stats(t_data *param)
 {
 	printf("\n--- %s ping statistics ---\n", param->fqdn);
-	printf("%d packets transmitted, %d packets received, %f%% packet loss\n",
-					param->pkt_send, param->pkt_recvd,
-					100.0f);
+
+	printf("%d packets transmitted, %d packets received, %.3f%% packet loss\n",
+			param->pkt_send, param->pkt_recvd,
+			((double)(param->pkt_recvd / param->pkt_send) * 100));
+
 	printf("round-trip min/avg/max/stddev = %.3f / %.3f / %.3f / %.3f ms\n",
 					param->rtt_min, 0.420f,
 					param->rtt_max, 0.420f);
