@@ -6,7 +6,7 @@
 /*   By: skuppers <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/07 08:22:15 by skuppers          #+#    #+#             */
-/*   Updated: 2020/02/13 16:41:38 by skuppers         ###   ########.fr       */
+/*   Updated: 2020/02/13 17:03:27 by skuppers         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,19 +62,18 @@ void	ping_while(t_data *param, int socket, t_timer *timer)
 		start_timer(timer);
 		send_packet(param, socket, icmp_pkt);
 
-		receive_packet(param, socket);
-
-
-		stop_timer(timer);
-		store_timings(timer, param->timings, sequence);
-		print_ping(param, icmp_pkt, timer);
-
-		update_statistics(param, timer);
+		if (receive_packet(param, socket) != -1)
+		{
+			stop_timer(timer);
+			store_timings(timer, param->timings, param->pkt_recvd);
+			print_ping(param, icmp_pkt, timer);
+			update_statistics(param, timer);
+		}
+		else
+			printf("Timeout for icmp sequence %d.\n", sequence);
 		++sequence;
-
 		ping_timer(1);
 	}
-
 }
 
 int ft_ping(t_data *param)

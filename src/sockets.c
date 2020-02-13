@@ -6,7 +6,7 @@
 /*   By: skuppers <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/13 10:26:15 by skuppers          #+#    #+#             */
-/*   Updated: 2020/02/13 16:50:12 by skuppers         ###   ########.fr       */
+/*   Updated: 2020/02/13 17:01:33 by skuppers         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,12 +39,14 @@ int		receive_packet(t_data *param, int socket)
 	message.msg_iovlen = 1;
 	message.msg_control = 0;
 	message.msg_controllen = 0;
+	param->timeout = 0;
 	alarm(1);
 	count = recvmsg(socket, &message, MSG_DONTWAIT);
 	while ((count <= 0 && errno == EINTR) && param->timeout == 0)
 		count = recvmsg(socket, &message, MSG_DONTWAIT);
 	alarm(0);
-	param->timeout = 0;
+	if (count == -1)
+		return (-1);
 	param->pkt_recvd++;
 	return (0);
 }
@@ -69,7 +71,6 @@ int setSocketOptions(t_data *param, int socket)
 		timeout.tv_sec = 1;
 		timeout.tv_usec = 0;
 		setsockopt(socket, SOL_IP, IP_TTL, &(param->ttl), sizeof(param->ttl));
-		if (setsockopt(socket, SOL_IP, SO_RCVTIMEO, (char*)&timeout, sizeof(timeout)))
-				printf("Error setting timeout on socket\n");
+		setsockopt(socket, SOL_IP, SO_RCVTIMEO, (char*)&timeout, sizeof(timeout));
 		return (0);
 }
