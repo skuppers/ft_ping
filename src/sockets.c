@@ -6,7 +6,7 @@
 /*   By: skuppers <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/13 10:26:15 by skuppers          #+#    #+#             */
-/*   Updated: 2020/02/13 16:15:23 by skuppers         ###   ########.fr       */
+/*   Updated: 2020/02/13 16:19:44 by skuppers         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,11 +38,14 @@ int		receive_packet(t_data *param, int socket)
 	message.msg_iovlen = 1;
 	message.msg_control = 0;
 	message.msg_controllen = 0;
+
+	alarm(1);
 	if ((count = recvmsg(socket, &message, 0)) == -1)
-		return (-1);
+	{	return (-1); alarm(0); }
 	else if (message.msg_flags & MSG_TRUNC)
 		return (42);
 	param->pkt_recvd++;
+	alarm(0);
 	return (0);
 }
 
