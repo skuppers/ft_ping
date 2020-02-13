@@ -6,7 +6,7 @@
 /*   By: skuppers <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/03 15:13:23 by skuppers          #+#    #+#             */
-/*   Updated: 2020/02/13 11:49:16 by skuppers         ###   ########.fr       */
+/*   Updated: 2020/02/13 12:04:14 by skuppers         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,9 +71,9 @@ typedef struct		s_data
 
 typedef struct		s_timer
 {
-	float			send_sec;
-	float			recv_sec;
-	float			rtt_sec;
+	double			send_sec;
+	double			recv_sec;
+	double			rtt_sec;
 }					t_timer;
 
 t_data				*g_param;	//global
