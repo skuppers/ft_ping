@@ -40,9 +40,23 @@ void			free_packet(t_icmppacket *pkt)
 	free(pkt);
 }
 
-t_icmppacket	*forge_packet(t_data *param)
+static void		setup_ip_hdr(struct ip_hdr *header)
 {
-		t_icmppacket	*pkt;
+	header->ip_version_and_header_length = IP4_HDRLEN;
+}
+
+uint8_t			*forge_packet(t_data *param, uint16_t total_length)
+{
+		uint8_t				*packet;
+		struct ip_hdr		ip_header;
+		struct icmp_hdr		icmp_header;
+
+		packet = allocate_ucharlist(IP_MAXPACKET);
+
+		setup_ip_hdr(&ip_header);
+		setup_icmp_hdr(&icmp_header);
+
+
 		unsigned long	datafiller;
 
 		pkt = ft_memalloc(8);

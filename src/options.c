@@ -12,13 +12,13 @@
 
 #include "ft_ping.h"
 
-void	err(void)
+int8_t	err(void)
 {
 	printf("ft_ping: invalid argument: %s\n", optarg);
-	exit(42);
+	return (-1);
 }
 
-uint32_t	parse_opt(int ac, char **av, t_data *param)
+int32_t	parse_opt(int ac, char **av, t_data *param)
 {
 	int32_t		option;
 
@@ -36,8 +36,6 @@ uint32_t	parse_opt(int ac, char **av, t_data *param)
 			(ft_atoi(optarg) > 0 ? param->count = ft_atoi(optarg) : err());
 		else if (option == 'q')
 			param->options |= OPT_SILENT;
-		else if (option == 'f')
-			param->options |= OPT_FLOOD;
 		else
 			print_usage(42);
 	}

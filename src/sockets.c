@@ -10,9 +10,33 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <sys/time.h>
 #include "ft_ping.h"
-#include <errno.h>
+
+int32_t	createSocket(void)
+{
+		int clientsocket;
+
+		if (!(clientsocket = socket(AF_INET, SOCK_RAW, IPPROTO_RAW)) < 0)
+			return (clientsocket);
+		ping_fatal("createSocket()", "undefined");
+		return (-1);
+}
+
+int8_t setSocketOptions(t_data *param, int socket)
+{
+		int32_t	on;
+
+		on = 1;
+		if (setsockopt(socket, IPPROTO_IP, IP_HDRINCL, &on, sizeof(on)) < 0)
+		{
+			ping_fatal("setsockopt", "failed to configure socket");
+			return (-1);
+		}
+//		setsockopt(socket, SOL_IP, SO_RCVTIMEO, (char*)&timeout, sizeof(timeout));
+		return (0);
+}
+
+
 
 int send_packet(t_data *param, int socket, t_icmppacket *pkt)
 {
@@ -54,26 +78,4 @@ int		receive_packet(t_data *param, int socket)
 	return (0);
 }
 
-int	createSocket(void)
-{
-		int clientsocket;
 
-		clientsocket = socket(AF_INET, SOCK_RAW, IPPROTO_ICMP);
-		if (clientsocket == -1)
-		{
-				printf("Error creating socket. Are you root?\n");
-				exit(42);
-		}
-		return (clientsocket);
-}
-
-int setSocketOptions(t_data *param, int socket)
-{
-		struct timeval timeout;
-
-		timeout.tv_sec = 1;
-		timeout.tv_usec = 0;
-		setsockopt(socket, SOL_IP, IP_TTL, &(param->ttl), sizeof(param->ttl));
-		setsockopt(socket, SOL_IP, SO_RCVTIMEO, (char*)&timeout, sizeof(timeout));
-		return (0);
-}

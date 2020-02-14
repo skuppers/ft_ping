@@ -12,6 +12,11 @@
 
 #include "ft_ping.h"
 
+void	ping_fatal(const char *failed_here, const char *errbuff)
+{
+	printf("Fatal error in %s: %s\n", failed_here, errbuff);
+}
+
 void	print_usage(uint8_t exits)
 {
 		printf(" usage: ft_ping [-hvf] [-c count] [-m ttl]"
@@ -20,7 +25,7 @@ void	print_usage(uint8_t exits)
 			exit(exits);
 }
 
-void	init_param(t_data *param)
+static void	init_param(t_data *param)
 {
 		memset(param, 0, sizeof(*param));
 		memset(param->timings, 0, 4096);
@@ -35,26 +40,32 @@ int		main(int ac, char **av)
 
 		if (ac < 2)
 			print_usage(42);
+
 		init_param(&param);
 		g_param = &param;
+
 		target_index = parse_opt(ac, av, &param);
 		param.fqdn = av[target_index];
-		resolve_fqdn(&param);
+
+		if (resolve_fqdn(&param) < 0)
+			return (-1);
+
+
 
 
 //			printf("\nPING OPTIONS: %x\n", param.options);
 //			printf("TTL: 			%d\n", param.ttl);
 //			printf("Count: 			%d\n", param.count);
 //			printf("Packet size: 	%d\n", param.pkt_size);
-//			printf("Host/FQDN: 		%s\n", param.fqdn);
-//			printf("Host IP: 		%s\n\n", param.hostname);
+			printf("Host/FQDN: 		%s\n", param.fqdn);
+			printf("Host IP: 		%s\n\n", param.ipv4_str);
 
-		signal(SIGINT, sigint_handle);
-		signal(SIGALRM, sigalrm_handle);
+//		signal(SIGINT, sigint_handle);
+//		signal(SIGALRM, sigalrm_handle);
 
-		print_resolve(&param);
-		ft_ping(&param);
-		print_stats(&param);
+//		print_resolve(&param);
+//		ft_ping(&param);
+//		print_stats(&param);
 
 		return (0);
 }

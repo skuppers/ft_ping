@@ -10,8 +10,32 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <sys/time.h>
+
 #include "ft_ping.h"
+
+uint8_t		*allocate_ucharlist(int32_t len)
+{
+	void *tmp;
+
+	if (len <= 0)
+		printf("Cannot allocate memory. ucharlist(len <= 0).\n");
+	if ((tmp = (uint8_t*)ft_memalloc(len * sizeof(uint8_t))) == NULL)
+		printf("Cannot allocate memory. malloc().\n");
+	return (tmp);
+
+}
+
+int32_t		*allocate_intlist(int32_t len)
+{
+	void *tmp;
+
+	if (len <= 0)
+		printf("Cannot allocate memory. intlist(len <= 0).\n");
+	if ((tmp = (int32_t*)ft_memalloc(len * sizeof(int32_t))) == NULL)
+		printf("Cannot allocate memory. malloc().\n");
+	return (tmp);
+}
+
 
 void    sigint_handle(int signo)
 {

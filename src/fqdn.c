@@ -12,40 +12,36 @@
 
 #include "ft_ping.h"
 
-void	resolve_error(void)
-{
-	printf("ft_ping: Fatal error when resolving hostname.\n");
-	exit(42);
-}
 
 void	prepare_hints(struct addrinfo *hints)
 {
 	hints->ai_family = AF_INET;
-	hints->ai_socktype = 0;
-	hints->ai_protocol = 0;
-	hints->ai_flags = AI_ADDRCONFIG;
+	hints->ai_socktype = SOCK_STREAM;
+	hints->ai_flags = hints->ai_flags | AI_CANONNAME;//AI_ADDRCONFIG;
 }
 
-int		resolve_fqdn(t_data *param)
+int32_t		resolve_fqdn(t_data *param)
 {
-	char				buffer[64];
 	struct addrinfo		hints;
 	struct addrinfo		*result;
-	struct sockaddr_in	*sadr;
 	struct in_addr		*iadr;
+	char				buffer[INET_ADDRSTRLEN];
 
 	result = 0;
-	memset(&hints, 0, sizeof(hints));
+	memset(&hints, 0, sizeof(struct addrinfo));
 	prepare_hints(&hints);
-	if ((getaddrinfo(param->fqdn, "1337", &hints, &result)) != 0)
-		resolve_error();
-	param->host = result->ai_addr;
-	param->hostlen = result->ai_addrlen;
-	sadr = (struct sockaddr_in*)result->ai_addr;
-	iadr = &(sadr->sin_addr);
-	if (inet_ntop(AF_INET, iadr, buffer, sizeof(buffer)) != NULL)
-		param->hostname = ft_strdup(buffer);
-	else
-		resolve_error();
+	if ((getaddrinfo(param->fqdn, NULL, &hints, &result)) != 0) //port 1337 ?
+	{
+		ping_fatal("getaddrinfo", "Could not resolve hostname");
+		return (-1);
+	}
+	param->ipv4 = (struct sockaddr_in*) result->ai_addr;
+	iadr = &(param->ipv4->sin_addr);
+	if (inet_ntop(AF_INET, iadr, buffer, INET_ADDRSTRLEN) == NULL)
+	{
+		ping_fatal("inet_ntop", "undefined");
+		return (-1);
+	}
+	param->ipv4_str = ft_strdup(buffer);
 	return (0);
 }
