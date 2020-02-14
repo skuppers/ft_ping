@@ -47,7 +47,7 @@ uint8_t			*forge_packet(t_data *param, uint16_t data_len)
 		struct ip_hdr		ip_header;
 		struct icmp_hdr		icmp_header;
 
-		packet = allocate_ucharlist(IP_MAXPACKET);
+		packet = allocate_ucharlist(IP_MAXPACKET); // 65535, really?
 
 		setup_ip_hdr(&ip_header, data_len, param);
 		setup_icmp_hdr(&icmp_header);

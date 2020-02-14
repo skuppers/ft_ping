@@ -13,6 +13,7 @@
 
 #include "ft_ping.h"
 
+// Error handling??
 uint8_t		*allocate_ucharlist(int32_t len)
 {
 	void *tmp;
@@ -32,6 +33,17 @@ int32_t		*allocate_intlist(int32_t len)
 	if (len <= 0)
 		printf("Cannot allocate memory. intlist(len <= 0).\n");
 	if ((tmp = (int32_t*)ft_memalloc(len * sizeof(int32_t))) == NULL)
+		printf("Cannot allocate memory. malloc().\n");
+	return (tmp);
+}
+
+float        *allocate_floatlist()
+{
+	void *tmp;
+
+	if (len <= 0)
+		printf("Cannot allocate memory. floatlist(len <= 0).\n");
+	if ((tmp = (int32_t*)ft_memalloc(len * sizeof(float))) == NULL)
 		printf("Cannot allocate memory. malloc().\n");
 	return (tmp);
 }

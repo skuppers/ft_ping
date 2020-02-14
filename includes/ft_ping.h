@@ -39,6 +39,9 @@
 #define OPT_HELP 	0x01 // -h
 #define OPT_VERBOSE 0x02 // -v
 #define OPT_SILENT	0x04 // -q
+#define OPT_TIMESTAMP 0xff
+#define OPT_SO_DEBUG 0xff
+
 
 
 #define BASE_TTL		64
@@ -46,7 +49,7 @@
 #define IP4_HDRLEN		20
 #define ICMP_HDRLEN		8
 
-struct				ip_hdr
+struct				ip_hdr //ipv4_hdr
 {
 #if __BYTE_ORDER == __LITTLE_ENDIAN
 	unsigned char	ip_header_length:4;
@@ -77,38 +80,43 @@ struct				icmp_hdr
 	unsigned short	icmp_sequence;
 };
 
+/*
+typedef struct      s_signals
+{
+	uint8_t         sigalrm;
+	uint8_t         sigint;
+}                   t_signals;
+
+t_signals           *g_signals;
+*/
+
 typedef struct		s_data
 {
-	uint8_t			options;
-
+	uint8_t				options;
 
 	unsigned char		ttl;
 	unsigned int		count;
 	unsigned int		pkt_size;
-
+// unsigned int  timeout -W
+// unsigned int  deadline -w
+// unsigned int  interval -i
 	struct ifaddrs		*interfaces;
-
 	char				*fqdn;
 	char				*ipv4_str;
 	struct sockaddr_in	*ipv4;
-	
+}					t_data;
 
-		uint8_t			timeout;
-	uint8_t			sigint;
-
-	
-
-	uint32_t		pkt_send;
+typedef struct      s_stats
+{
+    uint32_t		pkt_send;
 	uint32_t		pkt_recvd;
-
 	float			rtt_min;
 	float			rtt_max;
 	float			rtt_avg;
-
 	float			std_deviation;
-	float			timings[4096];
-}					t_data;
-
+	
+//	float			*timings;
+}                   t_stats;
 
 uint16_t				checksum(uint16_t *addr, int32_t len);
 uint8_t					*allocate_ucharlist(int32_t len);
