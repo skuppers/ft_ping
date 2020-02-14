@@ -29,6 +29,7 @@
 # include <netinet/in.h>
 # include <netinet/ip.h>
 #include <sys/time.h>
+#include <ifaddrs.h>
 #include <errno.h>
 
 #include <bits/endian.h>
@@ -72,7 +73,7 @@ struct				icmp_hdr
 	unsigned char	icmp_type;
 	unsigned char	icmp_code;
 	unsigned short	icmp_checksum;
-	unsigned short	icmp_id;
+	unsigned short	icmp_identifier;
 	unsigned short	icmp_sequence;
 };
 
@@ -80,19 +81,20 @@ typedef struct		s_data
 {
 	uint8_t			options;
 
-	uint8_t			timeout;
-	uint8_t			sigint;
 
 	unsigned char		ttl;
 	unsigned int		count;
 	unsigned int		pkt_size;
+
+	struct ifaddrs		*interfaces;
 
 	char				*fqdn;
 	char				*ipv4_str;
 	struct sockaddr_in	*ipv4;
 	
 
-	
+		uint8_t			timeout;
+	uint8_t			sigint;
 
 	
 

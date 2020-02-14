@@ -12,40 +12,36 @@
 
 #include "ft_ping.h"
 
-void	pkt_setsequence(t_icmppacket *pkt, int sequence)
-{
-		pkt->header.un.echo.sequence = sequence;
-}
-
-void	pkt_fix_checksum(t_icmppacket *packet, void *pkt, size_t len)
-{
-		unsigned short	*buf;				// for 16 bit casting
-		unsigned int 	sum = 0;    		// 1's over sum
-		uint16_t 		result;   			// checksum
-
-		buf = pkt;
-		for ( sum = 0; len > 1; len -= 2 )
-				sum += *buf++;
-		if ( len == 1 )
-				sum += *(unsigned char*)buf;
-		sum = (sum >> 16) + (sum & 0xFFFF);
-		sum += (sum >> 16);
-		result = ~sum;
-		packet->header.checksum = result;
-}
-
 void			free_packet(t_icmppacket *pkt)
 {
 	ft_strdel(&(pkt->msg));
 	free(pkt);
 }
 
-static void		setup_ip_hdr(struct ip_hdr *header)
+static void		setup_ip_hdr(struct ip_hdr *header, uint16_t datalen, t_data *param)
 {
-	header->ip_version_and_header_length = IP4_HDRLEN;
+	int		ip_flags[4];
+
+	header->ip_header_length = IP4_HDRLEN / sizeof(uint32_t);
+	header->ip_version = 4;
+	header->ip_tos = 0;
+	header->ip_len = htons(IP4_HDRLEN + ICMP_HDRLEN + datalen);
+	header->ip_id = htons(0);
+
+	ip_flags[0] = 0; // Zero
+	ip_flags[1] = 0; // Do notfrag bit
+	ip_flags[2] = 0; // Fragment following bit
+	ip_flags[3] = 0; // Fragemntation offset
+	header->ip_frag_offset = htons((ip_flags[0] << 15)
+								 + (ip_flags[1] << 14)
+								 + (ip_flags[2] << 13)
+								 + (ip_flags[3]));
+	header->ip_ttl = BASE_TTL;
+	header->ip_type = IPPROTO_ICMP;
+	//if (inet_pton(AF_INET, param->))
 }
 
-uint8_t			*forge_packet(t_data *param, uint16_t total_length)
+uint8_t			*forge_packet(t_data *param, uint16_t data_len)
 {
 		uint8_t				*packet;
 		struct ip_hdr		ip_header;
@@ -53,7 +49,7 @@ uint8_t			*forge_packet(t_data *param, uint16_t total_length)
 
 		packet = allocate_ucharlist(IP_MAXPACKET);
 
-		setup_ip_hdr(&ip_header);
+		setup_ip_hdr(&ip_header, data_len, param);
 		setup_icmp_hdr(&icmp_header);
 
 

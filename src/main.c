@@ -31,6 +31,8 @@ static void	init_param(t_data *param)
 		memset(param->timings, 0, 4096);
 		param->ttl = 64;
 		param->pkt_size = 64;
+		getifaddrs(&(param->interfaces));
+		
 }
 
 int		main(int ac, char **av)
@@ -59,7 +61,13 @@ int		main(int ac, char **av)
 //			printf("Packet size: 	%d\n", param.pkt_size);
 			printf("Host/FQDN: 		%s\n", param.fqdn);
 			printf("Host IP: 		%s\n\n", param.ipv4_str);
-
+			for (struct ifaddrs *ifa = param.interfaces; ifa != NULL; ifa = ifa->ifa_next)
+			{
+				if(ifa->ifa_addr->sa_family == AF_INET) 
+					printf("Interface: %s -- %s\n",
+					ifa->ifa_name,
+					inet_ntoa(((struct sockaddr_in*)(ifa->ifa_addr))->sin_addr));
+			}
 //		signal(SIGINT, sigint_handle);
 //		signal(SIGALRM, sigalrm_handle);
 

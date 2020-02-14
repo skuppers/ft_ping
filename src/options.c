@@ -34,6 +34,7 @@ int32_t	parse_opt(int ac, char **av, t_data *param)
 			(ft_atoi(optarg) > 0 ? param->ttl = ft_atoi(optarg) : err());
 		else if (option == 'c')
 			(ft_atoi(optarg) > 0 ? param->count = ft_atoi(optarg) : err());
+		//:welse if ()
 		else if (option == 'q')
 			param->options |= OPT_SILENT;
 		else
