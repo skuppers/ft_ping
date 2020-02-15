@@ -6,7 +6,7 @@
 /*   By: skuppers <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/07 08:55:41 by skuppers          #+#    #+#             */
-/*   Updated: 2020/02/15 15:27:48 by skuppers         ###   ########.fr       */
+/*   Updated: 2020/02/15 15:32:02 by skuppers         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,9 @@ int8_t	invalid_opt(char * optarg)
 
 void	print_usage(uint8_t exits)
 {
-		printf(" usage: ft_ping [-hvf] [-c count] [-m ttl]"
-				" [-s packetsize] <host>\n");
+		printf("Usage: ft_ping [-46dDhqv] [-c count] [-i interval] [-I interface]"
+				"\t[-l preload] [-s packetsize] [-Q tos] [-t TTL]"
+				"\t[-w deadline] [-W timeout] <host>\n");
 		if (exits != 0)
 			exit(exits);
 }
@@ -83,7 +84,7 @@ static void		handle_custom_options(int32_t opt, t_data *prm, char *oarg)
 	else if (opt == 'W')
 		(ft_atoi(oarg) > 0) ? prm->deadline = ft_atoi(oarg) : invalid_opt(oarg);
 	else if (opt == 'w')
-		(ft_atoi(oarg) > 0) ? prm->timeout = ft_atoi(oarg) : invalid_opt(oargt);
+		(ft_atoi(oarg) > 0) ? prm->timeout = ft_atoi(oarg) : invalid_opt(oarg);
 }
 
 int32_t	parse_opt(int ac, char **av, t_data *param)
