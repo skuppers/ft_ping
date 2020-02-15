@@ -12,42 +12,44 @@
 
 #include "ft_ping.h"
 
-static uint32_t			forge_ipv4(t_runtime *runtime, uint8_t packet,
+static uint16_t			forge_ipv4(t_runtime *runtime, uint8_t *packet,
 									uint32_t seq)
 {
 	struct ipv4_hdr		ip_header;
 	struct icmp_hdr		icmp_header;
-	char				*data;
-	uint32_t			datalen;
+	char				data[65535];
+	uint16_t			datalen;
 
-	setup_ipv4_header(runtime, &ip_header);
+	datalen = setup_message_body(runtime, data);
 	setup_icmpv4_header(runtime, &icmp_header);
-	setup_message_body(runtime);
+	setup_ipv4_header(runtime, &ip_header, datalen);
+
+	icmp_checksum(&icmp_header, datalen);
+	ip_checksum(&ip_header, ICMP_HDRLEN + datalen);
+
+	packet = ft_memalloc(IP4_HDRLEN + ICMP_HDRLEN + datalen);
+	ft_memcpy(packet, &ip_header, IP4_HDRLEN);
+	ft_memcpy(packet + IP4_HDRLEN, &icmp_header, ICMP_HDRLEN);
+	ft_memcpy(packet + IP4_HDRLEN + ICMP_HDRLEN, data, datalen);
+
+	return (IP4_HDRLEN + ICMP_HDRLEN + datalen);
 }
 
 static uint32_t			forge_ipv6()
 {
-	setup_ipv6_header();
-	setup_icmpv6_header();
-	setup_message_body();
+/*	setup_ipv6_header();
+ *	setup_icmpv6_header();
+ *	setup_message_body();
+ */
 }
 
 uint8_t			*forge_packet(t_runtime *runtime, uint8_t *pkt, uint32_t seq)
 {
-	uint32_t	packet_length;
+	uint16_t	packet_length;
 
-		if (param->options & OPT_IPV4)
+		if (runtime->param->options & OPT_IPV4)
 			packet_length = forge_ipv4(runtime, pkt, seq);
-
-		else if (param->options & OPT_IPV6)
+		else if (runtime->param->options & OPT_IPV6)
 			packet_length = forge_ipv6(runtime, pkt, seq);
-
-//		packet = allocate_ucharlist(IP_MAXPACKET); // 65535, really?
-/*		unsigned long	datafiller;
-		datafiller = 0;
-		while (datafiller < (param->pkt_size))
-				pkt->msg[datafiller++] = 'a' + datafiller;
-		pkt->msg[datafiller] = 0;
-*/
 		return (SUCCESS);
 }

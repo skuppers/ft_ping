@@ -12,7 +12,7 @@
 
 #include "ft_ping.h"
 
-uint16_t	pack_it_up(uint16_t *addr, int32_t len)
+uint16_t	checksum(uint16_t *addr, int32_t len)
 {
 	int32_t		count;
 	uint32_t	sum;

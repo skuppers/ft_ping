@@ -12,46 +12,47 @@
 
 #include "ft_ping.h"
 
-void		setup_ipv6_header()
+void		setup_message_body(t_data *param, char *data)
+{
+	
+}
+/*
+void		setup_ipv6_header(void)
 {
 
 }
 
-void		setup_icmpv6_header()  // Are they really different?
+void		setup_icmpv6_header(void)  // Are they really different?
 {
 
 }
+*/
 
-void		setup_ipv4_header(t_runtime *runtime)
+void		setup_ipv4_header(t_runtime *runtime, struct ipv4_hdr *header,
+								 uint16_t datalen)
 {
-	int		ip_flags[4];
-
+	ft_memset(header,0, IP4_HDRLEN);
 	header->ip_header_length = IP4_HDRLEN / sizeof(uint32_t);
 	header->ip_version = 4;
-//	header->ip_tos = 0;
-//	header->ip_len = htons(IP4_HDRLEN + ICMP_HDRLEN + datalen);
-//	header->ip_id = htons(0);
-
-	ip_flags[0] = 0; // Zero
-	ip_flags[1] = 0; // Do notfrag bit
-	ip_flags[2] = 0; // Fragment following bit
-	ip_flags[3] = 0; // Fragemntation offset
-	header->ip_frag_offset = htons((ip_flags[0] << 15)
-								 + (ip_flags[1] << 14)
-								 + (ip_flags[2] << 13)
-								 + (ip_flags[3]));
-//	header->ip_ttl = BASE_TTL;
+	header->ip_tos = runtime->param->tos;
+	header->ip_len = htons(IP4_HDRLEN + ICMP_HDRLEN + datalen);
+	header->ip_id = htons(getpid());
+	header->ip_frag_offset = htons(0);
+	header->ip_ttl = runtime->param->ttl;
 	header->ip_type = IPPROTO_ICMP;
-
-
+	header->ip_checksum = 0;
+	if (inet_pton(AF_INET, /* our inet address - see interfaces */, header->ip_src_addr) < 0)
+		printf("fuckd up bro");
+	if (inet_pton(AF_INET, runtime->param->ipv4_str, header->ip_dst_addr) < 0)
+		printf("fuckd up bro");
 }
 
-void		setup_icmpv4_header()
+void		setup_icmpv4_header(t_data *param, struct icmp_hdr *header)
 {
-		pkt = ft_memalloc(8);
-		pkt->msg = ft_strnew(param->pkt_size);
-		pkt->header.type = ICMP_ECHO;
-		pkt->header.un.echo.id = getpid();
-		pkt->header.un.echo.sequence = 0;
-		pkt->header.checksum = 0;
+	memset(header, 0, ICMP_HDRLEN);
+	header->icmp_type = ICMP_ECHO;
+	header->icmp_code = 0;
+	header->icmp_checksum = 0;
+	header->icmp_identifier = getpid();
+	header->icmp_sequence = 0;
 }

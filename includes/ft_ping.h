@@ -78,6 +78,16 @@ typedef struct			s_data
 	struct sockaddr_in	*ipv4;
 }						t_data;
 
+typedef struct 			s_network
+{
+	/* 
+	 * interfaces
+	 *  our ipv4?
+	 *  our ipv6?
+	 */
+}						t_network;
+
+
 struct				ipv4_hdr //ipv4_hdr
 {
 #if __BYTE_ORDER == __LITTLE_ENDIAN

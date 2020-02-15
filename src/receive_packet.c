@@ -22,7 +22,14 @@ void	receive_packet(t_runtime *runtime, uint8_t *packet)
 			;//just do nothing
 	}
 	if (packet == NULL)
-		// Handle timeout
-	else
-		register_response();
+		;// Handle timeout
+	
+		struct ipv4_hdr *response = (struct ipv4_hdr*)packet;
+		printf("\t--- Received an IP packet response ---\n");
+	 	printf("\t( Source: %s\t", inet_ntoa(*(struct in_addr*)&(response->ip_src_addr)));
+        printf("Dest: %s )\n", inet_ntoa(*(struct in_addr*)&(response->ip_dst_addr)));
+        printf("\t( Type: %u\t", (uint8_t) response->ip_type);
+        printf("ID: %hu\tLength: %hu )\n", ntohs(response->ip_id), ntohs(response->ip_len));
+	//else
+	//	register_response();
 }

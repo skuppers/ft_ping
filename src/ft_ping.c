@@ -105,15 +105,13 @@ static void		ping_loop(t_runtime *runtime)
 	while (g_signals->sigint == 0 && sequence < 65535)
 	{
 		packet_len = forge_packet(runtime, packet, sequence);
-		pack_it_up(runtime, packet, packet_len); //checksum
 		if (send_packet(runtime, packet, packet_len) == SUCCESS)
 			receive_packet(runtime, packet); // do a pointer jutsu here for packet
 		++sequence;
 	}
 }
 
-void	setup_runtime(t_runtime *runtime, t_data *param, int socket,
-				t_list *packethead)
+void	setup_runtime(t_runtime *runtime, t_data *param, int socket)
 {
 	memset(runtime, 0, sizeof(struct s_runtime));
 	runtime->param = param;
