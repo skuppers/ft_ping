@@ -6,7 +6,7 @@
 /*   By: skuppers <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/07 08:55:41 by skuppers          #+#    #+#             */
-/*   Updated: 2020/02/15 15:21:29 by skuppers         ###   ########.fr       */
+/*   Updated: 2020/02/15 15:27:48 by skuppers         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@
 
 #include "ft_ping.h"
 
-int8_t	err(void)
+int8_t	invalid_opt(char * optarg)
 {
 	printf("ft_ping: invalid argument: %s\n", optarg);
 	return (-1);
@@ -73,17 +73,17 @@ static void		handle_custom_options(int32_t opt, t_data *prm, char *oarg)
 	else if (opt == 'I')
 		;//(ft_atoi(oarg) > 0) ? prm-> = ft_atoi(oarg) : invalid_opt();
 	else if (opt == 'l')
-		(ft_atoi(oarg) > 0) ? prm->preload = ft_atoi(oarg) : invalid_opt();
+		(ft_atoi(oarg) > 0) ? prm->preload = ft_atoi(oarg) : invalid_opt(oarg);
 	else if (opt == 's')
-		(ft_atoi(oarg) > 0) ? prm->pkt_size = ft_atoi(oarg) : invalid_opt();
+		(ft_atoi(oarg) > 0) ? prm->pkt_size = ft_atoi(oarg) : invalid_opt(oarg);
 	else if (opt == 'Q')
-		(ft_atoi(oarg) > 0) ? prm->tos = ft_atoi(oarg) : invalid_opt();
+		(ft_atoi(oarg) > 0) ? prm->tos = ft_atoi(oarg) : invalid_opt(oarg);
 	else if (opt == 't')
-		(ft_atoi(oarg) > 0) ? prm->ttl = ft_atoi(oarg) : invalid_opt();
+		(ft_atoi(oarg) > 0) ? prm->ttl = ft_atoi(oarg) : invalid_opt(oarg);
 	else if (opt == 'W')
-		(ft_atoi(oarg) > 0) ? prm->deadline = ft_atoi(oarg) : invalid_opt();
+		(ft_atoi(oarg) > 0) ? prm->deadline = ft_atoi(oarg) : invalid_opt(oarg);
 	else if (opt == 'w')
-		(ft_atoi(oarg) > 0) ? prm->timeout = ft_atoi(oarg) : invalid_opt();
+		(ft_atoi(oarg) > 0) ? prm->timeout = ft_atoi(oarg) : invalid_opt(oargt);
 }
 
 int32_t	parse_opt(int ac, char **av, t_data *param)
@@ -102,6 +102,6 @@ int32_t	parse_opt(int ac, char **av, t_data *param)
 		else
 			print_usage(1);
 	}
-	param->fqdn = optind;
+	param->fqdn = av[optind];
 	return (0);
 }
