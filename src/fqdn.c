@@ -6,7 +6,7 @@
 /*   By: skuppers <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/07 13:34:50 by skuppers          #+#    #+#             */
-/*   Updated: 2020/02/13 14:07:22 by skuppers         ###   ########.fr       */
+/*   Updated: 2020/02/15 15:38:52 by skuppers         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,8 @@ int32_t		resolve_fqdn(t_data *param)
 	struct in_addr		*iadr;
 	char				buffer[INET_ADDRSTRLEN];
 
+	if (param->fqdn == NULL)
+		return (-1);
 	result = 0;
 	memset(&hints, 0, sizeof(struct addrinfo));
 	prepare_hints(&hints);

@@ -6,7 +6,7 @@
 /*   By: skuppers <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/03 15:13:01 by skuppers          #+#    #+#             */
-/*   Updated: 2020/02/15 15:23:56 by skuppers         ###   ########.fr       */
+/*   Updated: 2020/02/15 17:23:24 by skuppers         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,12 @@ void	ping_fatal(const char *failed_here, const char *errbuff)
 
 static void	init_param(t_data *param)
 {
-		g_param = param;
+		;
 		memset(param, 0, sizeof(struct s_data));
-		param->ttl = 64;
+		param->ttl = 255;
 		param->interval = 1.0;
 		param->pkt_size = 64;
+		param->options = param->options |= OPT_IPV4;
 
 //      List interfaces, store references to later select interface & ip. Default to interface 1 ? not 0
 //		getifaddrs(&(param->interfaces));
@@ -32,15 +33,23 @@ static void	init_param(t_data *param)
 
 }
 
+static void	init_signals(t_signals signals)
+{
+	memset(signals, 0, sizeof(struct s_signals));
+	g_signals = signals;
+}
+
 int		main(int ac, char **av)
 {
 		t_data		param;
+		t_signals	signals;
 		uint32_t	target_index;
 
 		if (ac < 2)
 			print_usage(42);
 
 		init_param(&param);
+		init_signals(&signals);
 		parse_opt(ac, av, &param);
 
 
@@ -71,7 +80,7 @@ int		main(int ac, char **av)
 //		signal(SIGALRM, sigalrm_handle);
 
 //		print_resolve(&param);
-//		ft_ping(&param);
+		ft_ping(&param);
 //		print_stats(&param);
 
 		return (0);

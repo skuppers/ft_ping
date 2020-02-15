@@ -6,7 +6,7 @@
 /*   By: skuppers <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/07 08:22:15 by skuppers          #+#    #+#             */
-/*   Updated: 2020/02/13 17:03:27 by skuppers         ###   ########.fr       */
+/*   Updated: 2020/02/15 17:53:17 by skuppers         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,17 +50,18 @@ void	ping_while(t_data *param, int socket, t_timer *timer)
 		ping_timer(1);
 	}
 }
-*/
+
 
 void	ping_loop(t_data *param, int socket, t_timer *timer)
 {
 //	int				sequence;
 	uint8_t			*packet;
-//probably a list of packets?
-// uint8_t			packet_list[MAX_INET_IP_PKTS]
 
+//	probably a list of packets?
+//	uint8_t			packet_list[MAX_INET_IP_PKTS]
 //	sequence = 1;
-	while (param->sigint == 0) //change name maybe
+
+	while (g_signals->sigint == 0) //change name maybe
 	{
 		// make 2 outta 3 fcts
 		packet = forge_packet(param);
@@ -76,9 +77,9 @@ void	ping_loop(t_data *param, int socket, t_timer *timer)
 
 		//return success or fail for next lines?
 		receive_packet(param, socket);
-		// just cast them ,store, and print according messages, 
+		// just cast them ,store, and print according messages,
 		// store packet with timestamp
-		
+
 		stop_timer(timer); // yeah see above
 
 		store_timings(timer, param->timings, sequence);// not needed if timestamp stored
@@ -92,26 +93,58 @@ void	ping_loop(t_data *param, int socket, t_timer *timer)
 
 		ping_timer(1);
 	}
+}*/
+
+static void		ping_loop(t_runtime *runtime)
+{
+	uint8_t		*packet;
+	uint32_t	packet_len;
+	uint32_t	sequence;
+
+	sequence = 1;
+	while (g_signals->sigint == 0 && sequence < 65535)
+	{
+		packet_len = forge_packet(runtime, packet, sequence);
+		pack_it_up(runtime, packet, packet_len); //checksum
+		if (send_packet(runtime, packet, packet_len) == SUCCESS)
+			receive_packet(runtime, packet); // do a pointer jutsu here for packet
+		++sequence;
+	}
+}
+
+void	setup_runtime(t_runtime *runtime, t_data *param, int socket,
+				t_list *packethead)
+{
+	memset(runtime, 0, sizeof(struct s_runtime));
+	runtime->param = param;
+	runtime->socket = socket;
+	runtime->packetlist_head = NULL;
 }
 
 int32_t ft_ping(t_data *param)
 {
-	int			socket;
-	t_timer		timer;
+	int				socket;
+	t_runtime		runtime;
 
 	if ((socket = createSocket()) < 0)
 		return (-1);
-
 	if (setSocketOptions(param, socket) < 0)
 		return (-1);
 
-    //print fqdn?
+	setup_runtime(&runtime, param, socket);
 
-	if (param->count == 0) //change with opt_flag
-		ping_loop(param, socket, &timer);
+//print fqdn?
 
+	if (param->options & OPT_PRELOAD)
+		ping_preload(runtime);
 
-	//else	
-	//	ping_while(param, socket, &timer);
+	if (param->count > 0)
+		ping_while(runtime);
+
+	else if (param->count == 0)
+		ping_loop(runtime);
+
+//Plot statistics and print them // use t_stat here
+
 	return (0);
 }

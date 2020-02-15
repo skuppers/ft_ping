@@ -1,30 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   checksum.c                                         :+:      :+:    :+:   */
+/*   receive_packet.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: skuppers <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/02/07 08:23:00 by skuppers          #+#    #+#             */
-/*   Updated: 2020/02/15 17:25:10 by skuppers         ###   ########.fr       */
+/*   Created: 2020/02/15 17:53:48 by skuppers          #+#    #+#             */
+/*   Updated: 2020/02/15 18:04:58 by skuppers         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ping.h"
 
-uint16_t	pack_it_up(uint16_t *addr, int32_t len)
+void	receive_packet(t_runtime *runtime, uint8_t *packet)
 {
-	int32_t		count;
-	uint32_t	sum;
-
-	while (count > 1)
+	packet = NULL;
+	while (/* Timeout is not reached -- alarm() */)
 	{
-		sum += *(addr++);
-		count -= 2;
+		if (recvfrom(runtime->socket, packet, SOME_SIZE_FOR_IPV4_6,
+				MSG_DONTWAIT, NULL, (socklen_t*)sizeof (struct sockaddr)) <= 0)
+			;//just do nothing
 	}
-	if (count > 0)
-		sum += *(uint8_t *) addr;
-	while (sum >> 16)
-		sum = (sum & 0xffff) + (sum >> 16);
-	return (~sum);
+	if (packet == NULL)
+		// Handle timeout
+	else
+		register_response();
 }

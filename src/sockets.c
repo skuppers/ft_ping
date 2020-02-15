@@ -6,7 +6,7 @@
 /*   By: skuppers <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/13 10:26:15 by skuppers          #+#    #+#             */
-/*   Updated: 2020/02/13 18:08:47 by skuppers         ###   ########.fr       */
+/*   Updated: 2020/02/15 15:44:30 by skuppers         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,12 @@ int8_t setSocketOptions(t_data *param, int socket)
 			ping_fatal("setsockopt", "failed to configure socket");
 			return (-1);
 		}
+		if (param->options & OPT_SO_DEBUG)
+			if (setsockopt(socket, IPPROTO_IP, SO_DEBUG, 1, sizeof(int)) < 0)
+			{
+				ping_fatal("setsockopt", "failed to set SO_DEBUG flag.");
+				return (-1);
+			}
 //		setsockopt(socket, SOL_IP, SO_RCVTIMEO, (char*)&timeout, sizeof(timeout));
 		return (0);
 }

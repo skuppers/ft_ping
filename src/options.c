@@ -6,7 +6,7 @@
 /*   By: skuppers <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/07 08:55:41 by skuppers          #+#    #+#             */
-/*   Updated: 2020/02/15 15:32:02 by skuppers         ###   ########.fr       */
+/*   Updated: 2020/02/15 15:56:42 by skuppers         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,18 +16,18 @@
  *	-6				IPv6 Only
  *	-c <number>     (count)
  *	-d           	SO_DEBUG
- *	-i				interval
+ *	-i <number>		interval
  *	-I				interface
- *	-l				preload
+ *	-l <number>		preload
  *	-D				timestamp
  *	-h				Help
  *	-Q <tos>        Tos
  *	-q				Quiet
  *	-v				Verbose
- *	-t				TTL
- *	-s				packetsize
- *	-w				deadline
- *	-W 				timeout
+ *	-t <number>		TTL
+ *	-s <number>		packetsize
+ *	-w <deadline>	deadline
+ *	-W <timeout>	timeout
  */
 
 #include "ft_ping.h"
@@ -35,13 +35,13 @@
 int8_t	invalid_opt(char * optarg)
 {
 	printf("ft_ping: invalid argument: %s\n", optarg);
-	return (-1);
+	exit(-1);
 }
 
 void	print_usage(uint8_t exits)
 {
-		printf("Usage: ft_ping [-46dDhqv] [-c count] [-i interval] [-I interface]"
-				"\t[-l preload] [-s packetsize] [-Q tos] [-t TTL]"
+		printf("Usage: ft_ping [-46dDhqv] [-c count] [-i interval] [-I interface]\n"
+				"\t[-l preload] [-s packetsize] [-Q tos] [-t TTL]\n"
 				"\t[-w deadline] [-W timeout] <host>\n");
 		if (exits != 0)
 			exit(exits);
@@ -60,9 +60,15 @@ static void		handle_standalone_options(int32_t option, t_data *param)
 	else if (option == 'D')
 		param->options |= OPT_TIMESTAMP;
 	else if (option == '4')
+	{
 		param->options |= OPT_IPV4;
+		param->options ~= OPT_IPV6;
+	}
 	else if (option == '6')
+	{
 		param->options |= OPT_IPV6;
+		param->options ~= OPT_IPV4;
+	}
 }
 
 static void		handle_custom_options(int32_t opt, t_data *prm, char *oarg)
@@ -103,6 +109,7 @@ int32_t	parse_opt(int ac, char **av, t_data *param)
 		else
 			print_usage(1);
 	}
-	param->fqdn = av[optind];
+	if (av[optind] != NULL)
+		param->fqdn = av[optind];
 	return (0);
 }

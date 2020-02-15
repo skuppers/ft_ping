@@ -6,7 +6,7 @@
 /*   By: skuppers <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/03 15:13:23 by skuppers          #+#    #+#             */
-/*   Updated: 2020/02/15 15:17:28 by skuppers         ###   ########.fr       */
+/*   Updated: 2020/02/15 17:47:05 by skuppers         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,6 @@
 typedef struct			s_data
 {
 //	struct ifaddrs		*interface_list;
-
 	uint16_t			options;
 	unsigned int		count;
 	float				interval;
@@ -74,13 +73,12 @@ typedef struct			s_data
 	uint8_t				ttl;
 	uint16_t			deadline;
 	uint16_t			timeout;
-
 	char				*fqdn;
 	char				*ipv4_str;
 	struct sockaddr_in	*ipv4;
 }						t_data;
 
-struct				ip_hdr //ipv4_hdr
+struct				ipv4_hdr //ipv4_hdr
 {
 #if __BYTE_ORDER == __LITTLE_ENDIAN
 	unsigned char	ip_header_length:4;
@@ -111,7 +109,14 @@ struct				icmp_hdr
 	unsigned short	icmp_sequence;
 };
 
-/*
+typedef struct 		s_packetlist
+{
+	void			*data;
+	uint32_t		data_size;
+	struct timeval	timestamp;
+
+}					t_packetlist;
+
 typedef struct      s_signals
 {
 	uint8_t         sigalrm;
@@ -119,7 +124,7 @@ typedef struct      s_signals
 }                   t_signals;
 
 t_signals           *g_signals;
-*/
+
 
 typedef struct      s_stats
 {
@@ -133,6 +138,21 @@ typedef struct      s_stats
 //	float			*timings;
 }                   t_stats;
 
+//typedef struct		s_timer
+//{
+//	double			send_sec;
+//	double			recv_sec;
+//	double			rtt_sec;
+//}					t_timer;
+
+typedef struct		s_runtime
+{
+	int				socket;
+	t_data			*param;
+	t_list			*packetlist_head;
+
+}					t_runtime;
+
 uint16_t				checksum(uint16_t *addr, int32_t len);
 uint8_t					*allocate_ucharlist(int32_t len);
 int32_t					*allocate_intlist(int32_t len);
@@ -142,28 +162,15 @@ void					ping_fatal(const char *failed, const char *errbuff);
 int32_t					ft_ping(t_data *param);
 
 int32_t					resolve_fqdn(t_data *param);
-int32_t			parse_opt(int ac, char **av, t_data *param);
+int32_t					parse_opt(int ac, char **av, t_data *param);
 int32_t					createSocket(void);
 int8_t					setSocketOptions(t_data *param, int socket);
 
 uint8_t					*forge_packet(t_data *param, uint16_t total_length);
+void					setup_ipv4_header(t_runtime *rt);
+void					setup_ipv6_header(t_runtime *rt);
+void					setup_icmp_header(t_runtime *rt);
 
-typedef struct		s_icmppacket
-{
-	struct icmphdr	header;
-	char			*msg;
-}					t_icmppacket;
-
-
-
-typedef struct		s_timer
-{
-	double			send_sec;
-	double			recv_sec;
-	double			rtt_sec;
-}					t_timer;
-
-t_data				*g_param;	//global
 
 void				print_usage(uint8_t exit);
 void 				print_resolve(t_data *param);
