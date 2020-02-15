@@ -6,7 +6,7 @@
 /*   By: skuppers <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/03 15:13:23 by skuppers          #+#    #+#             */
-/*   Updated: 2020/02/13 14:56:40 by skuppers         ###   ########.fr       */
+/*   Updated: 2020/02/15 15:17:28 by skuppers         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,18 +36,49 @@
 
 #include "libft.h"
 
-#define OPT_HELP 	0x01 // -h
-#define OPT_VERBOSE 0x02 // -v
-#define OPT_SILENT	0x04 // -q
-#define OPT_TIMESTAMP 0xff
-#define OPT_SO_DEBUG 0xff
+#define OPT_VERBOSE		0x0002 // -v
+#define OPT_QUIET		0x0004 // -q
+#define OPT_SO_DEBUG	0x0008 // -d
 
+#define OPT_TIMESTAMP	0x0010 // -D
+#define OPT_IPV4		0x0020 // -4
+#define OPT_IPV6		0x0040 // -6
+#define OPT_PRELOAD		0x0080 // -l <number>
 
+#define OPT_COUNT		0x0100 //-c <number
+#define OPT_PKTSZ		0x0200 //-s <pkt-size>
+
+//The following opt's have default value so will see
+//#define OPT_TOS
+//#define OPT_TTL
+//#define OPT_INTERVAL
+//#define OPT_DEADLINE
+//#define OPT_TIMEOUT
+//#define OPT_INTERFACE
 
 #define BASE_TTL		64
-
 #define IP4_HDRLEN		20
 #define ICMP_HDRLEN		8
+
+typedef struct			s_data
+{
+//	struct ifaddrs		*interface_list;
+
+	uint16_t			options;
+	unsigned int		count;
+	float				interval;
+//						interface;
+	uint16_t			preload;
+	uint16_t			pkt_size;
+	uint8_t				tos;
+	uint8_t				ttl;
+	uint16_t			deadline;
+	uint16_t			timeout;
+
+	char				*fqdn;
+	char				*ipv4_str;
+	struct sockaddr_in	*ipv4;
+}						t_data;
 
 struct				ip_hdr //ipv4_hdr
 {
@@ -90,22 +121,6 @@ typedef struct      s_signals
 t_signals           *g_signals;
 */
 
-typedef struct		s_data
-{
-	uint8_t				options;
-
-	unsigned char		ttl;
-	unsigned int		count;
-	unsigned int		pkt_size;
-// unsigned int  timeout -W
-// unsigned int  deadline -w
-// unsigned int  interval -i
-	struct ifaddrs		*interfaces;
-	char				*fqdn;
-	char				*ipv4_str;
-	struct sockaddr_in	*ipv4;
-}					t_data;
-
 typedef struct      s_stats
 {
     uint32_t		pkt_send;
@@ -114,7 +129,7 @@ typedef struct      s_stats
 	float			rtt_max;
 	float			rtt_avg;
 	float			std_deviation;
-	
+
 //	float			*timings;
 }                   t_stats;
 
