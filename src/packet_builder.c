@@ -12,30 +12,28 @@
 
 #include "ft_ping.h"
 
-static uint16_t			forge_ipv4(t_runtime *runtime, uint8_t *packet,
+static uint8_t			*forge_ipv4(t_runtime *runtime, uint8_t *packet,
 									uint32_t seq)
 {
-	struct ipv4_hdr		ip_header;
-	struct icmp_hdr		icmp_header;
+	
 	char				data[65535];
+	struct icmpv4_hdr	icmp_header;
+	struct ipv4_hdr		ip_header;
 	uint16_t			datalen;
 
 	datalen = setup_message_body(runtime->param, data);
-	setup_icmpv4_header(runtime->param, &icmp_header);
-	setup_ipv4_header(runtime, &ip_header, datalen);
-
-//	icmp_checksum(&icmp_header, datalen);
-//	ip_checksum(&ip_header, ICMP_HDRLEN + datalen);
-
 	packet = ft_memalloc(IP4_HDRLEN + ICMP_HDRLEN + datalen);
-	ft_memcpy(packet, &ip_header, IP4_HDRLEN);
-	ft_memcpy(packet + IP4_HDRLEN, &icmp_header, ICMP_HDRLEN);
 	ft_memcpy(packet + IP4_HDRLEN + ICMP_HDRLEN, data, datalen);
-
-	return (IP4_HDRLEN + ICMP_HDRLEN + datalen);
+	setup_icmpv4_header(runtime->param, &icmp_header, datalen, seq);
+	ft_memcpy(packet + IP4_HDRLEN, &icmp_header, ICMP_HDRLEN);
+	icmp_header.icmp_checksum = ip_checksum((void *)packet + IP4_HDRLEN, ICMP_HDRLEN + datalen);
+	ft_memcpy(packet + IP4_HDRLEN, &icmp_header, ICMP_HDRLEN);
+	setup_ipv4_header(runtime, &ip_header, datalen);
+	ft_memcpy(packet, &ip_header, IP4_HDRLEN);
+	return (packet);
 }
 
-static uint32_t			forge_ipv6(t_runtime *runtime, uint8_t *pkt, uint16_t seq)
+static uint8_t			*forge_ipv6(t_runtime *runtime, uint8_t *pkt, uint16_t seq)
 {
 /*	setup_ipv6_header();
  *	setup_icmpv6_header();
@@ -44,13 +42,11 @@ static uint32_t			forge_ipv6(t_runtime *runtime, uint8_t *pkt, uint16_t seq)
 	return (0);
 }
 
-uint16_t			forge_packet(t_runtime *runtime, uint8_t *pkt, uint16_t seq)
+uint8_t			*forge_packet(t_runtime *runtime, uint8_t *pkt, uint16_t seq)
 {
-	uint16_t	packet_length;
-
 		if (runtime->param->options & OPT_IPV4)
-			packet_length = forge_ipv4(runtime, pkt, seq);
+			pkt = forge_ipv4(runtime, pkt, seq);
 		else if (runtime->param->options & OPT_IPV6)
-			packet_length = forge_ipv6(runtime, pkt, seq);
-	return (packet_length);
+			pkt = forge_ipv6(runtime, pkt, seq);
+	return (pkt);
 }

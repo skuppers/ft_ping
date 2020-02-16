@@ -98,15 +98,27 @@ void	ping_loop(t_data *param, int socket, t_timer *timer)
 static void		ping_loop(t_runtime *runtime)
 {
 	uint8_t		*packet;
-	uint16_t	packet_len;
 	uint16_t	sequence;
 
 	sequence = 1;
-	while (g_signals->sigint == 0 && sequence < 10)
+	while (g_signals->sigint == 0 && sequence < 2)
 	{
-		packet_len = forge_packet(runtime, packet, sequence);
-		printf("Forged a %u bytes ipv4 packet\n", packet_len);
-		//if (send_packet(runtime, packet, packet_len) == SUCCESS)
+		packet = forge_packet(runtime, packet, sequence);
+		/*
+		printf("Forged a %u bytes ipv4 packet\n", ntohs(((struct ipv4_hdr *)packet)->ip_len));
+		printf(" ----------------- \n");
+		printf("hdr->hdr_len:\t%u\n", ((struct ipv4_hdr *)packet)->ip_header_length);
+		printf("hdr->version:\t%u\n", ((struct ipv4_hdr *)packet)->ip_version);
+		printf("hdr->tos    :\t%u\n", ((struct ipv4_hdr *)packet)->ip_tos);
+		printf("hdr->len    :\t%u\n", ntohs(((struct ipv4_hdr *)packet)->ip_len));
+		printf("hdr->id      :\t%u\n", ntohs(((struct ipv4_hdr *)packet)->ip_id));
+		printf("hdr->ttl     :\t%u\n", ((struct ipv4_hdr *)packet)->ip_ttl);
+		printf("hdr->type    :\t%u\n", ((struct ipv4_hdr *)packet)->ip_type);
+		printf("hdr->checksum:\t%x\n", ((struct ipv4_hdr *)packet)->ip_checksum);
+		printf(" ----------------- \n");
+		*/
+		if (send_packet(runtime, packet) == SUCCESS) 
+			;//	printf(" --- Sent a %u bytes message\n", ntohs(((struct ipv4_hdr *)packet)->ip_len));
 			//receive_packet(runtime, packet); // do a pointer jutsu here for packet
 		++sequence;
 	}

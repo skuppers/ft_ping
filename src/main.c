@@ -34,7 +34,7 @@ static void	init_param(t_data *param)
 		memset(param, 0, sizeof(struct s_data));
 		param->ttl = 255;
 		param->interval = 1.0;
-		param->pkt_size = 64;
+		param->pkt_size = 36;
 		param->options = param->options |= OPT_IPV4;
 }
 

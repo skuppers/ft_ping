@@ -19,15 +19,18 @@ SRC=src/main.c\
 	src/ft_ping.c\
 	src/sockets.c\
 	src/packet_builder.c\
-	src/ipv4.c
+	src/ipv4.c\
+	src/tools.c\
+	src/send_packet.c\
+	src/checksum.c
 
 INC=includes/
 
 LIB=libft/
 
 #OBJS = $(patsubst %.c, $(OPATH)%.o, $(SRC)))))
-CC=clang
-CFLAGS= # -Wall -Wextra #-Werror
+CC=gcc
+CFLAGS= -fsanitize=address -Wall -Wextra #-Werror
 
 all: $(NAME)
 

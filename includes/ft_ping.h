@@ -91,16 +91,19 @@ struct				ipv4_hdr //ipv4_hdr
 #endif
 	unsigned char	ip_tos;
 	unsigned short	ip_len;
+
 	unsigned short	ip_id;
 	unsigned short	ip_frag_offset;
 	unsigned char 	ip_ttl;
 	unsigned char	ip_type;
+
 	unsigned short	ip_checksum;
+
 	unsigned int	ip_src_addr;
 	unsigned int	ip_dst_addr;
 };
 
-struct				icmp_hdr
+struct				icmpv4_hdr
 {
 	unsigned char	icmp_type;
 	unsigned char	icmp_code;
@@ -153,6 +156,10 @@ typedef struct		s_runtime
 
 }					t_runtime;
 
+uint16_t ip_checksum(void* vdata,size_t length);
+
+int8_t					send_packet(t_runtime *rt, uint8_t *packet);
+void					extract_ipaddr(const struct sockaddr *sa, char *ip, uint32_t maxlen);
 uint8_t					is_interface_valid(t_data *param, char *interface);
 uint8_t					select_dflt_interface(t_data *param);
 uint16_t				checksum(uint16_t *addr, int32_t len);
@@ -168,10 +175,10 @@ int32_t					parse_opt(int ac, char **av, t_data *param);
 int32_t					createSocket(t_data *param);
 int8_t					setSocketOptions(t_data *param, int socket);
 
-uint16_t				forge_packet(t_runtime *rt, uint8_t *pkt, uint16_t seq);
+uint8_t					*forge_packet(t_runtime *rt, uint8_t *pkt, uint16_t seq);
 void					setup_ipv4_header(t_runtime *rt, struct ipv4_hdr *hdr, uint16_t datalen);
 //void					setup_ipv6_header(t_runtime *rt);
-void					setup_icmpv4_header(t_data *param, struct icmp_hdr *hdr);
+void					setup_icmpv4_header(t_data *param, struct icmpv4_hdr *hdr, uint16_t datalen, uint16_t seq);
 uint16_t				setup_message_body(t_data *param, char *data);
 
 

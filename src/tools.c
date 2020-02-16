@@ -13,6 +13,22 @@
 
 #include "ft_ping.h"
 
+void	extract_ipaddr(const struct sockaddr *sa, char *ip, uint32_t maxlen)
+{
+	if (sa->sa_family == AF_INET)
+		inet_ntop(AF_INET, &(((struct sockaddr_in *)sa)->sin_addr), ip,
+			maxlen);
+	else if (sa->sa_family == AF_INET6)
+		inet_ntop(AF_INET6, &(((struct sockaddr_in6 *)sa)->sin6_addr), ip,
+			maxlen);
+	else
+	{
+		ping_fatal("extract_ipaddr()","Unknown AF");
+		exit(42);
+	}
+}
+
+/*
 // Error handling??
 uint8_t		*allocate_ucharlist(int32_t len)
 {
@@ -117,3 +133,4 @@ void		ping_timer(int interval)
 		    printf(" --- Fatal Error - Kernel Panic ---\n");
 	}
 }
+*/
