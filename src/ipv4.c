@@ -54,8 +54,7 @@ void		setup_ipv4_header(t_runtime *runtime, struct ipv4_hdr *header,
 	header->ip_checksum = ip_checksum((void *)header, IP4_HDRLEN);
 }
 
-void		setup_icmpv4_header(t_data *param, struct icmpv4_hdr *header,
-									uint16_t datalen, uint16_t sequence)
+void		setup_icmpv4_header(struct icmpv4_hdr *header, uint16_t sequence)
 {
 	ft_memset(header, 0, ICMP_HDRLEN);
 	header->icmp_type = ICMP_ECHO;

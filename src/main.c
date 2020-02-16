@@ -35,7 +35,6 @@ static void	init_param(t_data *param)
 		param->ttl = 255;
 		param->interval = 1.0;
 		param->pkt_size = 36;
-		param->options = param->options |= OPT_IPV4;
 }
 
 static void	init_signals(t_signals *signals)
@@ -54,9 +53,9 @@ int		main(int ac, char **av)
 		init_param(&param);
 		init_signals(&signals);
 		parse_opt(ac, av, &param);
-		if (resolve_fqdn(&param) < 0)
+		if (resolve_target(&param) < 0)
 			return (-1);
-
+		else {
 			printf("\nPING OPTIONS: "BYTE_TO_BIN_PATTERN,BYTE_TO_BIN(param.options));
 			printf("\nTTL: 			%d\n", param.ttl);
 			printf("Count: 			%d\n", param.count);
@@ -70,7 +69,8 @@ int		main(int ac, char **av)
 			printf("Host/FQDN: 		%s\n", param.fqdn);
 			printf("Host IP: 		%s\n\n", param.ipv4_str);
 		
-		ft_ping(&param);
+			ft_ping(&param);
+		}
 		return (0);
 }
 

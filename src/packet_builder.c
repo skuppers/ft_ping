@@ -24,7 +24,7 @@ static uint8_t			*forge_ipv4(t_runtime *runtime, uint8_t *packet,
 	datalen = setup_message_body(runtime->param, data);
 	packet = ft_memalloc(IP4_HDRLEN + ICMP_HDRLEN + datalen);
 	ft_memcpy(packet + IP4_HDRLEN + ICMP_HDRLEN, data, datalen);
-	setup_icmpv4_header(runtime->param, &icmp_header, datalen, seq);
+	setup_icmpv4_header(&icmp_header, seq);
 	ft_memcpy(packet + IP4_HDRLEN, &icmp_header, ICMP_HDRLEN);
 	icmp_header.icmp_checksum = ip_checksum((void *)packet + IP4_HDRLEN, ICMP_HDRLEN + datalen);
 	ft_memcpy(packet + IP4_HDRLEN, &icmp_header, ICMP_HDRLEN);
@@ -35,6 +35,9 @@ static uint8_t			*forge_ipv4(t_runtime *runtime, uint8_t *packet,
 
 static uint8_t			*forge_ipv6(t_runtime *runtime, uint8_t *pkt, uint16_t seq)
 {
+	(void)runtime;
+	(void)pkt;
+	(void)seq;
 /*	setup_ipv6_header();
  *	setup_icmpv6_header();
  *	setup_message_body();

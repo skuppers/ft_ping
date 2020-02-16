@@ -13,33 +13,50 @@
 #include "ft_ping.h"
 
 
-void	prepare_hints(struct addrinfo *hints)
+void	prepare_hints(struct addrinfo *hints, uint32_t family)
 {
 	memset(hints, 0, sizeof(struct addrinfo));
-	hints->ai_family = AF_INET;
+	hints->ai_family = family;
 	hints->ai_socktype = SOCK_STREAM;
 	hints->ai_flags = hints->ai_flags | AI_CANONNAME;//AI_ADDRCONFIG;
 }
 
+uint32_t	guess_format(t_data *param)
+{
+	if (0)
+	{
+		param->options |= OPT_IPV4;
+		if (param->interface == NULL)
+			return (select_dflt_interface(param));
+		return (AF_INET);
+	}
+	else
+	{
+		param->options |= OPT_IPV4;	
+		if (param->interface == NULL)
+			return (select_dflt_interface(param));
+		return (AF_INET);
+	}
+}
+
 // Add support for ipv6 here
-int32_t		resolve_fqdn(t_data *param)
+int32_t		resolve_target(t_data *param)
 {
 	struct addrinfo		hints;
 	struct addrinfo		*result;
 	struct in_addr		*iadr;
 	char				buffer[INET_ADDRSTRLEN];
 
+	result = 0;
 	if (param->fqdn == NULL)
 		return (-1);
-	result = 0;
-	prepare_hints(&hints);
+	prepare_hints(&hints, guess_format(param));
 	if ((getaddrinfo(param->fqdn, NULL, &hints, &result)) != 0)
 	{
 		ping_fatal("getaddrinfo", "Could not resolve hostname");
 		return (-1);
 	}
-	param->ipv4 = (struct sockaddr_in*) result->ai_addr; //recheck this
-	iadr = &(param->ipv4->sin_addr);
+	iadr = &(((struct sockaddr_in*)result->ai_addr)->sin_addr);
 	if (inet_ntop(AF_INET, iadr, buffer, INET_ADDRSTRLEN) == NULL)
 	{
 		ping_fatal("inet_ntop", "undefined");

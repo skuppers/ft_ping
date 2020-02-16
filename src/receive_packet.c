@@ -14,8 +14,10 @@
 
 void	receive_packet(t_runtime *runtime, uint8_t *packet)
 {
-	packet = NULL;
-	while (/* Timeout is not reached -- alarm() */)
+	(void)runtime;
+	(void)packet;
+	/*packet = NULL;
+	while ( Timeout is not reached -- alarm() )
 	{
 		if (recvfrom(runtime->socket, packet, SOME_SIZE_FOR_IPV4_6,
 				MSG_DONTWAIT, NULL, (socklen_t*)sizeof (struct sockaddr)) <= 0)
@@ -31,5 +33,5 @@ void	receive_packet(t_runtime *runtime, uint8_t *packet)
         printf("\t( Type: %u\t", (uint8_t) response->ip_type);
         printf("ID: %hu\tLength: %hu )\n", ntohs(response->ip_id), ntohs(response->ip_len));
 	//else
-	//	register_response();
+	//	register_response();*/
 }

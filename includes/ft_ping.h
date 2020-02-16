@@ -158,6 +158,7 @@ typedef struct		s_runtime
 
 uint16_t ip_checksum(void* vdata,size_t length);
 
+void					receive_packet(t_runtime *runtime, uint8_t *packet);
 int8_t					send_packet(t_runtime *rt, uint8_t *packet);
 void					extract_ipaddr(const struct sockaddr *sa, char *ip, uint32_t maxlen);
 uint8_t					is_interface_valid(t_data *param, char *interface);
@@ -170,7 +171,7 @@ void					ping_fatal(const char *failed, const char *errbuff);
 
 int32_t					ft_ping(t_data *param);
 
-int32_t					resolve_fqdn(t_data *param);
+int32_t					resolve_target(t_data *param);
 int32_t					parse_opt(int ac, char **av, t_data *param);
 int32_t					createSocket(t_data *param);
 int8_t					setSocketOptions(t_data *param, int socket);
@@ -178,7 +179,7 @@ int8_t					setSocketOptions(t_data *param, int socket);
 uint8_t					*forge_packet(t_runtime *rt, uint8_t *pkt, uint16_t seq);
 void					setup_ipv4_header(t_runtime *rt, struct ipv4_hdr *hdr, uint16_t datalen);
 //void					setup_ipv6_header(t_runtime *rt);
-void					setup_icmpv4_header(t_data *param, struct icmpv4_hdr *hdr, uint16_t datalen, uint16_t seq);
+void					setup_icmpv4_header(struct icmpv4_hdr *hdr, uint16_t seq);
 uint16_t				setup_message_body(t_data *param, char *data);
 
 

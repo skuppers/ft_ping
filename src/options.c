@@ -32,7 +32,7 @@
 
 #include "ft_ping.h"
 
-int8_t	invalid_opt(char * optarg)
+void	invalid_opt(char * optarg)
 {
 	printf("ft_ping: invalid argument: %s\n", optarg);
 	exit(-1);
@@ -60,21 +60,15 @@ static void		handle_standalone_options(int32_t option, t_data *param)
 	else if (option == 'D')
 		param->options |= OPT_TIMESTAMP;
 	else if (option == '4')
-	{
 		param->options |= OPT_IPV4;
-		param->options ^= OPT_IPV6;
-	}
 	else if (option == '6')
-	{
 		param->options |= OPT_IPV6;
-		param->options ^= OPT_IPV4;
-	}
 }
 
 static void		handle_custom_options(int32_t opt, t_data *prm, char *oarg)
 {
 	if (opt == 'c')
-		(ft_atoi(oarg) > 0) ? prm->count = ft_atoi(oarg) : invalid_opt(oarg);
+		(ft_atoi(oarg) > 0) ? prm->count = (uint16_t)ft_atoi(oarg) : invalid_opt(oarg);
 	else if (opt == 'i')
 		;//(ft_atoi(oarg) > 0) ? prm-> = ft_atoi(oarg) : invalid_opt();
 	else if (opt == 'I')
@@ -111,7 +105,5 @@ int32_t	parse_opt(int ac, char **av, t_data *param)
 	}
 	if (av[optind] != NULL)
 		param->fqdn = av[optind];
-	if (param->interface == NULL)
-		return (select_dflt_interface(param));
 	return (0);
 }

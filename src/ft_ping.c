@@ -118,8 +118,7 @@ static void		ping_loop(t_runtime *runtime)
 		printf(" ----------------- \n");
 		*/
 		if (send_packet(runtime, packet) == SUCCESS) 
-			;//	printf(" --- Sent a %u bytes message\n", ntohs(((struct ipv4_hdr *)packet)->ip_len));
-			//receive_packet(runtime, packet); // do a pointer jutsu here for packet
+			receive_packet(runtime, packet); // do a pointer jutsu here for packet
 		++sequence;
 	}
 }

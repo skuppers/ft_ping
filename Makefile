@@ -22,14 +22,15 @@ SRC=src/main.c\
 	src/ipv4.c\
 	src/tools.c\
 	src/send_packet.c\
-	src/checksum.c
+	src/checksum.c\
+	src/receive_packet.c
 
 INC=includes/
 
 LIB=libft/
 
 #OBJS = $(patsubst %.c, $(OPATH)%.o, $(SRC)))))
-CC=gcc
+CC=clang
 CFLAGS= -fsanitize=address -Wall -Wextra #-Werror
 
 all: $(NAME)
