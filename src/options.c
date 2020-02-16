@@ -62,12 +62,12 @@ static void		handle_standalone_options(int32_t option, t_data *param)
 	else if (option == '4')
 	{
 		param->options |= OPT_IPV4;
-		param->options ~= OPT_IPV6;
+		param->options ^= OPT_IPV6;
 	}
 	else if (option == '6')
 	{
 		param->options |= OPT_IPV6;
-		param->options ~= OPT_IPV4;
+		param->options ^= OPT_IPV4;
 	}
 }
 
@@ -78,7 +78,7 @@ static void		handle_custom_options(int32_t opt, t_data *prm, char *oarg)
 	else if (opt == 'i')
 		;//(ft_atoi(oarg) > 0) ? prm-> = ft_atoi(oarg) : invalid_opt();
 	else if (opt == 'I')
-		;//(ft_atoi(oarg) > 0) ? prm-> = ft_atoi(oarg) : invalid_opt();
+		(is_interface_valid(prm, oarg) == 0) ? 0 : invalid_opt(oarg);
 	else if (opt == 'l')
 		(ft_atoi(oarg) > 0) ? prm->preload = ft_atoi(oarg) : invalid_opt(oarg);
 	else if (opt == 's')
@@ -111,5 +111,7 @@ int32_t	parse_opt(int ac, char **av, t_data *param)
 	}
 	if (av[optind] != NULL)
 		param->fqdn = av[optind];
+	if (param->interface == NULL)
+		return (select_dflt_interface(param));
 	return (0);
 }

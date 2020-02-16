@@ -13,17 +13,27 @@
 NAME=ft_ping
 
 SRC=src/main.c\
-	src/ft_ping.c
+	src/fqdn.c\
+	src/options.c\
+	src/interface.c\
+	src/ft_ping.c\
+	src/sockets.c\
+	src/packet_builder.c\
+	src/ipv4.c
 
-OBJS = $(patsubst %.c, $(OPATH)%.o, $(SRC)))))
+INC=includes/
+
+LIB=libft/
+
+#OBJS = $(patsubst %.c, $(OPATH)%.o, $(SRC)))))
 CC=clang
-CFLAGS=-Wall -Wextra #-Werror
+CFLAGS= # -Wall -Wextra #-Werror
 
 all: $(NAME)
 
 $(NAME): $(SRC)
-	@cd lib; make
-	@$(CC) $(CFLAGS) -o $(NAME) $(SRC) lib/libft.a
+#	@cd lib; make
+	@$(CC) $(CFLAGS) -o $(NAME) -I $(INC) -I $(LIB)/includes/ $(SRC) libft/libft.a
 
 clean:
 	@rm -f $(NAME)

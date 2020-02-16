@@ -31,19 +31,20 @@
 #include <sys/time.h>
 #include <ifaddrs.h>
 #include <errno.h>
-
+#include <sys/ioctl.h>
+#include <net/if.h>
 #include <bits/endian.h>
 
 #include "libft.h"
 
-#define OPT_VERBOSE		0x0002 // -v
-#define OPT_QUIET		0x0004 // -q
-#define OPT_SO_DEBUG	0x0008 // -d
+#define OPT_VERBOSE		0x0001 // -v
+#define OPT_QUIET		0x0002 // -q
+#define OPT_SO_DEBUG	0x0004 // -d
+#define OPT_TIMESTAMP	0x0008 // -D
 
-#define OPT_TIMESTAMP	0x0010 // -D
-#define OPT_IPV4		0x0020 // -4
-#define OPT_IPV6		0x0040 // -6
-#define OPT_PRELOAD		0x0080 // -l <number>
+#define OPT_IPV4		0x0010 // -4
+#define OPT_IPV6		0x0020 // -6
+#define OPT_PRELOAD		0x0040 // -l <number>
 
 #define OPT_COUNT		0x0100 //-c <number
 #define OPT_PKTSZ		0x0200 //-s <pkt-size>
@@ -62,11 +63,9 @@
 
 typedef struct			s_data
 {
-//	struct ifaddrs		*interface_list;
 	uint16_t			options;
 	unsigned int		count;
 	float				interval;
-//						interface;
 	uint16_t			preload;
 	uint16_t			pkt_size;
 	uint8_t				tos;
@@ -76,17 +75,8 @@ typedef struct			s_data
 	char				*fqdn;
 	char				*ipv4_str;
 	struct sockaddr_in	*ipv4;
+	struct ifaddrs		*interface;
 }						t_data;
-
-typedef struct 			s_network
-{
-	/* 
-	 * interfaces
-	 *  our ipv4?
-	 *  our ipv6?
-	 */
-}						t_network;
-
 
 struct				ipv4_hdr //ipv4_hdr
 {
@@ -163,6 +153,8 @@ typedef struct		s_runtime
 
 }					t_runtime;
 
+uint8_t					is_interface_valid(t_data *param, char *interface);
+uint8_t					select_dflt_interface(t_data *param);
 uint16_t				checksum(uint16_t *addr, int32_t len);
 uint8_t					*allocate_ucharlist(int32_t len);
 int32_t					*allocate_intlist(int32_t len);
@@ -173,40 +165,41 @@ int32_t					ft_ping(t_data *param);
 
 int32_t					resolve_fqdn(t_data *param);
 int32_t					parse_opt(int ac, char **av, t_data *param);
-int32_t					createSocket(void);
+int32_t					createSocket(t_data *param);
 int8_t					setSocketOptions(t_data *param, int socket);
 
-uint8_t					*forge_packet(t_data *param, uint16_t total_length);
-void					setup_ipv4_header(t_runtime *rt);
-void					setup_ipv6_header(t_runtime *rt);
-void					setup_icmp_header(t_runtime *rt);
+uint16_t				forge_packet(t_runtime *rt, uint8_t *pkt, uint16_t seq);
+void					setup_ipv4_header(t_runtime *rt, struct ipv4_hdr *hdr, uint16_t datalen);
+//void					setup_ipv6_header(t_runtime *rt);
+void					setup_icmpv4_header(t_data *param, struct icmp_hdr *hdr);
+uint16_t				setup_message_body(t_data *param, char *data);
 
 
 void				print_usage(uint8_t exit);
 void 				print_resolve(t_data *param);
-void 				print_ping(t_data *param, t_icmppacket *pkt, t_timer *t);
+//void 				print_ping(t_data *param, t_icmppacket *pkt, t_timer *t);
 
-void				update_statistics(t_data *param, t_timer *timer);
-void 				print_stats(t_data *param);
+//void				update_statistics(t_data *param, t_timer *timer);
+//void 				print_stats(t_data *param);
 
-int					send_packet(t_data *param, int socket, t_icmppacket *pkt);
-int					receive_packet(t_data *param, int socket);
-
-
+//int					send_packet(t_data *param, int socket, t_icmppacket *pkt);
+//int					receive_packet(t_data *param, int socket);
 
 
 
 
 
-void				pkt_setsequence(t_icmppacket *pkt, int sequence);
-void				pkt_fix_checksum(t_icmppacket *pkts, void *pkt, size_t len);
 
-void				sigint_handle(int signo);
-void				sigalrm_handle(int signo);
 
-void				ping_timer(int interval);
-void				clear_timer(t_timer *t);
-void				start_timer(t_timer *t);
-void				stop_timer(t_timer *t);
+//void				pkt_setsequence(t_icmppacket *pkt, int sequence);
+//void				pkt_fix_checksum(t_icmppacket *pkts, void *pkt, size_t len);
+
+//void				sigint_handle(int signo);
+//void				sigalrm_handle(int signo);
+
+//void				ping_timer(int interval);
+//void				clear_timer(t_timer *t);
+//void				start_timer(t_timer *t);
+//void				stop_timer(t_timer *t);
 
 #endif

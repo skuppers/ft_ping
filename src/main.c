@@ -10,6 +10,17 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#define BYTE_TO_BIN_PATTERN "%c%c%c%c%c%c%c%c"
+#define BYTE_TO_BIN(byte) \
+		(byte & 0x80 ? '1' : '0'), \
+		(byte & 0x40 ? '1' : '0'), \
+		(byte & 0x20 ? '1' : '0'), \
+		(byte & 0x10 ? '1' : '0'), \
+		(byte & 0x08 ? '1' : '0'), \
+		(byte & 0x04 ? '1' : '0'), \
+		(byte & 0x02 ? '1' : '0'), \
+		(byte & 0x01 ? '1' : '0')
+
 #include "ft_ping.h"
 
 void	ping_fatal(const char *failed_here, const char *errbuff)
@@ -25,9 +36,6 @@ static void	init_param(t_data *param)
 		param->interval = 1.0;
 		param->pkt_size = 64;
 		param->options = param->options |= OPT_IPV4;
-//      List interfaces, store references to later select interface & ip. Default to interface 1 ? not 0
-//		getifaddrs(&(param->interfaces));
-//
 }
 
 static void	init_signals(t_signals *signals)
@@ -49,8 +57,8 @@ int		main(int ac, char **av)
 		if (resolve_fqdn(&param) < 0)
 			return (-1);
 
-			printf("\nPING OPTIONS: %x\n", param.options);
-			printf("TTL: 			%d\n", param.ttl);
+			printf("\nPING OPTIONS: "BYTE_TO_BIN_PATTERN,BYTE_TO_BIN(param.options));
+			printf("\nTTL: 			%d\n", param.ttl);
 			printf("Count: 			%d\n", param.count);
 			printf("Packet size: 	%d\n", param.pkt_size);
 			printf("Tos:		 	%d\n", param.tos);
@@ -58,6 +66,7 @@ int		main(int ac, char **av)
 			printf("Timeout: 		%d\n", param.timeout);
 			printf("Deadline: 		%d\n", param.deadline);
 			printf("Interval: 		%f\n", param.interval);
+			printf("Interface:		%s\n", param.interface->ifa_name);
 			printf("Host/FQDN: 		%s\n", param.fqdn);
 			printf("Host IP: 		%s\n\n", param.ipv4_str);
 		

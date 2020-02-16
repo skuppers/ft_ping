@@ -12,9 +12,9 @@
 
 #include "ft_ping.h"
 
-void		setup_message_body(t_data *param, char *data)
+uint16_t		setup_message_body(t_data *param, char *data)
 {
-	
+	return (0);
 }
 /*
 void		setup_ipv6_header(void)
@@ -41,10 +41,10 @@ void		setup_ipv4_header(t_runtime *runtime, struct ipv4_hdr *header,
 	header->ip_ttl = runtime->param->ttl;
 	header->ip_type = IPPROTO_ICMP;
 	header->ip_checksum = 0;
-	if (inet_pton(AF_INET, /* our inet address - see interfaces */, header->ip_src_addr) < 0)
-		printf("fuckd up bro");
-	if (inet_pton(AF_INET, runtime->param->ipv4_str, header->ip_dst_addr) < 0)
-		printf("fuckd up bro");
+//	if (inet_pton(AF_INET, runtime->param->interface->ifa_addr, header->ip_src_addr) < 0)
+//		printf("fuckd up bro");
+//	if (inet_pton(AF_INET, runtime->param->ipv4_str, header->ip_dst_addr) < 0)
+//		printf("fuckd up bro");
 }
 
 void		setup_icmpv4_header(t_data *param, struct icmp_hdr *header)

@@ -98,15 +98,16 @@ void	ping_loop(t_data *param, int socket, t_timer *timer)
 static void		ping_loop(t_runtime *runtime)
 {
 	uint8_t		*packet;
-	uint32_t	packet_len;
-	uint32_t	sequence;
+	uint16_t	packet_len;
+	uint16_t	sequence;
 
 	sequence = 1;
-	while (g_signals->sigint == 0 && sequence < 65535)
+	while (g_signals->sigint == 0 && sequence < 10)
 	{
 		packet_len = forge_packet(runtime, packet, sequence);
-		if (send_packet(runtime, packet, packet_len) == SUCCESS)
-			receive_packet(runtime, packet); // do a pointer jutsu here for packet
+		printf("Forged a %u bytes ipv4 packet\n", packet_len);
+		//if (send_packet(runtime, packet, packet_len) == SUCCESS)
+			//receive_packet(runtime, packet); // do a pointer jutsu here for packet
 		++sequence;
 	}
 }
@@ -124,8 +125,9 @@ int32_t ft_ping(t_data *param)
 	int				socket;
 	t_runtime		runtime;
 
-	if ((socket = createSocket()) < 0)
+	if ((socket = createSocket(param)) < 0)
 		return (-1);
+	
 	if (setSocketOptions(param, socket) < 0)
 		return (-1);
 
@@ -133,14 +135,15 @@ int32_t ft_ping(t_data *param)
 
 //print fqdn?
 
-	if (param->options & OPT_PRELOAD)
-		ping_preload(runtime);
+//	if (param->options & OPT_PRELOAD)
+//		ping_preload(runtime);
 
-	if (param->count > 0)
-		ping_while(runtime);
+//	if (param->count > 0)
+//		ping_while(runtime);
 
-	else if (param->count == 0)
-		ping_loop(runtime);
+//	else 
+	if (param->count == 0)
+		ping_loop(&runtime);
 
 //Plot statistics and print them // use t_stat here
 

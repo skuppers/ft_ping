@@ -20,12 +20,12 @@ static uint16_t			forge_ipv4(t_runtime *runtime, uint8_t *packet,
 	char				data[65535];
 	uint16_t			datalen;
 
-	datalen = setup_message_body(runtime, data);
-	setup_icmpv4_header(runtime, &icmp_header);
+	datalen = setup_message_body(runtime->param, data);
+	setup_icmpv4_header(runtime->param, &icmp_header);
 	setup_ipv4_header(runtime, &ip_header, datalen);
 
-	icmp_checksum(&icmp_header, datalen);
-	ip_checksum(&ip_header, ICMP_HDRLEN + datalen);
+//	icmp_checksum(&icmp_header, datalen);
+//	ip_checksum(&ip_header, ICMP_HDRLEN + datalen);
 
 	packet = ft_memalloc(IP4_HDRLEN + ICMP_HDRLEN + datalen);
 	ft_memcpy(packet, &ip_header, IP4_HDRLEN);
@@ -35,15 +35,16 @@ static uint16_t			forge_ipv4(t_runtime *runtime, uint8_t *packet,
 	return (IP4_HDRLEN + ICMP_HDRLEN + datalen);
 }
 
-static uint32_t			forge_ipv6()
+static uint32_t			forge_ipv6(t_runtime *runtime, uint8_t *pkt, uint16_t seq)
 {
 /*	setup_ipv6_header();
  *	setup_icmpv6_header();
  *	setup_message_body();
  */
+	return (0);
 }
 
-uint8_t			*forge_packet(t_runtime *runtime, uint8_t *pkt, uint32_t seq)
+uint16_t			forge_packet(t_runtime *runtime, uint8_t *pkt, uint16_t seq)
 {
 	uint16_t	packet_length;
 
@@ -51,5 +52,5 @@ uint8_t			*forge_packet(t_runtime *runtime, uint8_t *pkt, uint32_t seq)
 			packet_length = forge_ipv4(runtime, pkt, seq);
 		else if (runtime->param->options & OPT_IPV6)
 			packet_length = forge_ipv6(runtime, pkt, seq);
-		return (SUCCESS);
+	return (packet_length);
 }

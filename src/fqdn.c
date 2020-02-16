@@ -21,6 +21,7 @@ void	prepare_hints(struct addrinfo *hints)
 	hints->ai_flags = hints->ai_flags | AI_CANONNAME;//AI_ADDRCONFIG;
 }
 
+// Add support for ipv6 here
 int32_t		resolve_fqdn(t_data *param)
 {
 	struct addrinfo		hints;
