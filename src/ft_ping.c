@@ -101,11 +101,11 @@ static void		ping_loop(t_runtime *runtime)
 	uint16_t	sequence;
 
 	sequence = 1;
-	while (g_signals->sigint == 0 && sequence < 2)
+	while (g_signals->sigint == 0)
 	{
 		packet = forge_packet(runtime, packet, sequence);
-		/*
-		printf("Forged a %u bytes ipv4 packet\n", ntohs(((struct ipv4_hdr *)packet)->ip_len));
+		
+/*		printf("Forged a %u bytes ipv4 packet\n", ntohs(((struct ipv4_hdr *)packet)->ip_len));
 		printf(" ----------------- \n");
 		printf("hdr->hdr_len:\t%u\n", ((struct ipv4_hdr *)packet)->ip_header_length);
 		printf("hdr->version:\t%u\n", ((struct ipv4_hdr *)packet)->ip_version);
@@ -115,11 +115,23 @@ static void		ping_loop(t_runtime *runtime)
 		printf("hdr->ttl     :\t%u\n", ((struct ipv4_hdr *)packet)->ip_ttl);
 		printf("hdr->type    :\t%u\n", ((struct ipv4_hdr *)packet)->ip_type);
 		printf("hdr->checksum:\t%x\n", ((struct ipv4_hdr *)packet)->ip_checksum);
+		char *src = ft_strnew(16);
+		inet_ntop(AF_INET, &((struct ipv4_hdr *)packet)->ip_src, src, 16);
+		printf("hdr->src	 :\t%s\n", src);
+		char *dst = ft_strnew(16);
+		inet_ntop(AF_INET, &((struct ipv4_hdr *)packet)->ip_dst, dst, 16);
+		printf("hdr->dst	 :\t%s\n", dst);
 		printf(" ----------------- \n");
-		*/
+		printf("icmp->type     :\t%u\n", ((struct icmpv4_hdr *)packet + IP4_HDRLEN)->icmp_type);
+		printf("icmp->code    :\t%u\n", ((struct icmpv4_hdr *)packet + IP4_HDRLEN)->icmp_code);
+		printf(" ----------------- \n\n");
+*/		
 		if (send_packet(runtime, packet) == SUCCESS) 
 			receive_packet(runtime, packet); // do a pointer jutsu here for packet
 		++sequence;
+		if (g_signals->sigalrm != 1)
+			ping_timer(1);
+		g_signals->sigalrm = 0;
 	}
 }
 
@@ -128,7 +140,8 @@ void	setup_runtime(t_runtime *runtime, t_data *param, int socket)
 	memset(runtime, 0, sizeof(struct s_runtime));
 	runtime->param = param;
 	runtime->socket = socket;
-	runtime->packetlist_head = NULL;
+	runtime->spacketlist_head = NULL;
+	runtime->rpacketlist_head = NULL;
 }
 
 int32_t ft_ping(t_data *param)
@@ -136,15 +149,10 @@ int32_t ft_ping(t_data *param)
 	int				socket;
 	t_runtime		runtime;
 
-	if ((socket = createSocket(param)) < 0)
-		return (-1);
-	
-	if (setSocketOptions(param, socket) < 0)
-		return (-1);
-
+	socket = createSocket(param);
 	setup_runtime(&runtime, param, socket);
 
-//print fqdn?
+	print_resolve(param);
 
 //	if (param->options & OPT_PRELOAD)
 //		ping_preload(runtime);
@@ -157,6 +165,6 @@ int32_t ft_ping(t_data *param)
 		ping_loop(&runtime);
 
 //Plot statistics and print them // use t_stat here
-
+	print_stats(&runtime);
 	return (0);
 }

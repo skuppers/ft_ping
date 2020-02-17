@@ -20,7 +20,6 @@ uint8_t        select_dflt_interface(t_data *param)
             itf_ptr = itf_ptr->ifa_next;
             continue;
         }
-        //printf("");
         if ((param->options & OPT_IPV4) && (itf_ptr->ifa_addr->sa_family == AF_INET))
         {
             param->interface = itf_ptr;

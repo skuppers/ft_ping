@@ -13,6 +13,18 @@
 
 #include "ft_ping.h"
 
+void    sigint_handle(int signo)
+{
+	(void)signo;
+    g_signals->sigint = 1;
+}
+
+void    sigalrm_handle(int signo)
+{
+	(void)signo;
+    g_signals->sigalrm = 1;
+}
+
 void	extract_ipaddr(const struct sockaddr *sa, char *ip, uint32_t maxlen)
 {
 	if (sa->sa_family == AF_INET)
@@ -28,53 +40,50 @@ void	extract_ipaddr(const struct sockaddr *sa, char *ip, uint32_t maxlen)
 	}
 }
 
+void		ping_timer(int interval)
+{
+	struct timeval tv_current;
+	struct timeval tv_next;
+
+	if (gettimeofday(&tv_current, NULL) < 0)
+	        printf(" --- Fatal Error - Kernel Panic ---\n");
+	tv_next = tv_current;
+	tv_next.tv_sec += interval;
+	while ((tv_current.tv_sec < tv_next.tv_sec ||
+			tv_current.tv_usec < tv_next.tv_usec) &&
+			g_signals->sigint == 0)
+	{
+		if (gettimeofday(&tv_current, NULL) < 0)
+		    printf(" --- Fatal Error - Kernel Panic ---\n");
+	}
+}
+
+void	plot_stats(t_runtime *rt)
+{
+	for (t_list *slst = rt->spacketlist_head; slst != NULL; slst = slst->next)
+	{
+		for (t_list *rlst = rt->rpacketlist_head; rlst != NULL; rlst = rlst->next)
+		{
+			if (rlst->data == NULL)
+			{
+				//lst = lst->nest;
+				continue;
+			}
+		//	t_packetlist *pkt = (t_packetlist*)slst->data;
+	//		uint16_t seq = ((struct icmpv4_hdr *)pkt->data + ICMP_HDRLEN)->icmp_sequence;
+			
+
+
+		//	t_packetlist *pkt = (t_packetlist*)rlst->data;
+	//		uint16_t seq = ((struct icmpv4_hdr *)pkt->data + ICMP_HDRLEN)->icmp_sequence;
+
+			//printf("icmp sequence");
+		}
+	}
+
+}
+
 /*
-// Error handling??
-uint8_t		*allocate_ucharlist(int32_t len)
-{
-	void *tmp;
-
-	if (len <= 0)
-		printf("Cannot allocate memory. ucharlist(len <= 0).\n");
-	if ((tmp = (uint8_t*)ft_memalloc(len * sizeof(uint8_t))) == NULL)
-		printf("Cannot allocate memory. malloc().\n");
-	return (tmp);
-
-}
-
-int32_t		*allocate_intlist(int32_t len)
-{
-	void *tmp;
-
-	if (len <= 0)
-		printf("Cannot allocate memory. intlist(len <= 0).\n");
-	if ((tmp = (int32_t*)ft_memalloc(len * sizeof(int32_t))) == NULL)
-		printf("Cannot allocate memory. malloc().\n");
-	return (tmp);
-}
-
-float        *allocate_floatlist()
-{
-	void *tmp;
-
-	if (len <= 0)
-		printf("Cannot allocate memory. floatlist(len <= 0).\n");
-	if ((tmp = (int32_t*)ft_memalloc(len * sizeof(float))) == NULL)
-		printf("Cannot allocate memory. malloc().\n");
-	return (tmp);
-}
-
-
-void    sigint_handle(int signo)
-{
-    g_param->sigint = 1;
-}
-
-void    sigalrm_handle(int signo)
-{
-    g_param->timeout = 1;
-}
-
 void		update_statistics(t_data *param, t_timer *timer)
 {
 	if (param->rtt_min == 0 || timer->rtt_sec < param->rtt_min)

@@ -23,13 +23,20 @@ static uint8_t			*forge_ipv4(t_runtime *runtime, uint8_t *packet,
 
 	datalen = setup_message_body(runtime->param, data);
 	packet = ft_memalloc(IP4_HDRLEN + ICMP_HDRLEN + datalen);
-	ft_memcpy(packet + IP4_HDRLEN + ICMP_HDRLEN, data, datalen);
-	setup_icmpv4_header(&icmp_header, seq);
-	ft_memcpy(packet + IP4_HDRLEN, &icmp_header, ICMP_HDRLEN);
-	icmp_header.icmp_checksum = ip_checksum((void *)packet + IP4_HDRLEN, ICMP_HDRLEN + datalen);
-	ft_memcpy(packet + IP4_HDRLEN, &icmp_header, ICMP_HDRLEN);
+
 	setup_ipv4_header(runtime, &ip_header, datalen);
 	ft_memcpy(packet, &ip_header, IP4_HDRLEN);
+	ip_header.ip_checksum = ip_checksum((void *)packet, IP4_HDRLEN);
+	ft_memcpy(packet, &ip_header, IP4_HDRLEN);
+
+	setup_icmpv4_header(&icmp_header, seq);
+	ft_memcpy(packet + IP4_HDRLEN, &icmp_header, ICMP_HDRLEN);
+
+	ft_memcpy(packet + IP4_HDRLEN + ICMP_HDRLEN, data, datalen);
+
+	icmp_header.icmp_checksum = ip_checksum((void *)packet + IP4_HDRLEN, ICMP_HDRLEN + datalen);
+	ft_memcpy(packet + IP4_HDRLEN, &icmp_header, ICMP_HDRLEN);
+
 	return (packet);
 }
 

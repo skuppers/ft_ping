@@ -23,15 +23,16 @@ SRC=src/main.c\
 	src/tools.c\
 	src/send_packet.c\
 	src/checksum.c\
-	src/receive_packet.c
+	src/receive_packet.c\
+	src/display.c
 
 INC=includes/
 
 LIB=libft/
 
 #OBJS = $(patsubst %.c, $(OPATH)%.o, $(SRC)))))
-CC=clang
-CFLAGS= -fsanitize=address -Wall -Wextra #-Werror
+CC=gcc
+CFLAGS= -g -Wall -Wextra #-fsanitize=address #-Werror
 
 all: $(NAME)
 

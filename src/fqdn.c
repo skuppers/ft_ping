@@ -18,7 +18,7 @@ void	prepare_hints(struct addrinfo *hints, uint32_t family)
 	memset(hints, 0, sizeof(struct addrinfo));
 	hints->ai_family = family;
 	hints->ai_socktype = SOCK_STREAM;
-	hints->ai_flags = hints->ai_flags | AI_CANONNAME;//AI_ADDRCONFIG;
+//	hints->ai_flags = hints->ai_flags | AI_ADDRCONFIG;//AI_CANONNAME;;
 }
 
 uint32_t	guess_format(t_data *param)
@@ -27,14 +27,14 @@ uint32_t	guess_format(t_data *param)
 	{
 		param->options |= OPT_IPV4;
 		if (param->interface == NULL)
-			return (select_dflt_interface(param));
+			select_dflt_interface(param);
 		return (AF_INET);
 	}
 	else
 	{
 		param->options |= OPT_IPV4;	
 		if (param->interface == NULL)
-			return (select_dflt_interface(param));
+			select_dflt_interface(param);
 		return (AF_INET);
 	}
 }
@@ -56,6 +56,7 @@ int32_t		resolve_target(t_data *param)
 		ping_fatal("getaddrinfo", "Could not resolve hostname");
 		return (-1);
 	}
+	param->sin = ((struct sockaddr_in*)result->ai_addr);
 	iadr = &(((struct sockaddr_in*)result->ai_addr)->sin_addr);
 	if (inet_ntop(AF_INET, iadr, buffer, INET_ADDRSTRLEN) == NULL)
 	{

@@ -61,6 +61,14 @@
 #define IP4_HDRLEN		20
 #define ICMP_HDRLEN		8
 
+typedef struct      s_signals
+{
+	uint8_t         sigalrm;
+	uint8_t         sigint;
+}                   t_signals;
+
+t_signals           *g_signals;
+
 typedef struct			s_data
 {
 	uint16_t			options;
@@ -74,7 +82,7 @@ typedef struct			s_data
 	uint16_t			timeout;
 	char				*fqdn;
 	char				*ipv4_str;
-	struct sockaddr_in	*ipv4;
+	struct sockaddr_in	*sin;
 	struct ifaddrs		*interface;
 }						t_data;
 
@@ -91,43 +99,30 @@ struct				ipv4_hdr //ipv4_hdr
 #endif
 	unsigned char	ip_tos;
 	unsigned short	ip_len;
-
 	unsigned short	ip_id;
 	unsigned short	ip_frag_offset;
 	unsigned char 	ip_ttl;
 	unsigned char	ip_type;
-
 	unsigned short	ip_checksum;
-
-	unsigned int	ip_src_addr;
-	unsigned int	ip_dst_addr;
+	struct in_addr	ip_src;
+	struct in_addr	ip_dst;
 };
 
 struct				icmpv4_hdr
 {
-	unsigned char	icmp_type;
-	unsigned char	icmp_code;
-	unsigned short	icmp_checksum;
-	unsigned short	icmp_identifier;
-	unsigned short	icmp_sequence;
+	uint8_t		icmp_type;
+	uint8_t		icmp_code;
+	uint16_t	icmp_checksum;
+	uint16_t	icmp_identifier;
+	uint16_t	icmp_sequence;
 };
 
 typedef struct 		s_packetlist
 {
 	void			*data;
 	uint32_t		data_size;
-	struct timeval	timestamp;
-
+	struct timeval	*timestamp;
 }					t_packetlist;
-
-typedef struct      s_signals
-{
-	uint8_t         sigalrm;
-	uint8_t         sigint;
-}                   t_signals;
-
-t_signals           *g_signals;
-
 
 typedef struct      s_stats
 {
@@ -148,15 +143,22 @@ typedef struct      s_stats
 //	double			rtt_sec;
 //}					t_timer;
 
-typedef struct		s_runtime
+typedef struct			s_runtime
 {
-	int				socket;
-	t_data			*param;
-	t_list			*packetlist_head;
+	int					socket;
+	t_data				*param;
+	t_list				*spacketlist_head;
+	t_list				*rpacketlist_head;
+}						t_runtime;
 
-}					t_runtime;
+void	print_stats(t_runtime *param);
 
-uint16_t ip_checksum(void* vdata,size_t length);
+t_packetlist			*pktlstnew(uint8_t *packet, size_t size);
+uint16_t 				ip_checksum(void* vdata,size_t length);
+void					ping_timer(int interval);
+
+void					sigalrm_handle(int signo);
+void					sigint_handle(int signo);
 
 void					receive_packet(t_runtime *runtime, uint8_t *packet);
 int8_t					send_packet(t_runtime *rt, uint8_t *packet);
@@ -166,46 +168,28 @@ uint8_t					select_dflt_interface(t_data *param);
 uint16_t				checksum(uint16_t *addr, int32_t len);
 uint8_t					*allocate_ucharlist(int32_t len);
 int32_t					*allocate_intlist(int32_t len);
-
 void					ping_fatal(const char *failed, const char *errbuff);
-
 int32_t					ft_ping(t_data *param);
-
 int32_t					resolve_target(t_data *param);
 int32_t					parse_opt(int ac, char **av, t_data *param);
 int32_t					createSocket(t_data *param);
 int8_t					setSocketOptions(t_data *param, int socket);
-
 uint8_t					*forge_packet(t_runtime *rt, uint8_t *pkt, uint16_t seq);
 void					setup_ipv4_header(t_runtime *rt, struct ipv4_hdr *hdr, uint16_t datalen);
 //void					setup_ipv6_header(t_runtime *rt);
 void					setup_icmpv4_header(struct icmpv4_hdr *hdr, uint16_t seq);
 uint16_t				setup_message_body(t_data *param, char *data);
-
-
+void 					print_ping(t_data *param, uint8_t *pkt);
 void				print_usage(uint8_t exit);
 void 				print_resolve(t_data *param);
-//void 				print_ping(t_data *param, t_icmppacket *pkt, t_timer *t);
-
 //void				update_statistics(t_data *param, t_timer *timer);
 //void 				print_stats(t_data *param);
-
 //int					send_packet(t_data *param, int socket, t_icmppacket *pkt);
 //int					receive_packet(t_data *param, int socket);
-
-
-
-
-
-
-
 //void				pkt_setsequence(t_icmppacket *pkt, int sequence);
 //void				pkt_fix_checksum(t_icmppacket *pkts, void *pkt, size_t len);
-
 //void				sigint_handle(int signo);
 //void				sigalrm_handle(int signo);
-
-//void				ping_timer(int interval);
 //void				clear_timer(t_timer *t);
 //void				start_timer(t_timer *t);
 //void				stop_timer(t_timer *t);

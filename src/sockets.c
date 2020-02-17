@@ -14,51 +14,66 @@
 
 int32_t	createSocket(t_data *param)
 {
-	int clientsocket;
+	int 			clientsocket;
+	struct ifreq	if_bind;
 
 	if (param->options & OPT_IPV4)
 	{
-		if ((clientsocket = socket(AF_INET, SOCK_RAW, IPPROTO_RAW)) < 0)
-		{
-			ping_fatal("createSocket()", "Could not create raw ipv4 socket. Are you root?");
-			return (-1);
-		}
-		return (clientsocket);
-	}
-	if ((clientsocket = socket(AF_INET6, SOCK_RAW, IPPROTO_RAW)) < 0)
-	{
-		ping_fatal("createSocket()", "Could not create raw ipv6 socket. Are you root?");
-		return (-1);
-	}
-	return (clientsocket);
-}
-
-int8_t setSocketOptions(t_data *param, int socket)
-{
-		int32_t	on;
-		struct ifreq	if_bind;
-
-		on = 1;
+		if ((clientsocket = socket (AF_INET, SOCK_RAW, IPPROTO_ICMP)) < 0)
+  		{
+    		perror ("socket() failed ");
+    		exit (EXIT_FAILURE);
+ 		 }
 		memset(&if_bind, 0, sizeof(struct ifreq));
-		ft_strncpy(if_bind.ifr_name, (const char*)param->interface->ifa_name, IF_NAMESIZE);
-		if (setsockopt(socket, SOL_SOCKET, SO_BINDTODEVICE, (void *)&if_bind, sizeof(if_bind)) < 0)
+		ft_strncpy(if_bind.ifr_name, (const char*)param->interface->ifa_name,
+			IF_NAMESIZE);
+		if (ioctl (clientsocket, SIOCGIFINDEX, &if_bind) < 0)
+  			 perror ("ioctl() failed to find interface\n");
+		close(clientsocket);
+
+		if ((clientsocket = socket (AF_INET, SOCK_RAW, IPPROTO_ICMP)) < 0) {
+   			perror ("socket() failed ");
+    		exit (EXIT_FAILURE);
+  		}
+
+		if (setsockopt(clientsocket, IPPROTO_IP, IP_TTL, &(param->ttl), sizeof(uint8_t)) < 0)
 		{
-			ping_fatal("setsockopt", "failed to bind to device");
+			ping_fatal("setsockopt", "failed to configure ttl socket");
 			return (-1);
 		}
-		if (setsockopt(socket, IPPROTO_IP, IP_HDRINCL, &on, sizeof(on)) < 0)
+		if (setsockopt(clientsocket, IPPROTO_IP, IP_TOS, &(param->tos), sizeof(uint8_t)) < 0)
 		{
-			ping_fatal("setsockopt", "failed to configure socket");
+			ping_fatal("setsockopt", "failed to configure ttl socket");
 			return (-1);
 		}
 		if (param->options & OPT_SO_DEBUG)
 		{
-			if (setsockopt(socket, IPPROTO_IP, SO_DEBUG, &on, sizeof(int)) < 0)
+			int on = 1;
+			if (setsockopt(clientsocket, IPPROTO_IP, SO_DEBUG, &on, sizeof(int)) < 0)
 			{
 				ping_fatal("setsockopt", "failed to set SO_DEBUG flag.");
 				return (-1);
 			}
 		}
-//		setsockopt(socket, SOL_IP, SO_RCVTIMEO, (char*)&timeout, sizeof(timeout));
-		return (0);
+		struct timeval timeout;
+		timeout.tv_sec = 1;
+		timeout.tv_usec = 0;
+		if (setsockopt(clientsocket, SOL_IP, SO_SNDTIMEO, (char*)&timeout, sizeof(timeout)) < 0)
+			printf("could no set send timeout\n");
+		if (setsockopt(clientsocket, SOL_IP, SO_RCVTIMEO, (char*)&timeout, sizeof(timeout)) < 0)
+			printf("could no set recv timeout\n");
+
+		if (setsockopt (clientsocket, SOL_SOCKET, SO_BINDTODEVICE, &if_bind, sizeof (if_bind)) < 0)
+		{
+    		perror ("setsockopt() failed to bind to interface ");
+    		exit (EXIT_FAILURE);
+  		}	
+		return (clientsocket);
+	}
+	if ((clientsocket = socket(PF_INET6, SOCK_RAW, IPPROTO_RAW)) < 0)
+	{
+		ping_fatal("createSocket()", "Could not create raw ipv6 socket. Are you root?");
+		return (-1);
+	}
+	return (clientsocket);
 }

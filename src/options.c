@@ -14,18 +14,18 @@
  *	Possible options are:
  *	-4				IPv4 only
  *	-6				IPv6 Only
- *	-c <number>     (count)
- *	-d           	SO_DEBUG
- *	-i <number>		interval
- *	-I				interface
+ *	-c <number>     (count)			
+ *	-d           	SO_DEBUG		Impl.
+ *	-i <number>		interval		
+ *	-I				interface		
  *	-l <number>		preload
- *	-D				timestamp
- *	-h				Help
- *	-Q <tos>        Tos
+ *	-D				timestamp		
+ *	-h				Help			Impl.
+ *	-Q <tos>        Tos				Impl.
  *	-q				Quiet
  *	-v				Verbose
- *	-t <number>		TTL
- *	-s <number>		packetsize
+ *	-t <number>		TTL				Impl.
+ *	-s <number>		packetsize		Impl.
  *	-w <deadline>	deadline
  *	-W <timeout>	timeout
  */

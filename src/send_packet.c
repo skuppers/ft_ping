@@ -12,26 +12,45 @@
 
 #include "ft_ping.h"
 
+t_packetlist	*pktlstnew(uint8_t *packet, size_t size)
+{
+	t_packetlist	*pktlst;
+	struct timeval	*tv;
+
+	tv = (struct timeval*) ft_memalloc(sizeof(struct timeval));
+	gettimeofday(tv, NULL);
+	pktlst = ft_memalloc(sizeof(t_packetlist));
+	pktlst->data = packet;
+	pktlst->data_size = size;
+	pktlst->timestamp = tv;
+	return (pktlst);
+}
+
+void		register_request(t_runtime *runtime, uint8_t *packet, size_t size)
+{
+	t_list			*data;
+
+	data = ft_lstnew(pktlstnew(packet, size), sizeof(t_packetlist));
+	if (runtime->spacketlist_head == NULL)
+		runtime->spacketlist_head = data;
+	else
+		ft_lstadd(&runtime->spacketlist_head, data);
+}
+
 int8_t		send_packet(t_runtime *runtime, uint8_t *packet)
 {
-	uint16_t	packet_size;
-	int16_t send_bytes = 0;
-
-	if (runtime->param->options & OPT_IPV6)
-		packet_size = 40;// + datalen + icmpv6?;
-	else
-	packet_size = ntohs((((struct ipv4_hdr*)packet)->ip_len));
-	printf("Trying to send %u byte packet to socket %d\n", packet_size, runtime->socket);
-	if ((send_bytes = sendto(runtime->socket, packet, packet_size,
-				0, runtime->param->interface->ifa_addr,
-				sizeof(struct sockaddr))) == -1
-				|| send_bytes != packet_size)
+//TODO:	if (runtime->param->options & OPT_IPV6)
+	int16_t	sent_bytes;
+	size_t 	packet_size;
+	
+	packet_size = ICMP_HDRLEN + runtime->param->pkt_size;
+	if ((sent_bytes = sendto (runtime->socket, packet + IP4_HDRLEN, packet_size, 0,
+  		(struct sockaddr *) runtime->param->sin, sizeof (struct sockaddr))) < 0)
 	{
-		printf("Error sending packet. Sendto()\n");
-		printf("%s",strerror(errno));
-		return (FAILURE);
+    	perror ("sendto() failed ");
+    	exit (EXIT_FAILURE);
 	}
-	printf("Sent %u bytes\n", send_bytes);
-	//register_packet(); // add it to linked list
+	register_request(runtime, packet + IP4_HDRLEN, ICMP_HDRLEN);
+	alarm(1);
 	return (SUCCESS);
 }

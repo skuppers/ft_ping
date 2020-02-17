@@ -30,7 +30,6 @@ void	ping_fatal(const char *failed_here, const char *errbuff)
 
 static void	init_param(t_data *param)
 {
-		;
 		memset(param, 0, sizeof(struct s_data));
 		param->ttl = 255;
 		param->interval = 1.0;
@@ -41,6 +40,8 @@ static void	init_signals(t_signals *signals)
 {
 	memset(signals, 0, sizeof(struct s_signals));
 	g_signals = signals;
+	signal(SIGALRM, &sigalrm_handle);
+	signal(SIGINT, &sigint_handle);
 }
 
 int		main(int ac, char **av)
@@ -55,8 +56,9 @@ int		main(int ac, char **av)
 		parse_opt(ac, av, &param);
 		if (resolve_target(&param) < 0)
 			return (-1);
-		else {
-			printf("\nPING OPTIONS: "BYTE_TO_BIN_PATTERN,BYTE_TO_BIN(param.options));
+		else 
+		{
+/*			printf("\nPING OPTIONS: "BYTE_TO_BIN_PATTERN,BYTE_TO_BIN(param.options));
 			printf("\nTTL: 			%d\n", param.ttl);
 			printf("Count: 			%d\n", param.count);
 			printf("Packet size: 	%d\n", param.pkt_size);
@@ -68,20 +70,8 @@ int		main(int ac, char **av)
 			printf("Interface:		%s\n", param.interface->ifa_name);
 			printf("Host/FQDN: 		%s\n", param.fqdn);
 			printf("Host IP: 		%s\n\n", param.ipv4_str);
-		
+*/		
 			ft_ping(&param);
 		}
 		return (0);
 }
-
-//			for (struct ifaddrs *ifa = param.interfaces; ifa != NULL; ifa = ifa->ifa_next)
-//			{
-//				if(ifa->ifa_addr->sa_family == AF_INET)
-//					printf("Interface: %s -- %s\n",
-//					ifa->ifa_name,
-//					inet_ntoa(((struct sockaddr_in*)(ifa->ifa_addr))->sin_addr));
-//			}
-//		signal(SIGINT, sigint_handle);
-//		signal(SIGALRM, sigalrm_handle);
-//		print_resolve(&param);
-//		print_stats(&param);
