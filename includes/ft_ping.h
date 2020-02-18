@@ -122,6 +122,7 @@ typedef struct 		s_packetlist
 	void			*data;
 	uint32_t		data_size;
 	struct timeval	*timestamp;
+	double			rtt;
 }					t_packetlist;
 
 typedef struct      s_stats
@@ -132,16 +133,13 @@ typedef struct      s_stats
 	float			rtt_max;
 	float			rtt_avg;
 	float			std_deviation;
-
-//	float			*timings;
 }                   t_stats;
 
-//typedef struct		s_timer
-//{
-//	double			send_sec;
-//	double			recv_sec;
-//	double			rtt_sec;
-//}					t_timer;
+typedef struct		s_timer
+{
+	struct timeval	send;
+	struct timeval	recv;
+}					t_timer;
 
 typedef struct			s_runtime
 {
@@ -151,17 +149,23 @@ typedef struct			s_runtime
 	t_list				*rpacketlist_head;
 }						t_runtime;
 
+uint32_t	list_received(t_list *list_header);
 void	print_stats(t_runtime *param);
+void		update_statistics(t_runtime *rt, t_stats *stats);
 
-t_packetlist			*pktlstnew(uint8_t *packet, size_t size);
+//t_packetlist			*pktlstnew(uint8_t *packet, size_t size);
 uint16_t 				ip_checksum(void* vdata,size_t length);
 void					ping_timer(int interval);
+
+float					plot_timer(t_timer *timer);
+void	print_timeout(t_runtime *rt, uint8_t *packet);
 
 void					sigalrm_handle(int signo);
 void					sigint_handle(int signo);
 
-void					receive_packet(t_runtime *runtime, uint8_t *packet);
-int8_t					send_packet(t_runtime *rt, uint8_t *packet);
+void					receive_packet(t_runtime *runtime, uint8_t *packet, t_timer *tv);
+int8_t					send_packet(t_runtime *rt, uint8_t *packet, t_timer *tv);
+
 void					extract_ipaddr(const struct sockaddr *sa, char *ip, uint32_t maxlen);
 uint8_t					is_interface_valid(t_data *param, char *interface);
 uint8_t					select_dflt_interface(t_data *param);
@@ -179,7 +183,9 @@ void					setup_ipv4_header(t_runtime *rt, struct ipv4_hdr *hdr, uint16_t datalen
 //void					setup_ipv6_header(t_runtime *rt);
 void					setup_icmpv4_header(struct icmpv4_hdr *hdr, uint16_t seq);
 uint16_t				setup_message_body(t_data *param, char *data);
-void 					print_ping(t_data *param, uint8_t *pkt);
+
+void 					print_ping(t_data *param, uint8_t *pkt, t_timer *tm);
+
 void				print_usage(uint8_t exit);
 void 				print_resolve(t_data *param);
 //void				update_statistics(t_data *param, t_timer *timer);

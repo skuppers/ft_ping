@@ -12,22 +12,22 @@
 
 /*	Option parsing file.
  *	Possible options are:
- *	-4				IPv4 only
- *	-6				IPv6 Only
- *	-c <number>     (count)			
+ *	-4				IPv4 only		Impl.
+ *	-6				IPv6 Only		todo.
+ *	-c <number>     (count)			Impl.
  *	-d           	SO_DEBUG		Impl.
- *	-i <number>		interval		
- *	-I				interface		
- *	-l <number>		preload
- *	-D				timestamp		
+ *	-i <number>		interval		todo
+ *	-I				interface		todo
+ *	-l <number>		preload			todo.
+ *	-D				timestamp		Impl.
  *	-h				Help			Impl.
  *	-Q <tos>        Tos				Impl.
- *	-q				Quiet
- *	-v				Verbose
- *	-t <number>		TTL				Impl.
+ *	-q				Quiet			todo
+ *	-v				Verbose			todo
+ *	-t <number>		TTL				Buggy
  *	-s <number>		packetsize		Impl.
- *	-w <deadline>	deadline
- *	-W <timeout>	timeout
+ *	-w <deadline>	deadline		todo
+ *	-W <timeout>	timeout			todo
  */
 
 #include "ft_ping.h"

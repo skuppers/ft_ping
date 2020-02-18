@@ -58,7 +58,7 @@ int		main(int ac, char **av)
 			return (-1);
 		else 
 		{
-/*			printf("\nPING OPTIONS: "BYTE_TO_BIN_PATTERN,BYTE_TO_BIN(param.options));
+			printf("\nPING OPTIONS: "BYTE_TO_BIN_PATTERN,BYTE_TO_BIN(param.options));
 			printf("\nTTL: 			%d\n", param.ttl);
 			printf("Count: 			%d\n", param.count);
 			printf("Packet size: 	%d\n", param.pkt_size);
@@ -70,7 +70,7 @@ int		main(int ac, char **av)
 			printf("Interface:		%s\n", param.interface->ifa_name);
 			printf("Host/FQDN: 		%s\n", param.fqdn);
 			printf("Host IP: 		%s\n\n", param.ipv4_str);
-*/		
+		
 			ft_ping(&param);
 		}
 		return (0);

@@ -21,35 +21,6 @@ void	store_timings(t_timer *timer, float *timings, int sequence)
 
 
 
-void	ping_while(t_data *param, int socket, t_timer *timer)
-{
-	uint32_t		sequence;
-	t_icmppacket	*icmp_pkt;
-
-	sequence = 1;
-	while (param->sigint == 0 && sequence <= param->count)
-	{
-		icmp_pkt = forge_packet(param);
-		pkt_setsequence(icmp_pkt, sequence);
-		pkt_fix_checksum(icmp_pkt, icmp_pkt, HDR_SZ + param->pkt_size);
-
-		clear_timer(timer);
-		start_timer(timer);
-		send_packet(param, socket, icmp_pkt);
-
-		if (receive_packet(param, socket) != -1)
-		{
-			stop_timer(timer);
-			store_timings(timer, param->timings, param->pkt_recvd);
-			print_ping(param, icmp_pkt, timer);
-			update_statistics(param, timer);
-		}
-		else
-			printf("Timeout for icmp sequence %d.\n", sequence);
-		++sequence;
-		ping_timer(1);
-	}
-}
 
 
 void	ping_loop(t_data *param, int socket, t_timer *timer)
@@ -95,10 +66,31 @@ void	ping_loop(t_data *param, int socket, t_timer *timer)
 	}
 }*/
 
+
+static void	ping_while(t_runtime *runtime)
+{
+	uint8_t		*packet;
+	uint16_t	sequence;
+	t_timer		timer;
+
+	sequence = 1;
+	while (g_signals->sigint == 0 && sequence <= runtime->param->count)
+	{
+		packet = forge_packet(runtime, packet, sequence);
+		if (send_packet(runtime, packet, &timer) == SUCCESS) 
+			receive_packet(runtime, packet, &timer);
+		++sequence;
+		if (g_signals->sigalrm != 1)
+			ping_timer(1);
+		g_signals->sigalrm = 0;
+	}
+}
+
 static void		ping_loop(t_runtime *runtime)
 {
 	uint8_t		*packet;
 	uint16_t	sequence;
+	t_timer		timer;
 
 	sequence = 1;
 	while (g_signals->sigint == 0)
@@ -126,8 +118,9 @@ static void		ping_loop(t_runtime *runtime)
 		printf("icmp->code    :\t%u\n", ((struct icmpv4_hdr *)packet + IP4_HDRLEN)->icmp_code);
 		printf(" ----------------- \n\n");
 */		
-		if (send_packet(runtime, packet) == SUCCESS) 
-			receive_packet(runtime, packet); // do a pointer jutsu here for packet
+		ft_memset(&timer, 0, sizeof(t_timer));
+		if (send_packet(runtime, packet, &timer) == SUCCESS) 
+			receive_packet(runtime, packet, &timer); // do a pointer jutsu here for packet
 		++sequence;
 		if (g_signals->sigalrm != 1)
 			ping_timer(1);
@@ -151,20 +144,15 @@ int32_t ft_ping(t_data *param)
 
 	socket = createSocket(param);
 	setup_runtime(&runtime, param, socket);
-
 	print_resolve(param);
 
 //	if (param->options & OPT_PRELOAD)
 //		ping_preload(runtime);
 
-//	if (param->count > 0)
-//		ping_while(runtime);
-
-//	else 
-	if (param->count == 0)
+	if (param->count > 0)
+		ping_while(&runtime);
+	else if (param->count == 0)
 		ping_loop(&runtime);
-
-//Plot statistics and print them // use t_stat here
 	print_stats(&runtime);
 	return (0);
 }

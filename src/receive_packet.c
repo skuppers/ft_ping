@@ -12,12 +12,24 @@
 
 #include "ft_ping.h"
 
-void		register_response(t_runtime *runtime, uint8_t *packet, size_t size)
+t_packetlist	*pktlstnew(uint8_t *packet, size_t size, t_timer *timer)
+{
+	t_packetlist	*pktlst;
+
+	pktlst = ft_memalloc(sizeof(t_packetlist));
+	pktlst->data = packet;
+	pktlst->data_size = size;
+	pktlst->rtt = plot_timer(timer);
+	return (pktlst);
+}
+
+static void		register_response(t_runtime *runtime, uint8_t *packet, ssize_t size,
+								t_timer *timer)
 {
 	t_list			*data;
 
-	if (packet != NULL)
-		data = ft_lstnew(pktlstnew(packet, size), sizeof(t_packetlist));
+	if (packet != NULL && size > 0)
+		data = ft_lstnew(pktlstnew(packet, (size_t) size, timer), sizeof(t_packetlist));
 	else
 		data = ft_lstnew(NULL, 0);
 	if (runtime->rpacketlist_head == NULL)
@@ -26,10 +38,10 @@ void		register_response(t_runtime *runtime, uint8_t *packet, size_t size)
 		ft_lstadd(&runtime->rpacketlist_head, data);
 }
 
-void	receive_packet(t_runtime *runtime, uint8_t *pkt)
+void	receive_packet(t_runtime *runtime, uint8_t *pkt, t_timer *tm)
 {
 	int32_t	recvd_bytes;
-	
+
 	recvd_bytes = -1;
 	pkt = (uint8_t *)ft_memalloc(1500);
 	while (g_signals->sigalrm == 0 && recvd_bytes <= 0)
@@ -39,13 +51,15 @@ void	receive_packet(t_runtime *runtime, uint8_t *pkt)
 	alarm(0);
 	if (recvd_bytes <= 0)
 	{
-		write(1, "timeout\n",8);// Handle timeout
-		register_response(runtime, NULL, 0);
+		print_timeout(runtime, pkt);
+		register_response(runtime, NULL, 0, tm);
 	}
 	else
 	{
-		print_ping(runtime->param, pkt);
-		register_response(runtime, pkt, IP4_HDRLEN + ICMP_HDRLEN);
+		if (gettimeofday(&(tm->recv), NULL) < 0)
+			printf("Error getting time of day\n");
+		print_ping(runtime->param, pkt, tm);
+		register_response(runtime, pkt, recvd_bytes, tm);
 	}
 }
 /*

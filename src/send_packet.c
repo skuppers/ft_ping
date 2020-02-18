@@ -12,20 +12,8 @@
 
 #include "ft_ping.h"
 
-t_packetlist	*pktlstnew(uint8_t *packet, size_t size)
-{
-	t_packetlist	*pktlst;
-	struct timeval	*tv;
 
-	tv = (struct timeval*) ft_memalloc(sizeof(struct timeval));
-	gettimeofday(tv, NULL);
-	pktlst = ft_memalloc(sizeof(t_packetlist));
-	pktlst->data = packet;
-	pktlst->data_size = size;
-	pktlst->timestamp = tv;
-	return (pktlst);
-}
-
+/*
 void		register_request(t_runtime *runtime, uint8_t *packet, size_t size)
 {
 	t_list			*data;
@@ -35,9 +23,9 @@ void		register_request(t_runtime *runtime, uint8_t *packet, size_t size)
 		runtime->spacketlist_head = data;
 	else
 		ft_lstadd(&runtime->spacketlist_head, data);
-}
+}*/
 
-int8_t		send_packet(t_runtime *runtime, uint8_t *packet)
+int8_t		send_packet(t_runtime *runtime, uint8_t *packet, t_timer *tv)
 {
 //TODO:	if (runtime->param->options & OPT_IPV6)
 	int16_t	sent_bytes;
@@ -50,7 +38,11 @@ int8_t		send_packet(t_runtime *runtime, uint8_t *packet)
     	perror ("sendto() failed ");
     	exit (EXIT_FAILURE);
 	}
-	register_request(runtime, packet + IP4_HDRLEN, ICMP_HDRLEN);
+	if (gettimeofday(&(tv->send), NULL) < 0)
+		printf("Error getting timeofday()\n");
+//	printf("*[%ld:%ld]", tv->send.tv_sec, tv->send.tv_usec);
+	//fflush(stdout);
+//	register_request(runtime, packet + IP4_HDRLEN, ICMP_HDRLEN);
 	alarm(1);
 	return (SUCCESS);
 }

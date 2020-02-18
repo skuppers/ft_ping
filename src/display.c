@@ -18,55 +18,53 @@ void	print_resolve(t_data *param)
 						param->pkt_size, param->pkt_size + IP4_HDRLEN + ICMP_HDRLEN);
 }
 
-void	print_ping(t_data *param, uint8_t *pkt)
+void	print_timeout(t_runtime *rt, uint8_t *packet)
 {
+	(void)packet;
+	(void)rt;
+	printf("Timeout\n");
+}
+
+void	print_ping(t_data *param, uint8_t *pkt, t_timer *tm)
+{
+	char				*src;
 	struct ipv4_hdr		*ip;
 	struct icmpv4_hdr	*icmp;
+	struct hostent 		*hostdns;
 
 	ip = (struct ipv4_hdr *)pkt;
 	icmp = (struct icmpv4_hdr *)(pkt + sizeof(struct ipv4_hdr));
-	char *src = ft_strnew(16);
+	src = ft_strnew(16);
 	inet_ntop(AF_INET, &ip->ip_src, src, 16);
+	hostdns = gethostbyaddr(&(param->sin->sin_addr), sizeof(param->sin->sin_addr), AF_INET);
+
 	if (param->options & OPT_TIMESTAMP)
-			printf("[timestamp] ");
-	printf("%u bytes from %s: icmp_seq=%u ttl=%d time=0.420ms\n",
-					ntohs(ip->ip_len), src,
-					ntohs(icmp->icmp_sequence),
-					ip->ip_ttl);
-}
-
-/*
-void	get_stddev(t_data *param)
-{
-	int		iterator;
-	float	dev;
-
-	dev = 0;
-	iterator = 0;
-	while (param->timings[iterator] != 0)
 	{
-		dev = (float)(param->timings[iterator] - param->rtt_avg);
-		if (dev < 0)
-				dev = -dev;
-		param->std_deviation += dev;
-		++iterator;
+			printf("[%f] ", (double)tm->recv.tv_sec +(double)(0.001f * (double)tm->recv.tv_usec));
 	}
-	param->std_deviation = (float)(param->std_deviation / param->pkt_recvd);
+	printf("%u bytes from %s(%s): icmp_seq=%u ttl=%d time=%.3fms\n",
+					ntohs(ip->ip_len),
+					(hostdns == NULL) ? src : hostdns->h_name,
+					src,
+					ntohs(icmp->icmp_sequence),
+					ip->ip_ttl,
+					plot_timer(tm));
 }
-*/
+
 void	print_stats(t_runtime *rt)
 {
+	t_stats		stats;
+
+	ft_memset(&stats, 0, sizeof(t_stats));
+	update_statistics(rt, &stats);
 	printf("\n--- %s ping statistics ---\n", rt->param->fqdn);
-
-	printf("%ld packets transmitted, %ld received, %.2f%% packet loss\n",
-			ft_lstlen(rt->spacketlist_head), ft_lstlen(rt->rpacketlist_head),
-			(100 - ((double)(ft_lstlen(rt->spacketlist_head) / ft_lstlen(rt->rpacketlist_head)) * 100)));
-
-//	param->rtt_avg = (param->rtt_avg / param->pkt_recvd);
-//	get_stddev(param);
-	printf("rtt min/avg/max/mdev = %.3f/%.3f/%.3f/%.3f ms\n",0.0,0.0,0.0,0.0);
-				/*	param->rtt_min,
-					param->rtt_avg,
-					param->rtt_max,
-					param->std_deviation); */
+	printf("%d packets transmitted, %d received, %.2f%% packet loss\n",
+			stats.pkt_send,
+			stats.pkt_recvd,
+			100 - ((double)stats.pkt_recvd / (double)stats.pkt_send * 100));
+	printf("rtt min/avg/max/mdev = %.3f/%.3f/%.3f/%.3f ms\n",
+					stats.rtt_min,
+					stats.rtt_avg,
+					stats.rtt_max,
+					stats.std_deviation);
 }

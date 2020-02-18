@@ -58,88 +58,72 @@ void		ping_timer(int interval)
 	}
 }
 
-void	plot_stats(t_runtime *rt)
+float	plot_timer(t_timer *timer)
 {
-	for (t_list *slst = rt->spacketlist_head; slst != NULL; slst = slst->next)
+	double	send = 0;
+	double	recv = 0;
+
+	send = ((double)timer->send.tv_sec) + ((double)(0.000001f*(double)timer->send.tv_usec));
+	recv =  ((double)timer->recv.tv_sec) + ((double)(0.000001f * (double)timer->recv.tv_usec));
+	return ((float)(recv - send) * 1000.0f);
+}
+
+uint32_t	list_received(t_list *list_header)
+{
+	uint32_t	len;
+	t_list		*listhdr;
+
+	len = 0;
+	listhdr = list_header;
+	while (listhdr != NULL)
 	{
-		for (t_list *rlst = rt->rpacketlist_head; rlst != NULL; rlst = rlst->next)
+		if (listhdr->data != NULL)
+			len++;
+		listhdr = listhdr->next;
+	}
+	return (len);
+}
+
+static void	get_stddev(t_runtime *rt, t_stats *stats)
+{
+	t_list	*ptr;
+	float	dev;
+
+	dev = 0;
+	ptr = rt->rpacketlist_head;
+	while (ptr != NULL)
+	{
+		if (ptr->data != NULL)
 		{
-			if (rlst->data == NULL)
-			{
-				//lst = lst->nest;
-				continue;
-			}
-		//	t_packetlist *pkt = (t_packetlist*)slst->data;
-	//		uint16_t seq = ((struct icmpv4_hdr *)pkt->data + ICMP_HDRLEN)->icmp_sequence;
-			
-
-
-		//	t_packetlist *pkt = (t_packetlist*)rlst->data;
-	//		uint16_t seq = ((struct icmpv4_hdr *)pkt->data + ICMP_HDRLEN)->icmp_sequence;
-
-			//printf("icmp sequence");
+			dev = (float)((((t_packetlist *)ptr->data)->rtt) - stats->rtt_avg);
+			if (dev < 0)
+				dev = -dev;
+			stats->std_deviation += dev;
 		}
+		ptr = ptr->next;
 	}
-
+	stats->std_deviation = (float)(stats->std_deviation / stats->pkt_recvd);
 }
 
-/*
-void		update_statistics(t_data *param, t_timer *timer)
+void		update_statistics(t_runtime *rt, t_stats *stats)
 {
-	if (param->rtt_min == 0 || timer->rtt_sec < param->rtt_min)
-		param->rtt_min = timer->rtt_sec;
-	if (param->rtt_max == 0 || timer->rtt_sec > param->rtt_max)
-		param->rtt_max = timer->rtt_sec;
-	param->rtt_avg += (float)timer->rtt_sec;
-}
+	t_list	*ptr;
 
-void		clear_timer(t_timer *timer)
-{
-	timer->send_sec = 0;
-	timer->recv_sec = 0;
-	timer->rtt_sec = 0;
-}
-
-void		start_timer(t_timer *t)
-{
-	struct timeval	start;
-
-	if (gettimeofday(&start, NULL) != 0)
+	ptr = rt->rpacketlist_head;
+	stats->pkt_send = ft_lstlen(ptr);
+	stats->pkt_recvd = list_received(ptr);
+	while (ptr != NULL)
 	{
-		printf("Fatal error getting time.\n");
-		exit(42);
+		if (ptr->data_size != 0)
+		{
+			if (stats->rtt_min == 0 || ((t_packetlist *)ptr->data)->rtt < stats->rtt_min)
+				stats->rtt_min = ((t_packetlist *)ptr->data)->rtt;
+			if (stats->rtt_max == 0 || ((t_packetlist *)ptr->data)->rtt > stats->rtt_max)
+				stats->rtt_max = ((t_packetlist *)ptr->data)->rtt;
+			stats->rtt_avg += (float)(((t_packetlist *)ptr->data)->rtt);
+		}
+		ptr = ptr->next;
 	}
-	t->send_sec = start.tv_sec + (double)(0.001f * (double)start.tv_usec);
+	stats->rtt_avg = stats->rtt_avg / stats->pkt_recvd;
+	get_stddev(rt, stats);
 }
-
-void		stop_timer(t_timer *t)
-{
-	struct timeval	stop;
-
-	if (gettimeofday(&stop, NULL) != 0)
-	{
-		printf("Fatal error getting time.\n");
-		exit(42);
-	}
-	t->recv_sec = stop.tv_sec + (double)(0.001f * (double)stop.tv_usec);
-	t->rtt_sec = (double)(t->recv_sec - t->send_sec);
-}
-
-void		ping_timer(int interval)
-{
-	struct timeval tv_current;
-	struct timeval tv_next;
-
-	if (gettimeofday(&tv_current, NULL) < 0)
-	        printf(" --- Fatal Error - Kernel Panic ---\n");
-	tv_next = tv_current;
-	tv_next.tv_sec += interval;
-	while ((tv_current.tv_sec < tv_next.tv_sec ||
-			tv_current.tv_usec < tv_next.tv_usec) &&
-			g_param->sigint == 0)
-	{
-		if (gettimeofday(&tv_current, NULL) < 0)
-		    printf(" --- Fatal Error - Kernel Panic ---\n");
-	}
-}
-*/

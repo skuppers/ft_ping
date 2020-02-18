@@ -31,7 +31,7 @@ INC=includes/
 LIB=libft/
 
 #OBJS = $(patsubst %.c, $(OPATH)%.o, $(SRC)))))
-CC=gcc
+CC=clang
 CFLAGS= -g -Wall -Wextra #-fsanitize=address #-Werror
 
 all: $(NAME)
