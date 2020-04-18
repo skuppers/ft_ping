@@ -23,27 +23,6 @@
 
 #include "ft_ping.h"
 
-void	ping_fatal(const char *failed_here, const char *errbuff)
-{
-	printf("Fatal error in %s: %s\n", failed_here, errbuff);
-}
-
-static void	init_param(t_data *param)
-{
-		memset(param, 0, sizeof(struct s_data));
-		param->ttl = 255;
-		param->interval = 1.0;
-		param->pkt_size = 36;
-}
-
-static void	init_signals(t_signals *signals)
-{
-	memset(signals, 0, sizeof(struct s_signals));
-	g_signals = signals;
-	signal(SIGALRM, &sigalrm_handle);
-	signal(SIGINT, &sigint_handle);
-}
-
 int		main(int ac, char **av)
 {
 		t_data		param;
@@ -51,14 +30,23 @@ int		main(int ac, char **av)
 
 		if (ac < 2)
 			print_usage(42);
+
 		init_param(&param);
 		init_signals(&signals);
+
+// look here for corrections
 		parse_opt(ac, av, &param);
+
+		if (param.fqdn == NULL)
+			print_usage(42);
+
+// check for configured interfaces but no inet access
+// also for special ips: broadcast, localhost, etc
 		if (resolve_target(&param) < 0)
 			return (-1);
 		else 
 		{
-			printf("\nPING OPTIONS: "BYTE_TO_BIN_PATTERN,BYTE_TO_BIN(param.options));
+/*			printf("\nPING OPTIONS: "BYTE_TO_BIN_PATTERN,BYTE_TO_BIN(param.options));
 			printf("\nTTL: 			%d\n", param.ttl);
 			printf("Count: 			%d\n", param.count);
 			printf("Packet size: 	%d\n", param.pkt_size);
@@ -70,7 +58,7 @@ int		main(int ac, char **av)
 			printf("Interface:		%s\n", param.interface->ifa_name);
 			printf("Host/FQDN: 		%s\n", param.fqdn);
 			printf("Host IP: 		%s\n\n", param.ipv4_str);
-		
+*/	
 			ft_ping(&param);
 		}
 		return (0);

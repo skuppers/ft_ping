@@ -13,7 +13,7 @@
 NAME=ft_ping
 
 SRC=src/main.c\
-	src/fqdn.c\
+	src/resolve.c\
 	src/options.c\
 	src/interface.c\
 	src/ft_ping.c\
@@ -24,15 +24,20 @@ SRC=src/main.c\
 	src/send_packet.c\
 	src/checksum.c\
 	src/receive_packet.c\
-	src/display.c
+	src/display.c\
+	src/init.c\
+	src/error.c\
+	src/signals.c\
+	src/usage.c\
+	src/statistics.c
 
 INC=includes/
 
 LIB=libft/
 
 #OBJS = $(patsubst %.c, $(OPATH)%.o, $(SRC)))))
-CC=clang
-CFLAGS= -g -Wall -Wextra #-fsanitize=address #-Werror
+CC=gcc
+CFLAGS= -Wall -Wextra -fsanitize=address -g #-Werror
 
 all: $(NAME)
 

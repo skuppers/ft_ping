@@ -13,33 +13,29 @@
 #include "ft_ping.h"
 
 
-void	prepare_hints(struct addrinfo *hints, uint32_t family)
+static void	prepare_hints(struct addrinfo *hints)
 {
 	memset(hints, 0, sizeof(struct addrinfo));
-	hints->ai_family = family;
-	hints->ai_socktype = SOCK_STREAM;
-//	hints->ai_flags = hints->ai_flags | AI_ADDRCONFIG;//AI_CANONNAME;;
+	hints->ai_family = AF_INET;
+	hints->ai_socktype = 0;
+	hints->ai_flags = AI_V4MAPPED | AI_ADDRCONFIG;
 }
 
-uint32_t	guess_format(t_data *param)
+char 		*reverse_target(char *src_addr)
 {
-	if (0)
-	{
-		param->options |= OPT_IPV4;
-		if (param->interface == NULL)
-			select_dflt_interface(param);
-		return (AF_INET);
-	}
-	else
-	{
-		param->options |= OPT_IPV4;	
-		if (param->interface == NULL)
-			select_dflt_interface(param);
-		return (AF_INET);
-	}
+	struct sockaddr_in	sa;
+	char 				hostname[256];
+	
+    memset(&sa, 0, sizeof sa);
+	sa.sin_family = AF_INET;
+  	inet_pton(AF_INET, src_addr, &sa.sin_addr);
+	if (getnameinfo((struct sockaddr*)&sa, sizeof(sa),
+                    hostname, sizeof(hostname),
+                    NULL, 0, NI_NAMEREQD))
+		return (NULL);
+	return (ft_strdup(hostname));
 }
 
-// Add support for ipv6 here
 int32_t		resolve_target(t_data *param)
 {
 	struct addrinfo		hints;
@@ -47,22 +43,39 @@ int32_t		resolve_target(t_data *param)
 	struct in_addr		*iadr;
 	char				buffer[INET_ADDRSTRLEN];
 
-	result = 0;
-	if (param->fqdn == NULL)
-		return (-1);
-	prepare_hints(&hints, guess_format(param));
-	if ((getaddrinfo(param->fqdn, NULL, &hints, &result)) != 0)
+	
+// check for configured interfaces but no inet access
+	if  (ft_strequ(param->fqdn, "255.255.255.255"))
 	{
-		ping_fatal("getaddrinfo", "Could not resolve hostname");
+		printf("ft_ping: Do you want to ping broadcast? sorry that's not possible.\n");
 		return (-1);
 	}
+
+	if (param->interface == NULL)
+		if (select_dflt_interface(param) != 0)
+			return (-1);
+
+	prepare_hints(&hints);
+
+
+	result = 0;
+	if ((getaddrinfo(param->fqdn, NULL, &hints, &result)) != 0)
+	{
+		printf("ft_ping: %s: Temporary failure in name resolution\n",
+			param->fqdn);
+		free(param->interface);
+		return (-1);
+	}
+
 	param->sin = ((struct sockaddr_in*)result->ai_addr);
 	iadr = &(((struct sockaddr_in*)result->ai_addr)->sin_addr);
+
 	if (inet_ntop(AF_INET, iadr, buffer, INET_ADDRSTRLEN) == NULL)
 	{
 		ping_fatal("inet_ntop", "undefined");
 		return (-1);
 	}
+	freeaddrinfo(result);
 	param->ipv4_str = ft_strdup(buffer);
 	return (0);
 }

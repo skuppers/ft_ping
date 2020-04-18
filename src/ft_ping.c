@@ -66,6 +66,13 @@ void	ping_loop(t_data *param, int socket, t_timer *timer)
 	}
 }*/
 
+void	setup_runtime(t_runtime *runtime, t_data *param, int socket)
+{
+	memset(runtime, 0, sizeof(struct s_runtime));
+	runtime->param = param;
+	runtime->socket = socket;
+	runtime->rpacketlist_head = NULL;
+}
 
 static void	ping_while(t_runtime *runtime)
 {
@@ -77,27 +84,8 @@ static void	ping_while(t_runtime *runtime)
 	while (g_signals->sigint == 0 && sequence <= runtime->param->count)
 	{
 		packet = forge_packet(runtime, packet, sequence);
-		if (send_packet(runtime, packet, &timer) == SUCCESS) 
-			receive_packet(runtime, packet, &timer);
-		++sequence;
-		if (g_signals->sigalrm != 1)
-			ping_timer(1);
-		g_signals->sigalrm = 0;
-	}
-}
 
-static void		ping_loop(t_runtime *runtime)
-{
-	uint8_t		*packet;
-	uint16_t	sequence;
-	t_timer		timer;
-
-	sequence = 1;
-	while (g_signals->sigint == 0)
-	{
-		packet = forge_packet(runtime, packet, sequence);
-		
-/*		printf("Forged a %u bytes ipv4 packet\n", ntohs(((struct ipv4_hdr *)packet)->ip_len));
+/*	printf("Forged a %u bytes ipv4 packet\n", ntohs(((struct ipv4_hdr *)packet)->ip_len));
 		printf(" ----------------- \n");
 		printf("hdr->hdr_len:\t%u\n", ((struct ipv4_hdr *)packet)->ip_header_length);
 		printf("hdr->version:\t%u\n", ((struct ipv4_hdr *)packet)->ip_version);
@@ -116,25 +104,39 @@ static void		ping_loop(t_runtime *runtime)
 		printf(" ----------------- \n");
 		printf("icmp->type     :\t%u\n", ((struct icmpv4_hdr *)packet + IP4_HDRLEN)->icmp_type);
 		printf("icmp->code    :\t%u\n", ((struct icmpv4_hdr *)packet + IP4_HDRLEN)->icmp_code);
-		printf(" ----------------- \n\n");
-*/		
-		ft_memset(&timer, 0, sizeof(t_timer));
+	printf(" ----------------- \n\n");
+*/
+
 		if (send_packet(runtime, packet, &timer) == SUCCESS) 
-			receive_packet(runtime, packet, &timer); // do a pointer jutsu here for packet
+			receive_packet(runtime, packet, &timer, sequence);
+		
 		++sequence;
+
 		if (g_signals->sigalrm != 1)
-			ping_timer(1);
+			ping_timer(runtime->param->interval);
+
 		g_signals->sigalrm = 0;
 	}
 }
 
-void	setup_runtime(t_runtime *runtime, t_data *param, int socket)
+static void		ping_loop(t_runtime *runtime)
 {
-	memset(runtime, 0, sizeof(struct s_runtime));
-	runtime->param = param;
-	runtime->socket = socket;
-	runtime->spacketlist_head = NULL;
-	runtime->rpacketlist_head = NULL;
+	uint8_t		*packet;
+	uint16_t	sequence;
+	t_timer		timer;
+
+	sequence = 1;
+	while (g_signals->sigint == 0)
+	{
+		packet = forge_packet(runtime, packet, sequence);
+		ft_memset(&timer, 0, sizeof(t_timer));
+		if (send_packet(runtime, packet, &timer) == SUCCESS) 
+			receive_packet(runtime, packet, &timer, sequence); // do a pointer jutsu here for packet
+		++sequence;
+		if (g_signals->sigalrm != 1)
+			ping_timer(runtime->param->interval);
+		g_signals->sigalrm = 0;
+	}
 }
 
 int32_t ft_ping(t_data *param)
@@ -142,17 +144,21 @@ int32_t ft_ping(t_data *param)
 	int				socket;
 	t_runtime		runtime;
 
-	socket = createSocket(param);
+	if ((socket = createSocket(param)) < 0)
+		return (-1);
 	setup_runtime(&runtime, param, socket);
 	print_resolve(param);
 
-//	if (param->options & OPT_PRELOAD)
-//		ping_preload(runtime);
-
 	if (param->count > 0)
 		ping_while(&runtime);
+	
 	else if (param->count == 0)
 		ping_loop(&runtime);
+
 	print_stats(&runtime);
+
+	free(runtime.param->interface);
+	ft_strdel(&param->ipv4_str);
+	
 	return (0);
 }

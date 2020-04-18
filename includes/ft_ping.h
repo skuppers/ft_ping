@@ -42,10 +42,7 @@
 #define OPT_SO_DEBUG	0x0004 // -d
 #define OPT_TIMESTAMP	0x0008 // -D
 
-#define OPT_IPV4		0x0010 // -4
-#define OPT_IPV6		0x0020 // -6
 #define OPT_PRELOAD		0x0040 // -l <number>
-
 #define OPT_COUNT		0x0100 //-c <number
 #define OPT_PKTSZ		0x0200 //-s <pkt-size>
 
@@ -57,9 +54,10 @@
 //#define OPT_TIMEOUT
 //#define OPT_INTERFACE
 
-#define BASE_TTL		64
+#define BASE_TTL		255
 #define IP4_HDRLEN		20
 #define ICMP_HDRLEN		8
+#define MTU				1500
 
 typedef struct      s_signals
 {
@@ -73,7 +71,7 @@ typedef struct			s_data
 {
 	uint16_t			options;
 	unsigned int		count;
-	float				interval;
+	uint32_t			interval;
 	uint16_t			preload;
 	uint16_t			pkt_size;
 	uint8_t				tos;
@@ -86,7 +84,7 @@ typedef struct			s_data
 	struct ifaddrs		*interface;
 }						t_data;
 
-struct				ipv4_hdr //ipv4_hdr
+struct				ipv4_hdr
 {
 #if __BYTE_ORDER == __LITTLE_ENDIAN
 	unsigned char	ip_header_length:4;
@@ -117,18 +115,19 @@ struct				icmpv4_hdr
 	uint16_t	icmp_sequence;
 };
 
-typedef struct 		s_packetlist
+typedef struct 		s_packetdata
 {
 	void			*data;
 	uint32_t		data_size;
 	struct timeval	*timestamp;
 	double			rtt;
-}					t_packetlist;
+}					t_packetdata;
 
 typedef struct      s_stats
 {
     uint32_t		pkt_send;
 	uint32_t		pkt_recvd;
+	uint16_t		icmp_errors;
 	float			rtt_min;
 	float			rtt_max;
 	float			rtt_avg;
@@ -145,25 +144,37 @@ typedef struct			s_runtime
 {
 	int					socket;
 	t_data				*param;
-	t_list				*spacketlist_head;
 	t_list				*rpacketlist_head;
 }						t_runtime;
 
-uint32_t	list_received(t_list *list_header);
-void	print_stats(t_runtime *param);
-void		update_statistics(t_runtime *rt, t_stats *stats);
+void	del_metadata(void *metadata);
+void	print_help(uint8_t exits);
 
-//t_packetlist			*pktlstnew(uint8_t *packet, size_t size);
+char	*reverse_target(char *src_addr);
+
+void		print_ttl_exceeded(uint8_t *pkt, uint16_t sequence);
+void		print_unreachable(uint8_t *pkt, uint16_t sequence);
+void 		print_unknown(uint8_t *pkt, uint16_t sequence);
+
+void					init_param(t_data *param);
+void					init_signals(t_signals *signals);
+
+
+uint32_t		list_received(t_list *list_header);
+void			print_stats(t_runtime *param);
+void			update_statistics(t_runtime *rt, t_stats *stats);
+
+//t_packetdata			*pktlstnew(uint8_t *packet, size_t size);
 uint16_t 				ip_checksum(void* vdata,size_t length);
 void					ping_timer(int interval);
 
 float					plot_timer(t_timer *timer);
-void	print_timeout(t_runtime *rt, uint8_t *packet);
+void					print_timeout(t_runtime *rt, uint8_t *packet, uint16_t sequence);
 
 void					sigalrm_handle(int signo);
 void					sigint_handle(int signo);
 
-void					receive_packet(t_runtime *runtime, uint8_t *packet, t_timer *tv);
+void					receive_packet(t_runtime *runtime, uint8_t *packet, t_timer *tv, uint16_t seq);
 int8_t					send_packet(t_runtime *rt, uint8_t *packet, t_timer *tv);
 
 void					extract_ipaddr(const struct sockaddr *sa, char *ip, uint32_t maxlen);
@@ -179,12 +190,11 @@ int32_t					parse_opt(int ac, char **av, t_data *param);
 int32_t					createSocket(t_data *param);
 int8_t					setSocketOptions(t_data *param, int socket);
 uint8_t					*forge_packet(t_runtime *rt, uint8_t *pkt, uint16_t seq);
-void					setup_ipv4_header(t_runtime *rt, struct ipv4_hdr *hdr, uint16_t datalen);
-//void					setup_ipv6_header(t_runtime *rt);
+//void					setup_ipv4_header(t_runtime *rt, struct ipv4_hdr *hdr, uint16_t datalen);
 void					setup_icmpv4_header(struct icmpv4_hdr *hdr, uint16_t seq);
 uint16_t				setup_message_body(t_data *param, char *data);
 
-void 					print_ping(t_data *param, uint8_t *pkt, t_timer *tm);
+void 					print_ping(t_data *param, uint8_t *pkt, t_timer *tm, uint16_t sequence);
 
 void				print_usage(uint8_t exit);
 void 				print_resolve(t_data *param);

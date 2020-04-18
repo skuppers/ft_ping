@@ -12,24 +12,32 @@
 
 #include "ft_ping.h"
 
-t_packetlist	*pktlstnew(uint8_t *packet, size_t size, t_timer *timer)
+static t_packetdata	*pktdatanew(uint8_t *packet, size_t size, t_timer *timer)
 {
-	t_packetlist	*pktlst;
+	t_packetdata	*pktdata;
 
-	pktlst = ft_memalloc(sizeof(t_packetlist));
-	pktlst->data = packet;
-	pktlst->data_size = size;
-	pktlst->rtt = plot_timer(timer);
-	return (pktlst);
+	pktdata = ft_memalloc(sizeof(t_packetdata));
+	pktdata->data = packet;
+	pktdata->data_size = size;
+	if (timer == NULL)
+		pktdata->rtt = -42.0;
+	else
+		pktdata->rtt = plot_timer(timer);
+	return (pktdata);
 }
 
 static void		register_response(t_runtime *runtime, uint8_t *packet, ssize_t size,
 								t_timer *timer)
 {
 	t_list			*data;
+	t_packetdata	*packetdata;
 
 	if (packet != NULL && size > 0)
-		data = ft_lstnew(pktlstnew(packet, (size_t) size, timer), sizeof(t_packetlist));
+	{
+		packetdata = pktdatanew(packet, (size_t) size, timer);
+		data = ft_lstnew(packetdata, sizeof(t_packetdata));
+		free(packetdata);
+	}
 	else
 		data = ft_lstnew(NULL, 0);
 	if (runtime->rpacketlist_head == NULL)
@@ -38,36 +46,9 @@ static void		register_response(t_runtime *runtime, uint8_t *packet, ssize_t size
 		ft_lstadd(&runtime->rpacketlist_head, data);
 }
 
-void	receive_packet(t_runtime *runtime, uint8_t *pkt, t_timer *tm)
-{
-	int32_t	recvd_bytes;
-
-	recvd_bytes = -1;
-	pkt = (uint8_t *)ft_memalloc(1500);
-	while (g_signals->sigalrm == 0 && recvd_bytes <= 0)
-		if ((recvd_bytes = recvfrom (runtime->socket, (void*)pkt, 1500,
-				MSG_DONTWAIT, NULL, (socklen_t*)sizeof (struct sockaddr))) <= 0)
-		{ }
-	alarm(0);
-	if (recvd_bytes <= 0)
-	{
-		print_timeout(runtime, pkt);
-		register_response(runtime, NULL, 0, tm);
-	}
-	else
-	{
-		if (gettimeofday(&(tm->recv), NULL) < 0)
-			printf("Error getting time of day\n");
-		print_ping(runtime->param, pkt, tm);
-		register_response(runtime, pkt, recvd_bytes, tm);
-	}
-}
 /*
-		if (runtime->param->options & OPT_TIMESTAMP)
-			printf("[timestamp] ");
-		
-		char *src = ft_strnew(16);
-		inet_ntop(AF_INET, &((struct ipv4_hdr *)pkt)->ip_src, src, 16);
+uint8_t check_response(uint8_t *pkt)
+{	
 		struct icmpv4_hdr *icmp =  (struct icmpv4_hdr *)(pkt + sizeof(struct ipv4_hdr));
 
 		printf("%u bytes from %s: icmp_seq=%u ttl=%u time= ms\n",
@@ -76,7 +57,7 @@ void	receive_packet(t_runtime *runtime, uint8_t *pkt, t_timer *tm)
 			ntohs(icmp->icmp_sequence),
 			((struct ipv4_hdr *)pkt)->ip_ttl);
 
-		printf("\nReceived a %u bytes ipv4 packet\n", ntohs(((struct ipv4_hdr *)pkt)->ip_len));
+		printf("\nReceived a %u bytes IPv4 packet\n", ntohs(((struct ipv4_hdr *)pkt)->ip_len));
 		printf(" ----------------- \n");
 		printf("hdr->hdr_len:\t%u\n", ((struct ipv4_hdr *)pkt)->ip_header_length);
 		printf("hdr->version:\t%u\n", ((struct ipv4_hdr *)pkt)->ip_version);
@@ -86,17 +67,84 @@ void	receive_packet(t_runtime *runtime, uint8_t *pkt, t_timer *tm)
 		printf("hdr->ttl     :\t%u\n", ((struct ipv4_hdr *)pkt)->ip_ttl);
 		printf("hdr->type    :\t%u\n", ((struct ipv4_hdr *)pkt)->ip_type);
 		printf("hdr->checksum:\t%x\n", ((struct ipv4_hdr *)pkt)->ip_checksum);
-		char *src = ft_strnew(16);
-		inet_ntop(AF_INET, &((struct ipv4_hdr *)pkt)->ip_src, src, 16);
-		printf("hdr->src	 :\t%s\n", src);
+		char *srcs = ft_strnew(16);
+		inet_ntop(AF_INET, &((struct ipv4_hdr *)pkt)->ip_src, srcs, 16);
+		printf("hdr->src	 :\t%s\n", srcs);
 		char *dst = ft_strnew(16);
 		inet_ntop(AF_INET, &((struct ipv4_hdr *)pkt)->ip_dst, dst, 16);
 		printf("hdr->dst	 :\t%s\n", dst);
 		printf(" ----------------- \n");
 		
-		printf("icmp->type     :\t%u\n", ((struct icmpv4_hdr *)pkt + IP4_HDRLEN)->icmp_type);
-		printf("icmp->code    :\t%u\n", ((struct icmpv4_hdr *)pkt + IP4_HDRLEN)->icmp_code);
+		printf("icmp->type     :\t%u\n", ((struct icmpv4_hdr *)(pkt + IP4_HDRLEN))->icmp_type);
+		printf("icmp->code    :\t%u\n", ((struct icmpv4_hdr *)(pkt + IP4_HDRLEN))->icmp_code);
 		printf("icmp->seq     :\t%u\n", ntohs(icmp->icmp_sequence));
 		printf("icmp->id      :\t%u\n", ntohs(icmp->icmp_identifier));
 		printf(" ----------------- \n\n");
+		return (0);
+}
 */
+void	handle_response(t_runtime *rt, uint8_t *pkt, t_timer *tm,
+							uint8_t recvd_bytes, uint16_t sequence)
+{
+	int8_t	response_code;
+
+	response_code = ((struct icmpv4_hdr *)(pkt + IP4_HDRLEN))->icmp_type;
+	if (response_code == 0)
+	{
+		if (!(rt->param->options & OPT_QUIET))
+			print_ping(rt->param, pkt, tm, sequence);
+		register_response(rt, pkt, recvd_bytes, tm);
+	}
+	else if (response_code == 11)
+	{
+		if (!(rt->param->options & OPT_QUIET))
+			print_ttl_exceeded(pkt, sequence);
+		register_response(rt, pkt, recvd_bytes, NULL);
+	}
+	else if (response_code == 3)
+	{
+		if (!(rt->param->options & OPT_QUIET))
+			print_unreachable(pkt, sequence);
+		register_response(rt, pkt, recvd_bytes, NULL);
+	} 
+	else
+	{
+		if (!(rt->param->options & OPT_QUIET))
+			print_unknown(pkt, sequence);
+		register_response(rt, pkt, recvd_bytes, NULL);
+	}
+}
+
+void	receive_packet(t_runtime *runtime, uint8_t *pkt,
+							t_timer *tm, uint16_t sequence)
+{
+	int32_t	recvd_bytes;
+	uint16_t response_code;
+
+	recvd_bytes = -1;
+	pkt = (uint8_t *)ft_memalloc(MTU);
+	while (g_signals->sigalrm == 0 && recvd_bytes <= 0)
+		if ((recvd_bytes = recvfrom(runtime->socket, (void*)pkt, MTU,
+				MSG_DONTWAIT, NULL, (socklen_t*)sizeof (struct sockaddr))) <= 0)
+		{ }
+	alarm(0);
+	if (recvd_bytes <= 0)
+	{
+		print_timeout(runtime, pkt, sequence);
+		free(pkt);
+		register_response(runtime, NULL, 0, tm);
+	}
+	else
+	{
+		if (gettimeofday(&(tm->recv), NULL) < 0)
+		{ }
+		response_code = ((struct icmpv4_hdr *)(pkt + IP4_HDRLEN))->icmp_type;
+		if (response_code == 8 && ft_strequ(runtime->param->interface->ifa_name, "lo"))
+		{
+			free(pkt);
+			receive_packet(runtime, pkt, tm, sequence);
+		}
+		else
+			handle_response(runtime, pkt, tm, recvd_bytes, sequence);
+	}
+}

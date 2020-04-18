@@ -18,37 +18,108 @@ void	print_resolve(t_data *param)
 						param->pkt_size, param->pkt_size + IP4_HDRLEN + ICMP_HDRLEN);
 }
 
-void	print_timeout(t_runtime *rt, uint8_t *packet)
+void	print_timeout(t_runtime *rt, uint8_t *packet, uint16_t sequence)
 {
 	(void)packet;
 	(void)rt;
-	printf("Timeout\n");
+	(void)sequence;
+//	printf("Timeout\n");
 }
 
-void	print_ping(t_data *param, uint8_t *pkt, t_timer *tm)
+void 	print_unknown(uint8_t *pkt, uint16_t sequence)
 {
-	char				*src;
+	char				src[16];
 	struct ipv4_hdr		*ip;
 	struct icmpv4_hdr	*icmp;
-	struct hostent 		*hostdns;
+	char 				*node;
+
+	ft_bzero(src, 16);
+	ip = (struct ipv4_hdr *)pkt;
+	icmp = (struct icmpv4_hdr *)(pkt + IP4_HDRLEN);
+	inet_ntop(AF_INET, &ip->ip_src, src, 16);
+	node = reverse_target(src);
+	printf("From %s (%s) icmp_seq=%u Unknown error: type:%u code:%u\n",
+		(node == NULL) ? src : node,
+		src,
+		sequence,
+		icmp->icmp_type,
+		icmp->icmp_code);
+}
+
+void	print_unreachable(uint8_t *pkt, uint16_t sequence)
+{
+	char				src[16];
+	struct ipv4_hdr		*ip;
+	char 				*node;
+
+	ft_bzero(src, 16);
+	ip = (struct ipv4_hdr *)pkt;
+	inet_ntop(AF_INET, &ip->ip_src, src, 16);
+	node = reverse_target(src);
+	printf("From %s (%s) icmp_seq=%u Destination unreachable.\n",
+		(node == NULL) ? src : node,
+		src,
+		sequence);
+}
+
+void	print_ttl_exceeded(uint8_t *pkt, uint16_t sequence)
+{
+	char				src[16];
+	struct ipv4_hdr		*ip;
+	char 				*node;
+
+	ft_bzero(src, 16);
+	ip = (struct ipv4_hdr *)pkt;
+	inet_ntop(AF_INET, &ip->ip_src, src, 16);
+    node = reverse_target(src);
+	printf("From %s (%s) icmp_seq=%u Time to live exceeded.\n",
+		(node == NULL) ? src : node,
+		src,
+		sequence);
+	ft_strdel(&node);
+}
+
+void	print_ping(t_data *param, uint8_t *pkt, t_timer *tm, uint16_t sequence)
+{
+	char				src[16];
+	struct ipv4_hdr		*ip;
+	char		 		*hostdns;
 
 	ip = (struct ipv4_hdr *)pkt;
-	icmp = (struct icmpv4_hdr *)(pkt + sizeof(struct ipv4_hdr));
-	src = ft_strnew(16);
 	inet_ntop(AF_INET, &ip->ip_src, src, 16);
-	hostdns = gethostbyaddr(&(param->sin->sin_addr), sizeof(param->sin->sin_addr), AF_INET);
-
+	hostdns = reverse_target(src);
 	if (param->options & OPT_TIMESTAMP)
-	{
-			printf("[%f] ", (double)tm->recv.tv_sec +(double)(0.001f * (double)tm->recv.tv_usec));
-	}
+		printf("[%f] ", (double)tm->recv.tv_sec +(double)(0.001f * (double)tm->recv.tv_usec));
 	printf("%u bytes from %s(%s): icmp_seq=%u ttl=%d time=%.3fms\n",
 					ntohs(ip->ip_len),
-					(hostdns == NULL) ? src : hostdns->h_name,
+					(hostdns == NULL) ? src : hostdns,
 					src,
-					ntohs(icmp->icmp_sequence),
+					sequence,
 					ip->ip_ttl,
 					plot_timer(tm));
+	ft_strdel(&hostdns);
+}
+
+void free_packetlist(t_list *pkt_list)
+{
+	t_list 			*current;
+	t_list 			*next;
+	t_packetdata	*meta;
+	
+	current = pkt_list;
+	while (current != NULL)
+	{
+		next = current->next;
+		meta = (t_packetdata *)current->data;
+		if (meta != NULL)
+		{
+			if (meta->data != NULL)
+				free(meta->data);
+			free(meta);
+		}
+		free(current);
+		current = next;
+	}
 }
 
 void	print_stats(t_runtime *rt)
@@ -58,13 +129,24 @@ void	print_stats(t_runtime *rt)
 	ft_memset(&stats, 0, sizeof(t_stats));
 	update_statistics(rt, &stats);
 	printf("\n--- %s ping statistics ---\n", rt->param->fqdn);
-	printf("%d packets transmitted, %d received, %.2f%% packet loss\n",
+	printf("%d packets transmitted, %d received,",
 			stats.pkt_send,
-			stats.pkt_recvd,
-			100 - ((double)stats.pkt_recvd / (double)stats.pkt_send * 100));
-	printf("rtt min/avg/max/mdev = %.3f/%.3f/%.3f/%.3f ms\n",
+			stats.pkt_recvd);
+	if (stats.icmp_errors != 0)
+		printf(" +%u errors,", stats.icmp_errors);
+	printf(" %.2f%% packet loss\n",
+		100 - ((double)stats.pkt_recvd / (double)stats.pkt_send * 100));
+	if (stats.pkt_recvd > 0)
+		printf("rtt min/avg/max/mdev = %.3f/%.3f/%.3f/%.3f ms\n",
 					stats.rtt_min,
 					stats.rtt_avg,
 					stats.rtt_max,
 					stats.std_deviation);
+	else
+		printf("\n");
+	
+	//ft_lstdel(&rt->rpacketlist_head, del_metadata);
+	//if (rt->rpacketlist_head != NULL)
+	//	free(rt->rpacketlist_head);
+	free_packetlist(rt->rpacketlist_head);
 }

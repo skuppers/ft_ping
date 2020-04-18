@@ -18,7 +18,7 @@ void		register_request(t_runtime *runtime, uint8_t *packet, size_t size)
 {
 	t_list			*data;
 
-	data = ft_lstnew(pktlstnew(packet, size), sizeof(t_packetlist));
+	data = ft_lstnew(pktlstnew(packet, size), sizeof(t_packetdata));
 	if (runtime->spacketlist_head == NULL)
 		runtime->spacketlist_head = data;
 	else
@@ -27,17 +27,17 @@ void		register_request(t_runtime *runtime, uint8_t *packet, size_t size)
 
 int8_t		send_packet(t_runtime *runtime, uint8_t *packet, t_timer *tv)
 {
-//TODO:	if (runtime->param->options & OPT_IPV6)
 	int16_t	sent_bytes;
 	size_t 	packet_size;
 	
 	packet_size = ICMP_HDRLEN + runtime->param->pkt_size;
-	if ((sent_bytes = sendto (runtime->socket, packet + IP4_HDRLEN, packet_size, 0,
-  		(struct sockaddr *) runtime->param->sin, sizeof (struct sockaddr))) < 0)
+	if ((sent_bytes = sendto(runtime->socket, packet, packet_size, 0,
+  		(struct sockaddr *)runtime->param->sin, sizeof (struct sockaddr))) < 0)
 	{
-    	perror ("sendto() failed ");
+    	ping_fatal("send_packet","sendto() failed");
     	exit (EXIT_FAILURE);
 	}
+	free(packet);
 	if (gettimeofday(&(tv->send), NULL) < 0)
 		printf("Error getting timeofday()\n");
 //	printf("*[%ld:%ld]", tv->send.tv_sec, tv->send.tv_usec);
