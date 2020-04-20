@@ -1,6 +1,32 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   receive_packet.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: skuppers <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/02/15 17:53:48 by skuppers          #+#    #+#             */
+/*   Updated: 2020/02/15 18:04:58 by skuppers         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "ft_ping.h"
 
-static void	get_stddev(t_runtime *rt, t_stats *stats)
+float		plot_timer(t_timer *timer)
+{
+	double	send;
+	double	recv;
+
+	send = 0;
+	recv = 0;
+	send = ((double)timer->send.tv_sec)
+		+ ((double)(0.000001f * (double)timer->send.tv_usec));
+	recv = ((double)timer->recv.tv_sec)
+		+ ((double)(0.000001f * (double)timer->recv.tv_usec));
+	return ((float)(recv - send) * 1000.0f);
+}
+
+static void	get_stddev(t_runtime *rt, t_stats *s)
 {
 	t_list	*ptr;
 	float	dev;
@@ -11,41 +37,41 @@ static void	get_stddev(t_runtime *rt, t_stats *stats)
 	{
 		if (ptr->data != NULL)
 		{
-			dev = (float)((((t_packetdata *)ptr->data)->rtt) - stats->rtt_avg);
+			dev = (float)((((t_packetdata *)ptr->data)->rtt) - s->rtt_avg);
 			if (dev < 0)
 				dev = -dev;
-			stats->std_deviation += dev;
+			s->std_deviation += dev;
 		}
 		ptr = ptr->next;
 	}
-	stats->std_deviation = (float)(stats->std_deviation / stats->pkt_recvd);
+	s->std_deviation = (float)(s->std_deviation / s->pkt_recvd);
 }
 
-void		update_statistics(t_runtime *rt, t_stats *stats)
+void		update_statistics(t_runtime *rt, t_stats *s)
 {
-	t_list	*ptr;
+	t_list	*p;
 
-	ptr = rt->rpacketlist_head;
-	stats->pkt_send = ft_lstlen(ptr);
-	stats->pkt_recvd = list_received(ptr);
-	while (ptr != NULL)
+	p = rt->rpacketlist_head;
+	s->pkt_send = ft_lstlen(p);
+	s->pkt_recvd = list_received(p);
+	while (p != NULL)
 	{
-		if (ptr->data_size != 0)
+		if (p->data_size != 0)
 		{
-			if (((t_packetdata*)ptr->data)->rtt == -42.0)
+			if (((t_packetdata*)p->data)->rtt == -42.0)
 			{
-				++(stats->icmp_errors);
-				ptr = ptr->next;
+				++(s->icmp_errors);
+				p = p->next;
 				continue;
 			}
-			if (stats->rtt_min == 0 || ((t_packetdata *)ptr->data)->rtt < stats->rtt_min)
-				stats->rtt_min = ((t_packetdata *)ptr->data)->rtt;
-			if (stats->rtt_max == 0 || ((t_packetdata *)ptr->data)->rtt > stats->rtt_max)
-				stats->rtt_max = ((t_packetdata *)ptr->data)->rtt;
-			stats->rtt_avg += (float)(((t_packetdata *)ptr->data)->rtt);
+			if (s->rtt_min == 0 || ((t_packetdata *)p->data)->rtt < s->rtt_min)
+				s->rtt_min = ((t_packetdata *)p->data)->rtt;
+			if (s->rtt_max == 0 || ((t_packetdata *)p->data)->rtt > s->rtt_max)
+				s->rtt_max = ((t_packetdata *)p->data)->rtt;
+			s->rtt_avg += (float)(((t_packetdata *)p->data)->rtt);
 		}
-		ptr = ptr->next;
+		p = p->next;
 	}
-	stats->rtt_avg = stats->rtt_avg / stats->pkt_recvd;
-	get_stddev(rt, stats);
+	s->rtt_avg = s->rtt_avg / s->pkt_recvd;
+	get_stddev(rt, s);
 }

@@ -29,7 +29,9 @@ SRC=src/main.c\
 	src/error.c\
 	src/signals.c\
 	src/usage.c\
-	src/statistics.c
+	src/statistics.c\
+	src/response_codes.c\
+	src/listutils.c
 
 INC=includes/
 

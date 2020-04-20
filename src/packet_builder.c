@@ -16,7 +16,7 @@ static uint8_t			*forge_ipv4(t_runtime *runtime, uint8_t *packet,
 									uint32_t seq)
 {
 	char				data[65535];
-	struct icmpv4_hdr	icmp_header;
+	struct s_icmpv4_hdr	icmp_header;
 	uint16_t			datalen;
 
 	datalen = setup_message_body(runtime->param, data);
@@ -24,12 +24,14 @@ static uint8_t			*forge_ipv4(t_runtime *runtime, uint8_t *packet,
 	setup_icmpv4_header(&icmp_header, seq);
 	ft_memcpy(packet, &icmp_header, ICMP_HDRLEN);
 	ft_memcpy(packet + ICMP_HDRLEN, data, datalen);
-	icmp_header.icmp_checksum = ip_checksum((void *)packet, ICMP_HDRLEN + datalen);
+	icmp_header.icmp_checksum = ip_checksum((void *)packet,
+		ICMP_HDRLEN + datalen);
 	ft_memcpy(packet, &icmp_header, ICMP_HDRLEN);
 	return (packet);
 }
 
-uint8_t			*forge_packet(t_runtime *runtime, uint8_t *pkt, uint16_t seq)
+uint8_t					*forge_packet(t_runtime *runtime,
+							uint8_t *pkt, uint16_t seq)
 {
 	pkt = forge_ipv4(runtime, pkt, seq);
 	return (pkt);

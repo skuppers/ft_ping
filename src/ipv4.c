@@ -12,16 +12,18 @@
 
 #include "ft_ping.h"
 
-uint16_t		setup_message_body(t_data *param, char *data)
+uint16_t	setup_message_body(t_data *param, char *data)
 {
-	int i;
-	for (i = 0; i < param->pkt_size; i++)
-		data[i] = 0x42;
+	int		i;
+
+	i = 0;
+	while (i < param->pkt_size)
+		data[i++] = 0x42;
 	data[i] = '\0';
 	return (i);
 }
 
-void		setup_icmpv4_header(struct icmpv4_hdr *header, uint16_t sequence)
+void		setup_icmpv4_header(struct s_icmpv4_hdr *header, uint16_t sequence)
 {
 	ft_memset(header, 0, ICMP_HDRLEN);
 	header->icmp_type = 8;

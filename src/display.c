@@ -12,29 +12,16 @@
 
 #include "ft_ping.h"
 
-void	print_resolve(t_data *param)
-{
-		printf("PING %s (%s): %d(%d) data bytes\n", param->fqdn, param->ipv4_str,
-						param->pkt_size, param->pkt_size + IP4_HDRLEN + ICMP_HDRLEN);
-}
-
-void	print_timeout(t_runtime *rt, uint8_t *packet, uint16_t sequence)
-{
-	(void)packet;
-	(void)rt;
-	(void)sequence;
-}
-
-void 	print_unknown(uint8_t *pkt, uint16_t sequence)
+void					print_unknown(uint8_t *pkt, uint16_t sequence)
 {
 	char				src[16];
-	struct ipv4_hdr		*ip;
-	struct icmpv4_hdr	*icmp;
-	char 				*node;
+	struct s_ipv4_hdr	*ip;
+	struct s_icmpv4_hdr	*icmp;
+	char				*node;
 
 	ft_bzero(src, 16);
-	ip = (struct ipv4_hdr *)pkt;
-	icmp = (struct icmpv4_hdr *)(pkt + IP4_HDRLEN);
+	ip = (struct s_ipv4_hdr *)pkt;
+	icmp = (struct s_icmpv4_hdr *)(pkt + IP4_HDRLEN);
 	inet_ntop(AF_INET, &ip->ip_src, src, 16);
 	node = reverse_target(src);
 	printf("From %s (%s) icmp_seq=%u Unknown error: type:%u code:%u\n",
@@ -45,14 +32,14 @@ void 	print_unknown(uint8_t *pkt, uint16_t sequence)
 		icmp->icmp_code);
 }
 
-void	print_unreachable(uint8_t *pkt, uint16_t sequence)
+void					print_unreachable(uint8_t *pkt, uint16_t sequence)
 {
 	char				src[16];
-	struct ipv4_hdr		*ip;
-	char 				*node;
+	struct s_ipv4_hdr	*ip;
+	char				*node;
 
 	ft_bzero(src, 16);
-	ip = (struct ipv4_hdr *)pkt;
+	ip = (struct s_ipv4_hdr *)pkt;
 	inet_ntop(AF_INET, &ip->ip_src, src, 16);
 	node = reverse_target(src);
 	printf("From %s (%s) icmp_seq=%u Destination unreachable.\n",
@@ -61,16 +48,16 @@ void	print_unreachable(uint8_t *pkt, uint16_t sequence)
 		sequence);
 }
 
-void	print_ttl_exceeded(uint8_t *pkt, uint16_t sequence)
+void					print_ttl_exceeded(uint8_t *pkt, uint16_t sequence)
 {
 	char				src[16];
-	struct ipv4_hdr		*ip;
-	char 				*node;
+	struct s_ipv4_hdr	*ip;
+	char				*node;
 
 	ft_bzero(src, 16);
-	ip = (struct ipv4_hdr *)pkt;
+	ip = (struct s_ipv4_hdr *)pkt;
 	inet_ntop(AF_INET, &ip->ip_src, src, 16);
-    node = reverse_target(src);
+	node = reverse_target(src);
 	printf("From %s (%s) icmp_seq=%u Time to live exceeded.\n",
 		(node == NULL) ? src : node,
 		src,
@@ -78,17 +65,19 @@ void	print_ttl_exceeded(uint8_t *pkt, uint16_t sequence)
 	ft_strdel(&node);
 }
 
-void	print_ping(t_data *param, uint8_t *pkt, t_timer *tm, uint16_t sequence)
+void					print_ping(t_data *param, uint8_t *pkt, t_timer *tm,
+							uint16_t sequence)
 {
 	char				src[16];
-	struct ipv4_hdr		*ip;
-	char		 		*hostdns;
+	struct s_ipv4_hdr	*ip;
+	char				*hostdns;
 
-	ip = (struct ipv4_hdr *)pkt;
+	ip = (struct s_ipv4_hdr *)pkt;
 	inet_ntop(AF_INET, &ip->ip_src, src, 16);
 	hostdns = reverse_target(src);
 	if (param->options & OPT_TIMESTAMP)
-		printf("[%f] ", (double)tm->recv.tv_sec +(double)(0.001f * (double)tm->recv.tv_usec));
+		printf("[%f] ", (double)tm->recv.tv_sec
+			+ (double)(0.001f * (double)tm->recv.tv_usec));
 	printf("%u bytes from %s(%s): icmp_seq=%u ttl=%d time=%.3fms\n",
 					ntohs(ip->ip_len),
 					(hostdns == NULL) ? src : hostdns,
@@ -99,31 +88,9 @@ void	print_ping(t_data *param, uint8_t *pkt, t_timer *tm, uint16_t sequence)
 	ft_strdel(&hostdns);
 }
 
-void free_packetlist(t_list *pkt_list)
+void					print_stats(t_runtime *rt)
 {
-	t_list 			*current;
-	t_list 			*next;
-	t_packetdata	*meta;
-	
-	current = pkt_list;
-	while (current != NULL)
-	{
-		next = current->next;
-		meta = (t_packetdata *)current->data;
-		if (meta != NULL)
-		{
-			if (meta->data != NULL)
-				free(meta->data);
-			free(meta);
-		}
-		free(current);
-		current = next;
-	}
-}
-
-void	print_stats(t_runtime *rt)
-{
-	t_stats		stats;
+	t_stats				stats;
 
 	ft_memset(&stats, 0, sizeof(t_stats));
 	update_statistics(rt, &stats);
@@ -143,9 +110,5 @@ void	print_stats(t_runtime *rt)
 					stats.std_deviation);
 	else
 		printf("\n");
-	
-	//ft_lstdel(&rt->rpacketlist_head, del_metadata);
-	//if (rt->rpacketlist_head != NULL)
-	//	free(rt->rpacketlist_head);
 	free_packetlist(rt->rpacketlist_head);
 }
