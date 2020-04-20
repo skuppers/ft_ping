@@ -42,9 +42,9 @@
 #define OPT_SO_DEBUG	0x0004 // -d
 #define OPT_TIMESTAMP	0x0008 // -D
 
-#define OPT_PRELOAD		0x0040 // -l <number>
-#define OPT_COUNT		0x0100 //-c <number
-#define OPT_PKTSZ		0x0200 //-s <pkt-size>
+//#define OPT_PRELOAD		0x0040 // -l <number>
+//#define OPT_COUNT		0x0100 //-c <number
+//#define OPT_PKTSZ		0x0200 //-s <pkt-size>
 
 //The following opt's have default value so will see
 //#define OPT_TOS
@@ -61,8 +61,8 @@
 
 typedef struct      s_signals
 {
-	uint8_t         sigalrm;
-	uint8_t         sigint;
+	volatile sig_atomic_t        sigalrm;
+	volatile sig_atomic_t         sigint;
 }                   t_signals;
 
 t_signals           *g_signals;
@@ -72,16 +72,14 @@ typedef struct			s_data
 	uint16_t			options;
 	unsigned int		count;
 	uint32_t			interval;
-	uint16_t			preload;
 	uint16_t			pkt_size;
 	uint8_t				tos;
 	uint8_t				ttl;
-	uint16_t			deadline;
-	uint16_t			timeout;
+	struct sockaddr_in	*sin;
+	//struct ifaddrs		*interface;
+	char				*interface;
 	char				*fqdn;
 	char				*ipv4_str;
-	struct sockaddr_in	*sin;
-	struct ifaddrs		*interface;
 }						t_data;
 
 struct				ipv4_hdr

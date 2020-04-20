@@ -37,6 +37,15 @@ int		main(int ac, char **av)
 // look here for corrections
 		parse_opt(ac, av, &param);
 
+/*
+		printf("\nPING OPTIONS: "BYTE_TO_BIN_PATTERN,BYTE_TO_BIN(param.options));
+		printf("\nTTL: 			%d\n", param.ttl);
+		printf("Count: 			%d\n", param.count);
+		printf("Packet size: 	%d\n", param.pkt_size);
+		printf("Tos:		 	%d\n", param.tos);
+		printf("Interval: 		%d\n", param.interval);
+		printf("Interface:		%s\n", param.interface);
+*/
 		if (param.fqdn == NULL)
 			print_usage(42);
 
@@ -46,19 +55,10 @@ int		main(int ac, char **av)
 			return (-1);
 		else 
 		{
-/*			printf("\nPING OPTIONS: "BYTE_TO_BIN_PATTERN,BYTE_TO_BIN(param.options));
-			printf("\nTTL: 			%d\n", param.ttl);
-			printf("Count: 			%d\n", param.count);
-			printf("Packet size: 	%d\n", param.pkt_size);
-			printf("Tos:		 	%d\n", param.tos);
-			printf("Preload:		%d\n", param.preload);
-			printf("Timeout: 		%d\n", param.timeout);
-			printf("Deadline: 		%d\n", param.deadline);
-			printf("Interval: 		%f\n", param.interval);
-			printf("Interface:		%s\n", param.interface->ifa_name);
+/*			printf("Interface:		%s\n", param.interface);
 			printf("Host/FQDN: 		%s\n", param.fqdn);
 			printf("Host IP: 		%s\n\n", param.ipv4_str);
-*/	
+*/
 			ft_ping(&param);
 		}
 		return (0);

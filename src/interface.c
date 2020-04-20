@@ -21,11 +21,11 @@ uint8_t        select_dflt_interface(t_data *param)
     
     while (itf_ptr != NULL)
     {
-        if ((ft_strbeginswith(param->fqdn, "127.0.0.")
-            || ft_strbeginswith(param->fqdn, "127.0.1."))
+        if ((ft_strbeginswith(param->ipv4_str, "127.0.0.")
+            || ft_strbeginswith(param->ipv4_str, "127.0.1."))
             && ft_strequ(itf_ptr->ifa_name, "lo"))
         {
-            param->interface = allocate_interfacedata(itf_ptr);
+            param->interface = ft_strdup(itf_ptr->ifa_name);
             freeifaddrs(interfaces);
             return (0);
         }
@@ -36,7 +36,7 @@ uint8_t        select_dflt_interface(t_data *param)
         }
         if (itf_ptr->ifa_addr->sa_family == AF_INET)
         {
-            param->interface = allocate_interfacedata(itf_ptr);
+            param->interface = ft_strdup(itf_ptr->ifa_name);
             freeifaddrs(interfaces);
             return (0);
         }
@@ -68,14 +68,14 @@ uint8_t     is_interface_valid(t_data *param, char *interface)
         {
             if (itf_ptr->ifa_addr->sa_family == AF_INET)
             {
-                param->interface = allocate_interfacedata(itf_ptr);
+                param->interface = ft_strdup(itf_ptr->ifa_name);
                 freeifaddrs(interfaces);
                 return (0);
             }
         }
         itf_ptr = itf_ptr->ifa_next;
     }
-    freeifaddrs(interfaces);
     printf("Invalid interface: %s\n", interface);
+    freeifaddrs(interfaces);
     exit(42);
 }

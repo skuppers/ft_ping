@@ -23,7 +23,6 @@ void	print_timeout(t_runtime *rt, uint8_t *packet, uint16_t sequence)
 	(void)packet;
 	(void)rt;
 	(void)sequence;
-//	printf("Timeout\n");
 }
 
 void 	print_unknown(uint8_t *pkt, uint16_t sequence)

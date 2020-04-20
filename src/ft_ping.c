@@ -133,8 +133,10 @@ static void		ping_loop(t_runtime *runtime)
 		if (send_packet(runtime, packet, &timer) == SUCCESS) 
 			receive_packet(runtime, packet, &timer, sequence); // do a pointer jutsu here for packet
 		++sequence;
+		
 		if (g_signals->sigalrm != 1)
 			ping_timer(runtime->param->interval);
+
 		g_signals->sigalrm = 0;
 	}
 }

@@ -87,9 +87,22 @@ void	handle_response(t_runtime *rt, uint8_t *pkt, t_timer *tm,
 							uint8_t recvd_bytes, uint16_t sequence)
 {
 	int8_t	response_code;
+	struct icmpv4_hdr *icmp =  (struct icmpv4_hdr *)(pkt + sizeof(struct ipv4_hdr));
 
 	response_code = ((struct icmpv4_hdr *)(pkt + IP4_HDRLEN))->icmp_type;
-	if (response_code == 0)
+	int response_seq = ntohs(icmp->icmp_sequence);
+	int response_id = ntohs(icmp->icmp_identifier);
+
+	if (response_seq != sequence || response_id != getpid())
+	{
+		print_timeout(rt, pkt, sequence);
+		free(pkt);
+		if (g_signals->sigalrm == 0 && g_signals->sigint == 0)
+			receive_packet(rt, pkt, tm, sequence);
+		else
+			register_response(rt, NULL, 0, tm);
+	}
+	else if (response_code == 0)
 	{
 		if (!(rt->param->options & OPT_QUIET))
 			print_ping(rt->param, pkt, tm, sequence);
@@ -139,7 +152,7 @@ void	receive_packet(t_runtime *runtime, uint8_t *pkt,
 		if (gettimeofday(&(tm->recv), NULL) < 0)
 		{ }
 		response_code = ((struct icmpv4_hdr *)(pkt + IP4_HDRLEN))->icmp_type;
-		if (response_code == 8 && ft_strequ(runtime->param->interface->ifa_name, "lo"))
+		if (response_code == 8 && ft_strequ(runtime->param->interface, "lo"))
 		{
 			free(pkt);
 			receive_packet(runtime, pkt, tm, sequence);

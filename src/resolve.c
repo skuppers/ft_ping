@@ -43,33 +43,23 @@ int32_t		resolve_target(t_data *param)
 	struct in_addr		*iadr;
 	char				buffer[INET_ADDRSTRLEN];
 
-	
+ft_bzero(buffer, INET_ADDRSTRLEN);
 // check for configured interfaces but no inet access
 	if  (ft_strequ(param->fqdn, "255.255.255.255"))
 	{
 		printf("ft_ping: Do you want to ping broadcast? sorry that's not possible.\n");
 		return (-1);
 	}
-
-	if (param->interface == NULL)
-		if (select_dflt_interface(param) != 0)
-			return (-1);
-
+	result = NULL;
 	prepare_hints(&hints);
-
-
-	result = 0;
 	if ((getaddrinfo(param->fqdn, NULL, &hints, &result)) != 0)
 	{
 		printf("ft_ping: %s: Temporary failure in name resolution\n",
 			param->fqdn);
-		free(param->interface);
 		return (-1);
 	}
-
 	param->sin = ((struct sockaddr_in*)result->ai_addr);
 	iadr = &(((struct sockaddr_in*)result->ai_addr)->sin_addr);
-
 	if (inet_ntop(AF_INET, iadr, buffer, INET_ADDRSTRLEN) == NULL)
 	{
 		ping_fatal("inet_ntop", "undefined");
@@ -77,5 +67,8 @@ int32_t		resolve_target(t_data *param)
 	}
 	freeaddrinfo(result);
 	param->ipv4_str = ft_strdup(buffer);
+	if (param->interface == NULL)
+		if (select_dflt_interface(param) != 0)
+			return (-1);
 	return (0);
 }

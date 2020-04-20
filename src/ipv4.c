@@ -26,6 +26,6 @@ void		setup_icmpv4_header(struct icmpv4_hdr *header, uint16_t sequence)
 	ft_memset(header, 0, ICMP_HDRLEN);
 	header->icmp_type = 8;
 	header->icmp_code = 0;
-	header->icmp_identifier = htons(1000);
+	header->icmp_identifier = htons(getpid());
 	header->icmp_sequence = htons(sequence);
 }

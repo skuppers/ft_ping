@@ -76,7 +76,7 @@ static int8_t	indexSocket(t_data *param, struct ifreq *if_bind)
   		return(-1);
 	}
 	
-	ft_strncpy(if_bind->ifr_name, (const char*)param->interface->ifa_name,
+	ft_strncpy(if_bind->ifr_name, (const char*)param->interface,
 		IF_NAMESIZE);
 
 	if (ioctl(tempsocket, SIOCGIFINDEX, if_bind) < 0)

@@ -66,7 +66,7 @@ uint32_t	list_received(t_list *list_header)
 	listhdr = list_header;
 	while (listhdr != NULL)
 	{
-		if (listhdr->data != NULL && ((t_packetdata*)listhdr->data)->rtt != 0.0)
+		if (listhdr->data != NULL && ((t_packetdata*)listhdr->data)->rtt != -42.0)
 			len++;
 		listhdr = listhdr->next;
 	}
