@@ -11,7 +11,7 @@
 # **************************************************************************** #
 
 CC = clang
-COMPILE = $(CC) -c
+COMPILE = $(CC) -fPIE -c
 DEBUG = $(CC) -g3 -c #-fsanitize=address,undefined
 
 # Reset
@@ -46,6 +46,7 @@ INCS += memory.h
 INCS += list.h
 INCS += test.h
 INCS += other.h
+INCS += ft_getopt.h
 INCS += hashmap.h
 INCS += vector.h
 INCS += get_next_line.h
@@ -236,6 +237,7 @@ SRCS += ft_checkstat.c
 
 #------------------get_next_line------------------#
 SRCS += get_next_line.c
+
 
 DSYM += $(NAME).dSYM
 DSYM += $(DBNAME).dSYM

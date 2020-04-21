@@ -10,42 +10,133 @@
 #                                                                              #
 # **************************************************************************** #
 
+#---------------------------------- GENERAL -----------------------------------#
+
 NAME=ft_ping
+DEBUG_NAME=ft_pingdbg
 
-SRC=src/main.c\
-	src/resolve.c\
-	src/options.c\
-	src/interface.c\
-	src/ft_ping.c\
-	src/sockets.c\
-	src/packet_builder.c\
-	src/ipv4.c\
-	src/tools.c\
-	src/send_packet.c\
-	src/checksum.c\
-	src/receive_packet.c\
-	src/display.c\
-	src/init.c\
-	src/error.c\
-	src/signals.c\
-	src/usage.c\
-	src/statistics.c\
-	src/response_codes.c\
-	src/listutils.c
-
-INC=includes/
-
-LIB=libft/
-
-#OBJS = $(patsubst %.c, $(OPATH)%.o, $(SRC)))))
 CC=clang
-CFLAGS= -Wall -Wextra -g -fsanitize=address -g #-Werror
 
-all: $(NAME)
+PATH_LIB=libft/
 
-$(NAME): $(SRC)
-#	@cd lib; make
-	@$(CC) $(CFLAGS) -o $(NAME) -I $(INC) -I $(LIB)/includes/ $(SRC) libft/libft.a
+LIBFT= $(PATH_LIB)libft.a
+
+
+CFLAGS += -Wall
+CFLAGS += -Wextra
+CFLAGS += -Werror
+
+DBFLAGS += $(CFLAGS)
+DBFLAGS += -fsanitize=address,undefined
+DBFLAGS += -ggdb3
+DBFLAGS += -pedantic
+
+#---------------------------------- INCLUDES ----------------------------------#
+
+INCLUDES_LIBFT = $(PATH_LIB)includes/
+INCLUDES_PING = includes/
+
+I_INCLUDES += -I $(INCLUDES_LIBFT)
+I_INCLUDES += -I $(INCLUDES_PING)
+
+#---------------------------------- HEADERS -----------------------------------#
+
+vpath %.h $(INCLUDES_LIBFT)
+vpath %.h $(INCLUDES_PING)
+
+HEADER += libft.h
+HEADER += ft_ping.h
+
+#----------------------------------- SOURCS -----------------------------------#
+
+PATH_SRCS = src/
+
+SRCS += main.c
+SRCS += resolve.c
+SRCS += options.c
+SRCS += interface.c
+SRCS += ft_ping.c
+SRCS += sockets.c
+SRCS += packet_builder.c
+SRCS += ipv4.c
+SRCS += tools.c
+SRCS += send_packet.c
+SRCS += checksum.c
+SRCS += receive_packet.c
+SRCS += display.c
+SRCS += init.c
+SRCS += error.c
+SRCS += signals.c
+SRCS += usage.c
+SRCS += statistics.c
+SRCS += response_codes.c
+SRCS += listutils.c
+
+vpath %.c $(PATH_SRCS)
+
+#----------------------------------- OBJECTS ----------------------------------#
+
+PATH_OBJS = objs/
+OBJS = $(patsubst %.c, $(PATH_OBJS)%.o, $(SRCS))
+
+DEBUG_PATH_OBJS = objs_debug/
+DEBUG_OBJS = $(patsubst %.c, $(DEBUG_PATH_OBJS)%.o, $(SRCS))
+
+
+#---------------------------------- THA RULES ---------------------------------#
+
+all: $(PATH_OBJS) $(NAME)
+
+$(NAME): $(LIBFT) $(OBJS)
+	$(CC) $(CFLAGS) $(I_INCLUDES) $(OBJS) $(LIBFT) -o $@
+	printf "$@ is ready.\n"
+
+$(OBJS): $(PATH_OBJS)%.o: %.c $(HEADER) Makefile
+	$(CC) $(CFLAGS) $(I_INCLUDES) -c $< -o $@
+
+$(PATH_OBJS):
+	mkdir $@
+
+$(LIBFT): FORCE 
+	$(MAKE) -C $(PATH_LIB)
+
+#---------------------------------- DEBUGGING ---------------------------------#
+
+
+debug: $(DEBUG_PATH_OBJS) $(DEBUG_NAME)
+
+$(DEBUG_NAME): $(LIBFT) $(DEBUG_OBJS)
+	$(CC) $(DBFLAGS) $(I_INCLUDES) $(DEBUG_OBJS) $(LIBFT) -o $@
+	printf "$(GREEN)$@ is ready.\n$(NC)"
+
+$(DEBUG_OBJS): $(DEBUG_PATH_OBJS)%.o: %.c $(HEADER) Makefile
+	$(CC) $(DBFLAGS) $(I_INCLUDES) -c $< -o $@
+
+$(DEBUG_PATH_OBJS):
+	mkdir $@
+
+#---------------------------------- CLEANING ----------------------------------#
 
 clean:
-	@rm -f $(NAME)
+	$(RM) $(OBJS)
+	$(RM) $(DEBUG_OBJS)
+	$(RM) -R $(PATH_OBJS)
+	$(RM) -R $(DEBUG_PATH_OBJS)
+	$(RM) -R $(DSYM)
+	$(MAKE) -C $(PATH_LIB) clean
+	printf "Objs from $(NAME) removed\n"
+
+fclean: clean
+	$(RM) $(NAME)
+	$(RM) $(DEBUG_NAME)
+	$(MAKE) -C $(PATH_LIB) fclean
+	printf "$(NAME) removed\n"
+
+re: fclean all
+
+FORCE:
+
+#------------------------------------- MISC -----------------------------------#
+
+.PHONY: clean fclean re all
+.SILENT:
