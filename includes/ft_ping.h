@@ -125,7 +125,7 @@ typedef struct				s_timer
 	struct timeval			recv;
 }							t_timer;
 
-typedef	struct 				s_meta
+typedef	struct				s_meta
 {
 	int32_t					received_bytes;
 	struct s_timer			*timer;
@@ -140,10 +140,10 @@ typedef struct				s_runtime
 	t_list					*rpacketlist_head;
 }							t_runtime;
 
-void 						free_packetlist(t_list *pkt_list);
+void						free_packetlist(t_list *pkt_list);
 t_packetdata				*pktdatanew(uint8_t *packet,
 								size_t size, t_timer *timer);
-void						register_response(t_runtime *runtime, uint8_t *packet,
+void						register_response(t_runtime *runtime, uint8_t *p,
 								ssize_t size, t_timer *timer);
 void						id_seq_mismatch(t_runtime *rt, uint8_t *pkt,
 								t_timer *tm, uint16_t seq);

@@ -28,6 +28,7 @@
 # include "conversion.h"
 # include "test.h"
 # include "other.h"
+# include "ft_getopt.h"
 # include "hashmap.h"
 # include "vector.h"
 # include "get_next_line.h"
@@ -38,5 +39,4 @@ void				ft_showtab(char **t);
 int					ft_tabsize(char **tab);
 int					ft_taboneach(char **current, void *context
 								, char *(*mod)(char *, void *));
-int					ft_getopt(int ac, char **av, const char *optstr);
 #endif
