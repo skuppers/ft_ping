@@ -106,7 +106,7 @@ debug: $(DEBUG_PATH_OBJS) $(DEBUG_NAME)
 
 $(DEBUG_NAME): $(LIBFT) $(DEBUG_OBJS)
 	$(CC) $(DBFLAGS) $(I_INCLUDES) $(DEBUG_OBJS) $(LIBFT) -o $@
-	printf "$(GREEN)$@ is ready.\n$(NC)"
+	printf "$@ is ready.\n"
 
 $(DEBUG_OBJS): $(DEBUG_PATH_OBJS)%.o: %.c $(HEADER) Makefile
 	$(CC) $(DBFLAGS) $(I_INCLUDES) -c $< -o $@
