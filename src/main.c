@@ -27,9 +27,6 @@ int		main(int ac, char **av)
 	if (resolve_target(&param) < 0)
 		return (-1);
 	else
-	{
-		printf("Interface %s\n", param.interface);
 		ft_ping(&param);
-	}
 	return (0);
 }

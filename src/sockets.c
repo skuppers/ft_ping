@@ -80,7 +80,7 @@ static int8_t		indexsocket(t_data *param, struct ifreq *if_bind)
 	if ((tempsocket = socket(AF_INET, SOCK_RAW, IPPROTO_ICMP)) < 0)
 	{
 		ft_strdel(&param->interface);
-		ping_fatal("indexSocket", "socket() failed");
+		ping_fatal("indexSocket", "socket() failed. Are you root?");
 		return (-1);
 	}
 	ft_strncpy(if_bind->ifr_name, (const char*)param->interface,

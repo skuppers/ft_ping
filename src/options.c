@@ -38,22 +38,22 @@ static void		handle_standalone_options(int32_t option, t_data *param)
 static void		handle_custom_options(int32_t opt, t_data *prm, char *oarg)
 {
 	if (opt == 'c')
-		(ft_atoi(oarg) > 0) ? prm->count = (uint16_t)ft_atoi(oarg) :
-			invalid_opt(oarg, "c");
+		(ft_atoi(oarg) > 0) ? prm->count = (uint16_t)ft_atoi(oarg)
+		: invalid_opt(oarg, "c");
 	else if (opt == 'i')
-		(ft_atoi(oarg) > 0) ? prm->interval = ft_atoi(oarg) :
-			invalid_opt(oarg, "i");
+		(ft_atoi(oarg) > 0) ? prm->interval = ft_atoi(oarg)
+		: invalid_opt(oarg, "i");
 	else if (opt == 'I')
 		(is_interface_valid(prm, oarg) == 0) ? 0 : invalid_opt(oarg, "I");
 	else if (opt == 's')
-		(ft_atoi(oarg) > 0) ? prm->pkt_size = ft_atoi(oarg) :
-			invalid_opt(oarg, "s");
+		(ft_atoi(oarg) > 0) ? prm->pkt_size = ft_atoi(oarg)
+		: invalid_opt(oarg, "s");
 	else if (opt == 'Q')
-		(ft_atoi(oarg) > 0) ? prm->tos = ft_atoi(oarg) :
-			invalid_opt(oarg, "Q");
+		(ft_atoi(oarg) > 0) ? prm->tos = ft_atoi(oarg)
+		: invalid_opt(oarg, "Q");
 	else if (opt == 't')
-		(ft_atoi(oarg) > 0) ? prm->ttl = ft_atoi(oarg) :
-			invalid_opt(oarg, "t");
+		(ft_atoi(oarg) > 0) ? prm->ttl = ft_atoi(oarg)
+		: invalid_opt(oarg, "t");
 }
 
 int32_t			parse_opt(int ac, char **av, t_data *param)
