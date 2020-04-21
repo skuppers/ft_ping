@@ -3,74 +3,106 @@
 /*                                                        :::      ::::::::   */
 /*   ft_getopt.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cempassi <cempassi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: skuppers <skuppers@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/11/27 03:15:30 by cempassi          #+#    #+#             */
-/*   Updated: 2019/07/03 00:16:01 by cempassi         ###   ########.fr       */
+/*   Created: 2020/04/17 13:15:30 by skuppers          #+#    #+#             */
+/*   Updated: 2020/04/17 20:16:01 by skuppers         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf.h"
+#include "ft_getopt.h"
 
-static int		push_back(char *to_push)
+int				g_optind = 0;
+int				g_optopt = 1;
+char			*g_optarg = NULL;
+
+int32_t			retrieve_argument(char **av,
+					char **option, char **processing)
 {
-	char	holder;
+	char	*argstart;
+	char	*argument;
+	int32_t	option_processing;
 
-	if (!to_push)
-		return (1);
-	while (to_push[1])
+	argstart = (*processing + 1);
+	if (argstart != NULL && *argstart != 0)
 	{
-		holder = to_push[0];
-		to_push[0] = to_push[1];
-		to_push[1] = holder;
-		to_push++;
+		argument = argstart;
+		g_optarg = argument;
+		option_processing = (int32_t)**processing;
 	}
+	else
+	{
+		*option = av[++g_optind];
+		g_optarg = *option;
+		option_processing = (int32_t)**processing;
+	}
+	*processing = NULL;
+	*option = NULL;
+	return (option_processing);
+}
+
+int32_t			inspect_option(char **av, char **option, char **processing,
+									char *charset)
+{
+	char		*target;
+
+	if (*processing != NULL && **processing != '\0')
+	{
+		if ((target = ft_strchr(charset, **processing)) != NULL)
+		{
+			if (*(target + 1) != '\0' && *(target + 1) == ':')
+				return (retrieve_argument(av, option, processing));
+			else
+				return ((int32_t)**processing);
+		}
+		else
+			return ('?');
+	}
+	*processing = NULL;
+	*option = NULL;
 	return (0);
 }
 
-static char		parser(int ac, char **av, const char *optstr, char **opt)
+int32_t			process_next_opt(char **av, char *charset,
+									char **option, char **processing)
 {
-	static int	lvl = 1;
-	int			flag;
-	int			i;
-	char		error;
+	int32_t		returnval;
 
-	if (!opt || lvl == ac || !ft_strncmp(av[lvl], "--", 3) || av[lvl][0] != '-')
-		return (1);
-	i = 1;
-	flag = 1;
-	while (av[lvl][i] != '\0' && flag)
+	if (ft_strbeginswith(*option, "-"))
 	{
-		error = av[lvl][i];
-		flag = av[lvl][i] != '-' && ft_strchr(optstr, av[lvl][i]) ? 1 : 0;
-		if (flag && push_back(ft_strchr(*opt, av[lvl][i])))
-			if (!(*opt = ft_strinsert(opt, av[lvl][i], ft_strlen(*opt))))
-				flag = 0;
-		i++;
+		*processing = ++(*option);
+		if ((returnval = inspect_option(av, option, processing, charset)) == 0)
+			return (ft_getopt(2, av, charset));
+		return (returnval);
 	}
-	lvl++;
-	if (flag == 1 && (error = parser(ac, av, optstr, opt)) == 1)
-		return (1);
-	ft_strdel(opt);
-	return (error);
+	g_optopt = g_optind;
+	*option = NULL;
+	return (ft_getopt(2, av, charset));
 }
 
-int				ft_getopt(int ac, char **av, const char *optstr)
+int32_t			continue_process(char **av, char *charset,
+									char **option, char **processing)
 {
-	static t_opt_buffer	opt = {.buffer = NULL, .index = 0};
-	int					error;
+	int32_t		returnval;
 
-	if (ac == 1 || av == NULL || optstr == NULL)
-		return (0);
-	if (!opt.buffer && av[1][0] == '-')
-	{
-		opt.buffer = ft_strnew(0);
-		if ((error = parser(ac, av, optstr, &opt.buffer)) != 1)
-			return (-error);
-	}
-	if (opt.buffer && opt.buffer[opt.index])
-		return ((int)opt.buffer[(++opt.index) - 1]);
-	else if (opt.buffer)
-		ft_strdel(&opt.buffer);
-	return (-1);
+	++(*processing);
+	if ((returnval = inspect_option(av, option, processing, charset)) == 0)
+		return (ft_getopt(2, av, charset));
+	return (returnval);
+}
+
+int32_t			ft_getopt(int ac, char **av, char *charset)
+{
+	static char	*option;
+	static char	*processing;
+
+	if (ac < 2 || charset == NULL || ft_strlen(charset) == 0)
+		return (-1);
+	if (option == NULL)
+		option = av[++g_optind];
+	if (option == NULL)
+		return (-1);
+	if (processing == NULL)
+		return (process_next_opt(av, charset, &option, &processing));
+	return (continue_process(av, charset, &option, &processing));
 }
