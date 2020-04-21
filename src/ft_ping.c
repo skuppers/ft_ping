@@ -21,6 +21,15 @@ void				setup_runtime(t_runtime *runtime, t_data *param, int socket)
 	runtime->rpacketlist_head = NULL;
 }
 
+static uint8_t		is_paramcount_reached(uint16_t seq, uint32_t count)
+{
+	if (count == 0)
+		return (1);
+	else if (seq <= count)
+		return (1);
+	return (0);
+}
+
 static void			ping_while(t_runtime *runtime)
 {
 	uint8_t			*packet;
@@ -28,29 +37,10 @@ static void			ping_while(t_runtime *runtime)
 	t_timer			timer;
 
 	sequence = 1;
-	while (g_signals->sigint == 0 && sequence <= runtime->param->count)
+	while (g_signals->sigint == 0
+		&& is_paramcount_reached(sequence, runtime->param->count))
 	{
 		packet = forge_packet(runtime, packet, sequence);
-		if (send_packet(runtime, packet, &timer) == SUCCESS)
-			receive_packet(runtime, packet, &timer, sequence);
-		++sequence;
-		if (g_signals->sigalrm != 1)
-			ping_timer(runtime->param->interval);
-		g_signals->sigalrm = 0;
-	}
-}
-
-static void			ping_loop(t_runtime *runtime)
-{
-	uint8_t			*packet;
-	uint16_t		sequence;
-	t_timer			timer;
-
-	sequence = 1;
-	while (g_signals->sigint == 0)
-	{
-		packet = forge_packet(runtime, packet, sequence);
-		ft_memset(&timer, 0, sizeof(t_timer));
 		if (send_packet(runtime, packet, &timer) == SUCCESS)
 			receive_packet(runtime, packet, &timer, sequence);
 		++sequence;
@@ -72,10 +62,7 @@ int32_t				ft_ping(t_data *param)
 	}
 	setup_runtime(&runtime, param, socket);
 	print_resolve(param);
-	if (param->count > 0)
-		ping_while(&runtime);
-	else if (param->count == 0)
-		ping_loop(&runtime);
+	ping_while(&runtime);
 	print_stats(&runtime);
 	free(runtime.param->interface);
 	ft_strdel(&param->ipv4_str);
