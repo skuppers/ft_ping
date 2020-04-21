@@ -74,13 +74,13 @@ void					receive_packet(t_runtime *runtime, uint8_t *pkt,
 		if ((packetmeta.received_bytes = recvfrom(runtime->socket,
 			(void*)pkt, MTU, MSG_DONTWAIT, NULL,
 			(socklen_t*)sizeof(struct sockaddr))) <= 0)
-			{ }
+		{
+		}
 	if (packetmeta.received_bytes <= 0)
 		handle_timeout(runtime, pkt, &packetmeta);
 	else
 	{
-		if (gettimeofday(&(tm->recv), NULL) < 0)
-			{ }
+		gettimeofday(&(tm->recv), NULL);
 		response_code = ((struct s_icmpv4_hdr *)(pkt + IP4_HDRLEN))->icmp_type;
 		if (is_loopback_duplicate(response_code, runtime->param->interface))
 			discard_duplicate(runtime, pkt, &packetmeta);
