@@ -67,5 +67,5 @@ size_t				ft_stcksize(t_stack *stack);
 void				ft_stckinit(t_stack *stack);
 void				*ft_stcktop(t_stack *stack);
 void				ft_stckdestroy(t_stack *stack, void (*f)(void *));
-char				**ft_lsttotab(t_list *lst, char *(*f)(void *));
+char				**ft_lsttotab(t_list *lst, char *(*f)(void *, size_t));
 #endif

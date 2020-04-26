@@ -24,4 +24,6 @@ extern int	g_optind;
 extern int	g_optopt;
 
 int32_t		ft_getopt(int ac, char **av, char *charset);
+char        **ft_getopt_order_arguments(int ac, char **av, char *charset);
+int8_t		option_needs_argument(char *opt, char *charset);
 #endif

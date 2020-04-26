@@ -10,9 +10,9 @@
 #                                                                              #
 # **************************************************************************** #
 
-CC = gcc
-COMPILE = $(CC) -fPIE -c
-DEBUG = $(CC) -g3 -c #-fsanitize=address,undefined
+CC = clang
+COMPILE = $(CC) -fPIE -c -Wextra -Wall
+DEBUG = $(CC) -g3 -c -Wextra -Wall -fsanitize=address,undefined
 
 # Reset
 NC = \033[0m
@@ -197,7 +197,10 @@ SRCS += ft_putstr.c
 SRCS += ft_putnstr.c
 SRCS += ft_putstr_fd.c
 SRCS += ft_ringbuffer.c
+
 SRCS += ft_getopt.c
+SRCS += ft_getopt_tools.c
+
 SRCS += ft_getdelim.c
 SRCS += ft_getargslst.c
 

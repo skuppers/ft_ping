@@ -32,6 +32,7 @@ t_list		*ft_lstnew(void const *data, size_t data_size)
 		free(new);
 		return (NULL);
 	}
+	ft_bzero(new->data, data_size);
 	new->data_size = data_size;
 	ft_memcpy(new->data, data, data_size);
 	new->next = NULL;

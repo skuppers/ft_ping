@@ -22,11 +22,7 @@ void	ft_lstdelone(t_list **alst, void (*del)(void *))
 	if (del)
 		del((*alst)->data);
 	if ((*alst)->data)
-	{
-		printf("Freeing meta\n");
 		ft_memdel(&(*alst)->data);
-	}
-	printf("Freeing t_list\n");
 	free(*alst);
 	*alst = NULL;
 }

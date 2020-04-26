@@ -14,7 +14,7 @@
 #include <stdlib.h>
 #include "ft_malloc.h"
 
-char	**ft_lsttotab(t_list *lst, char *(*f)(void *))
+char	**ft_lsttotab(t_list *lst, char *(*f)(void *, size_t))
 {
 	char	**result;
 	size_t	lstlen;
@@ -25,7 +25,8 @@ char	**ft_lsttotab(t_list *lst, char *(*f)(void *))
 	index = 0;
 	while (index < lstlen)
 	{
-		result[index++] = f(lst->data);
+		result[index] = f(lst->data, lst->data_size);
+		index++;
 		lst = lst->next;
 	}
 	result[index] = NULL;
