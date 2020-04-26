@@ -15,7 +15,7 @@
 NAME=ft_ping
 DEBUG_NAME=ft_pingdbg
 
-CC=gcc
+CC=clang
 
 PATH_LIB=libft/
 
@@ -24,7 +24,7 @@ LIBFT= $(PATH_LIB)libft.a
 
 CFLAGS += -Wall
 CFLAGS += -Wextra
-CFLAGS += -Werror
+#CFLAGS += -Werror
 
 DBFLAGS += $(CFLAGS)
 DBFLAGS += -fsanitize=address,undefined

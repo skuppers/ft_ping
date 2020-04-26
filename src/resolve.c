@@ -35,27 +35,31 @@ char					*reverse_target(char *src_addr)
 	return (ft_strdup(hostname));
 }
 
-static uint8_t			check_broadcast(char *str)
+static uint8_t			getsocketresult(char *fqdn, struct addrinfo **results)
 {
-	if (ft_strequ(str, "255.255.255.255"))
-	{
-		printf("ft_ping: Impossible to ping broadcast.\n");
+	int32_t				code;
+	struct addrinfo		hints;
+
+	prepare_hints(&hints);
+	if ((code = getaddrinfo(fqdn, NULL, &hints, results)) != 0)
+	{	
+		if (code == -2)
+			printf("ft_ping: %s: Name or service not known\n", fqdn);
+		else
+			printf("ft_ping: %s: Temporary failure in name resolution\n", fqdn);
 		return (1);
 	}
 	return (0);
 }
 
-static uint8_t			getsocketresult(char *fqdn, struct addrinfo **results)
+int8_t					check_numeric(char *str)
 {
-	struct addrinfo		hints;
+	struct in_addr	test;
 
-	prepare_hints(&hints);
-	if ((getaddrinfo(fqdn, NULL, &hints, results)) != 0)
-	{
-		printf("ft_ping: %s: Temporary failure in name resolution\n", fqdn);
+	if (inet_pton(AF_INET, str, &test) != 1)
 		return (1);
-	}
 	return (0);
+	
 }
 
 int32_t					resolve_target(t_data *param)
@@ -64,8 +68,8 @@ int32_t					resolve_target(t_data *param)
 	struct in_addr		*iadr;
 	char				buffer[INET_ADDRSTRLEN];
 
-	if (check_broadcast(param->fqdn))
-		return (-1);
+	if (check_numeric(param->fqdn) == 0)
+		param->options |= OPT_NUMERIC;
 	result = NULL;
 	if (getsocketresult(param->fqdn, &result))
 		return (-1);
@@ -79,8 +83,5 @@ int32_t					resolve_target(t_data *param)
 	}
 	freeaddrinfo(result);
 	param->ipv4_str = ft_strdup(buffer);
-	if (param->interface == NULL)
-		if (select_dflt_interface(param) != 0)
-			return (-1);
 	return (0);
 }

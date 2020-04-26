@@ -30,6 +30,7 @@ void					print_unknown(uint8_t *pkt, uint16_t sequence)
 		sequence,
 		icmp->icmp_type,
 		icmp->icmp_code);
+	ft_strdel(&node);
 }
 
 void					print_unreachable(uint8_t *pkt, uint16_t sequence)
@@ -42,10 +43,11 @@ void					print_unreachable(uint8_t *pkt, uint16_t sequence)
 	ip = (struct s_ipv4_hdr *)pkt;
 	inet_ntop(AF_INET, &ip->ip_src, src, 16);
 	node = reverse_target(src);
-	printf("From %s (%s) icmp_seq=%u Destination unreachable.\n",
+	printf("From %s (%s) icmp_seq=%u Destination unreachable\n",
 		(node == NULL) ? src : node,
 		src,
 		sequence);
+	ft_strdel(&node);
 }
 
 void					print_ttl_exceeded(uint8_t *pkt, uint16_t sequence)
@@ -58,7 +60,7 @@ void					print_ttl_exceeded(uint8_t *pkt, uint16_t sequence)
 	ip = (struct s_ipv4_hdr *)pkt;
 	inet_ntop(AF_INET, &ip->ip_src, src, 16);
 	node = reverse_target(src);
-	printf("From %s (%s) icmp_seq=%u Time to live exceeded.\n",
+	printf("From %s (%s) icmp_seq=%u Time to live exceeded\n",
 		(node == NULL) ? src : node,
 		src,
 		sequence);
@@ -74,16 +76,18 @@ void					print_ping(t_data *param, uint8_t *pkt, t_timer *tm,
 
 	ip = (struct s_ipv4_hdr *)pkt;
 	inet_ntop(AF_INET, &ip->ip_src, src, 16);
+
 	hostdns = reverse_target(src);
+
 	if (param->options & OPT_TIMESTAMP)
 		printf("[%f] ", (double)tm->recv.tv_sec
 			+ (double)(0.001f * (double)tm->recv.tv_usec));
-	printf("%u bytes from %s(%s): icmp_seq=%u ttl=%d time=%.3fms\n",
-					ntohs(ip->ip_len),
-					(hostdns == NULL) ? src : hostdns,
-					src,
-					sequence,
-					ip->ip_ttl,
+	printf("%u bytes from ", ntohs(ip->ip_len));
+	if (param->options & OPT_NUMERIC)
+		printf("%s: ", src);
+	else
+		printf("%s (%s): ", (hostdns == NULL) ? src : hostdns, src);
+	printf("icmp_seq=%u ttl=%d time=%.3fms\n", sequence, ip->ip_ttl,
 					plot_timer(tm));
 	ft_strdel(&hostdns);
 }

@@ -43,8 +43,6 @@ static void		handle_custom_options(int32_t opt, t_data *prm, char *oarg)
 	else if (opt == 'i')
 		(ft_atoi(oarg) > 0) ? prm->interval = ft_atoi(oarg)
 		: invalid_opt(oarg, "i");
-	else if (opt == 'I')
-		(is_interface_valid(prm, oarg) == 0) ? 0 : invalid_opt(oarg, "I");
 	else if (opt == 's')
 		(ft_atoi(oarg) > 0) ? prm->pkt_size = ft_atoi(oarg)
 		: invalid_opt(oarg, "s");
@@ -60,14 +58,16 @@ int32_t			parse_opt(int ac, char **av, t_data *param)
 {
 	int32_t		option;
 
-	while ((option = ft_getopt(ac, av, "c:i:I:Q:t:s:dDhqv")) != -1)
+	while ((option = ft_getopt(ac, av, "c:i:Q:t:s:dDhqv")) != -1)
 	{
 		if (option == 'h' || option == 'd'
 				|| option == 'D' || option == 'v' || option == 'q')
 			handle_standalone_options(option, param);
-		else if (option == 'c' || option == 'i' || option == 'I'
+
+		else if (option == 'c' || option == 'i'
 				|| option == 'Q' || option == 't' || option == 's')
 			handle_custom_options(option, param, g_optarg);
+
 		else
 			print_usage(1);
 	}

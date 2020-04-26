@@ -21,12 +21,14 @@ int8_t		send_packet(t_runtime *runtime, uint8_t *packet, t_timer *tv)
 	if ((sent_bytes = sendto(runtime->socket, packet, packet_size, 0,
 		(struct sockaddr *)runtime->param->sin, sizeof(struct sockaddr))) < 0)
 	{
-		ping_fatal("send_packet", "sendto() failed");
-		exit(EXIT_FAILURE);
+		if (errno == EPERM)
+			printf("ft_ping: sendmsg: Operation not permitted\n");
+		else
+			printf("ft_ping: sendmsg: unknown error\n");
 	}
 	free(packet);
 	if (gettimeofday(&(tv->send), NULL) < 0)
-		printf("Error getting timeofday()\n");
+		;
 	alarm(1);
 	return (SUCCESS);
 }

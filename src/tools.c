@@ -14,8 +14,14 @@
 
 void				print_resolve(t_data *param)
 {
-	printf("PING %s (%s): %d(%d) data bytes\n", param->fqdn,
-		param->ipv4_str, param->pkt_size,
+	char	*host;
+
+	if (ft_strequ(param->fqdn, "0.0.0.0") != 0)
+		host = "127.0.0.1";
+	else
+		host = param->ipv4_str;
+	printf("PING %s (%s) %d(%d) bytes of data.\n", param->fqdn,
+		host, param->pkt_size,
 		param->pkt_size + IP4_HDRLEN + ICMP_HDRLEN);
 }
 

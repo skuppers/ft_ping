@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 
 #include "ft_ping.h"
-
+/*
 static uint8_t		retrieve_interfaces(struct ifaddrs **interfaces)
 {
 	if (getifaddrs(interfaces) == -1)
@@ -57,7 +57,6 @@ uint8_t				select_dflt_interface(t_data *param)
 		if (dest_is_on_loopback(param->ipv4_str, itf_ptr->ifa_name)
 			|| is_valid_ipv4(param->ipv4_str, itf_ptr))
 		{
-			param->interface = ft_strdup(itf_ptr->ifa_name);
 			freeifaddrs(interfaces);
 			return (0);
 		}
@@ -70,6 +69,7 @@ uint8_t				select_dflt_interface(t_data *param)
 
 uint8_t				is_interface_valid(t_data *param, char *interface)
 {
+	(void)param;
 	struct ifaddrs	*itf_ptr;
 	struct ifaddrs	*interfaces;
 
@@ -84,7 +84,6 @@ uint8_t				is_interface_valid(t_data *param, char *interface)
 		{
 			if (itf_ptr->ifa_addr->sa_family == AF_INET)
 			{
-				param->interface = ft_strdup(itf_ptr->ifa_name);
 				freeifaddrs(interfaces);
 				return (0);
 			}
@@ -95,3 +94,4 @@ uint8_t				is_interface_valid(t_data *param, char *interface)
 	freeifaddrs(interfaces);
 	exit(42);
 }
+*/

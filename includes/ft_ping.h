@@ -35,11 +35,12 @@
 # include <net/if.h>
 # include <bits/endian.h>
 # include "libft.h"
-# define OPT_VERBOSE		0x0001
-# define OPT_QUIET			0x0002
-# define OPT_SO_DEBUG		0x0004
-# define OPT_TIMESTAMP		0x0008
-# define BASE_TTL			255
+# define OPT_VERBOSE		0x01
+# define OPT_QUIET			0x02
+# define OPT_SO_DEBUG		0x04
+# define OPT_TIMESTAMP		0x08
+# define OPT_NUMERIC		0x10
+# define BASE_TTL			128
 # define IP4_HDRLEN			20
 # define ICMP_HDRLEN		8
 # define MTU				1500
@@ -61,7 +62,6 @@ typedef struct				s_data
 	uint8_t					tos;
 	uint8_t					ttl;
 	struct sockaddr_in		*sin;
-	char					*interface;
 	char					*fqdn;
 	char					*ipv4_str;
 }							t_data;
@@ -177,8 +177,8 @@ int8_t						send_packet(t_runtime *rt, uint8_t *packet,
 								t_timer *tv);
 void						extract_ipaddr(const struct sockaddr *sa, char *ip,
 								uint32_t maxlen);
-uint8_t						is_interface_valid(t_data *param, char *interface);
-uint8_t						select_dflt_interface(t_data *param);
+//uint8_t						is_interface_valid(t_data *param, char *interface);
+//uint8_t						select_dflt_interface(t_data *param);
 uint16_t					checksum(uint16_t *addr, int32_t len);
 uint8_t						*allocate_ucharlist(int32_t len);
 int32_t						*allocate_intlist(int32_t len);

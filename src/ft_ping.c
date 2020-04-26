@@ -13,7 +13,7 @@
 #include <sys/time.h>
 #include "ft_ping.h"
 
-void				setup_runtime(t_runtime *runtime, t_data *param, int socket)
+static void				setup_runtime(t_runtime *runtime, t_data *param, int socket)
 {
 	memset(runtime, 0, sizeof(struct s_runtime));
 	runtime->param = param;
@@ -64,7 +64,6 @@ int32_t				ft_ping(t_data *param)
 	print_resolve(param);
 	ping_while(&runtime);
 	print_stats(&runtime);
-	free(runtime.param->interface);
 	ft_strdel(&param->ipv4_str);
 	return (0);
 }

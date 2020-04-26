@@ -15,6 +15,7 @@
 void	id_seq_mismatch(t_runtime *rt, uint8_t *pkt, t_timer *tm, uint16_t seq)
 {
 	free(pkt);
+	pkt = NULL;
 	if (g_signals->sigalrm == 0 && g_signals->sigint == 0)
 		receive_packet(rt, pkt, tm, seq);
 	else

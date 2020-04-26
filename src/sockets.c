@@ -62,47 +62,11 @@ static int8_t		configuretimeouts(int clientsocket)
 	return (0);
 }
 
-static int8_t		bindtointerface(int clientsocket, struct ifreq *if_bind)
-{
-	if (setsockopt(clientsocket, SOL_SOCKET, SO_BINDTODEVICE,
-			if_bind, sizeof(if_bind)) < 0)
-	{
-		ping_fatal("bindToInterface", "setsockopt() failed to bind");
-		return (-1);
-	}
-	return (0);
-}
-
-static int8_t		indexsocket(t_data *param, struct ifreq *if_bind)
-{
-	int				tempsocket;
-
-	if ((tempsocket = socket(AF_INET, SOCK_RAW, IPPROTO_ICMP)) < 0)
-	{
-		ft_strdel(&param->interface);
-		ping_fatal("indexSocket", "socket() failed. Are you root?");
-		return (-1);
-	}
-	ft_strncpy(if_bind->ifr_name, (const char*)param->interface,
-		IF_NAMESIZE);
-	if (ioctl(tempsocket, SIOCGIFINDEX, if_bind) < 0)
-	{
-		ping_fatal("indexSocket", "ioctl() failed to find interface");
-		return (-1);
-	}
-	close(tempsocket);
-	return (0);
-}
-
 int32_t				createsocket(t_data *param)
 {
 	int				clientsocket;
-	struct ifreq	if_bind;
 
 	clientsocket = -1;
-	memset(&if_bind, 0, sizeof(struct ifreq));
-	if (indexsocket(param, &if_bind) != 0)
-		return (-1);
 	if ((clientsocket = socket(AF_INET, SOCK_RAW, IPPROTO_ICMP)) < 0)
 	{
 		ping_fatal("createsocket", "socket() failed");
@@ -111,8 +75,6 @@ int32_t				createsocket(t_data *param)
 	if (configuresocket(clientsocket, param) != 0)
 		return (-1);
 	if (configuretimeouts(clientsocket) != 0)
-		return (-1);
-	if (bindtointerface(clientsocket, &if_bind) != 0)
 		return (-1);
 	return (clientsocket);
 }

@@ -46,9 +46,9 @@ static void				handle_timeout(t_runtime *runtime, uint8_t *pkt,
 	register_response(runtime, NULL, 0, packetmeta->timer);
 }
 
-static int8_t			is_loopback_duplicate(uint16_t code, char *interface)
+static int8_t			is_loopback_duplicate(uint16_t code)
 {
-	if (code == 8 && ft_strequ(interface, "lo"))
+	if (code == 8)
 		return (1);
 	return (0);
 }
@@ -57,7 +57,7 @@ static void				discard_duplicate(t_runtime *runtime, uint8_t *pkt,
 							t_meta *packetmeta)
 {
 	free(pkt);
-	receive_packet(runtime, pkt, packetmeta->timer, packetmeta->sequence);
+	receive_packet(runtime, NULL, packetmeta->timer, packetmeta->sequence);
 }
 
 void					receive_packet(t_runtime *runtime, uint8_t *pkt,
@@ -82,7 +82,7 @@ void					receive_packet(t_runtime *runtime, uint8_t *pkt,
 	{
 		gettimeofday(&(tm->recv), NULL);
 		response_code = ((struct s_icmpv4_hdr *)(pkt + IP4_HDRLEN))->icmp_type;
-		if (is_loopback_duplicate(response_code, runtime->param->interface))
+		if (is_loopback_duplicate(response_code))
 			discard_duplicate(runtime, pkt, &packetmeta);
 		else
 			handle_response(runtime, pkt, &packetmeta);
