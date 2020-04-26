@@ -22,9 +22,11 @@ int8_t		send_packet(t_runtime *runtime, uint8_t *packet, t_timer *tv)
 		(struct sockaddr *)runtime->param->sin, sizeof(struct sockaddr))) < 0)
 	{
 		if (errno == EPERM)
-			printf("ft_ping: sendmsg: Operation not permitted\n");
+			printf("ft_ping: sendto: Operation not permitted\n");
+		else if (errno == 90)
+			printf("ft_ping: sendto: message too long\n");
 		else
-			printf("ft_ping: sendmsg: unknown error\n");
+			printf("ft_ping: sendto: error code %d\n", errno);
 	}
 	free(packet);
 	if (gettimeofday(&(tv->send), NULL) < 0)

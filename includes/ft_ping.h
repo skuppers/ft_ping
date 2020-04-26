@@ -44,6 +44,7 @@
 # define IP4_HDRLEN			20
 # define ICMP_HDRLEN		8
 # define MTU				1500
+# define OPT_CHARSET		"c:i:Q:t:s:dDhqv"
 
 typedef struct				s_signals
 {
@@ -197,4 +198,9 @@ void						print_ping(t_data *param, uint8_t *pkt, t_timer *tm,
 								uint16_t sequence);
 void						print_usage(uint8_t exit);
 void						print_resolve(t_data *param);
+void						invalid_ttl(char *oarg);
+void						invalid_tos(char *oarg);
+void						invalid_size(char *oarg);
+void						invalid_timing(char *oarg);
+void						invalid_count(char *oarg);
 #endif

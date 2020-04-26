@@ -12,13 +12,25 @@
 
 #include "ft_ping.h"
 
-void			invalid_opt(char *optarg, char *option)
+static int8_t    valid_args(char *argument, int min, int max, char opt)
 {
-	if (optarg == NULL)
-		printf("ft_ping: option requires an argument -- '%s'\n", option);
-	else
-		printf("ft_ping: invalid argument: %s\n", optarg);
-	exit(-1);
+	if (argument == NULL || ft_strlen(argument) == 0)
+	{
+		printf("ft_ping: option requires an argument -- '%c'\n", opt);
+		exit(42);
+	}
+    if (!ft_isnumeric(argument))
+    {
+		printf("ft_ping: invalid argument: %s\n", argument);
+		exit(42);
+	}
+    if (ft_strlen(argument) > 5)
+        return (-2);
+    if (ft_atoi(argument) > max)
+        return (-3);
+    if (ft_atoi(argument) < min)
+        return (-4);
+    return (1);
 }
 
 static void		handle_standalone_options(int32_t option, t_data *param)
@@ -38,27 +50,27 @@ static void		handle_standalone_options(int32_t option, t_data *param)
 static void		handle_custom_options(int32_t opt, t_data *prm, char *oarg)
 {
 	if (opt == 'c')
-		(ft_atoi(oarg) > 0) ? prm->count = (uint16_t)ft_atoi(oarg)
-		: invalid_opt(oarg, "c");
+		(valid_args(oarg, 1, 65535, 'c') == 1) ? prm->count = (uint16_t)ft_atoi(oarg) : invalid_count(oarg);
+
 	else if (opt == 'i')
-		(ft_atoi(oarg) > 0) ? prm->interval = ft_atoi(oarg)
-		: invalid_opt(oarg, "i");
+		(valid_args(oarg, 1, 255, 'i') == 1)? prm->interval = ft_atoi(oarg) : invalid_timing(oarg);
+
 	else if (opt == 's')
-		(ft_atoi(oarg) > 0) ? prm->pkt_size = ft_atoi(oarg)
-		: invalid_opt(oarg, "s");
+		(valid_args(oarg, 0, 65507, 's') == 1)? prm->pkt_size = ft_atoi(oarg) : invalid_size(oarg);
+
 	else if (opt == 'Q')
-		(ft_atoi(oarg) > 0) ? prm->tos = ft_atoi(oarg)
-		: invalid_opt(oarg, "Q");
+		(valid_args(oarg, 1, 255, 'Q') == 1)? prm->tos = ft_atoi(oarg) : invalid_tos(oarg);
+
 	else if (opt == 't')
-		(ft_atoi(oarg) > 0) ? prm->ttl = ft_atoi(oarg)
-		: invalid_opt(oarg, "t");
+		(valid_args(oarg, 1, 255, 't') == 1)? prm->ttl = ft_atoi(oarg) : invalid_ttl(oarg);
 }
 
 int32_t			parse_opt(int ac, char **av, t_data *param)
 {
 	int32_t		option;
 
-	while ((option = ft_getopt(ac, av, "c:i:Q:t:s:dDhqv")) != -1)
+	av = ft_getopt_order_arguments(ac, av, OPT_CHARSET);
+	while ((option = ft_getopt(ac, av, OPT_CHARSET)) != -1)
 	{
 		if (option == 'h' || option == 'd'
 				|| option == 'D' || option == 'v' || option == 'q')
@@ -71,7 +83,17 @@ int32_t			parse_opt(int ac, char **av, t_data *param)
 		else
 			print_usage(1);
 	}
-	if (av[optind] != NULL)
-		param->fqdn = av[g_optopt];
+	if (g_optind != -1 && av[g_optind + 1] != NULL)
+	{
+		printf("ft_ping: multiple hops are not allowed: %s\n", av[g_optind + 1]);
+	}
+	if (g_optind != -1 && av[g_optind] != NULL)
+		param->fqdn = ft_strdup(av[g_optind]);
+	
+//	printf("fqdn:%s +1:%s\n", av[g_optind], av[g_optind + 1]);
+//	printf("Options: s:%d t:%d Q:%d i:%d c:%d\n",
+//		param->pkt_size, param->ttl, param->tos, param->interval, param->count);
+
+	ft_freetab(&av);
 	return (0);
 }

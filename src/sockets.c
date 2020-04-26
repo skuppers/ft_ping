@@ -69,7 +69,7 @@ int32_t				createsocket(t_data *param)
 	clientsocket = -1;
 	if ((clientsocket = socket(AF_INET, SOCK_RAW, IPPROTO_ICMP)) < 0)
 	{
-		ping_fatal("createsocket", "socket() failed");
+		ping_fatal("createsocket", "socket() failed. Are you root?");
 		return (-1);
 	}
 	if (configuresocket(clientsocket, param) != 0)

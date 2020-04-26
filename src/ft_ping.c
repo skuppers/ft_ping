@@ -58,6 +58,7 @@ int32_t				ft_ping(t_data *param)
 	if ((socket = createsocket(param)) < 0)
 	{
 		ft_strdel(&param->ipv4_str);
+		ft_strdel(&param->fqdn);
 		return (-1);
 	}
 	setup_runtime(&runtime, param, socket);
@@ -65,5 +66,6 @@ int32_t				ft_ping(t_data *param)
 	ping_while(&runtime);
 	print_stats(&runtime);
 	ft_strdel(&param->ipv4_str);
+	ft_strdel(&param->fqdn);
 	return (0);
 }
