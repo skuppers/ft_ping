@@ -14,9 +14,6 @@
 
 t_list	*ft_lstmerge(t_list **alst, t_list *blst)
 {
-	t_list *holder;
-
-	holder = *alst;
 	if (*alst == NULL)
 	{
 		*alst = blst;

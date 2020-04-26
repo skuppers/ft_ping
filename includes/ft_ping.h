@@ -158,9 +158,10 @@ void						resp_code_unknown(t_runtime *rt, uint8_t *pkt,
 void						del_metadata(void *metadata);
 void						print_help(uint8_t exits);
 char						*reverse_target(char *src_addr);
-void						print_ttl_exceeded(uint8_t *pkt, uint16_t sequence);
-void						print_unreachable(uint8_t *pkt, uint16_t sequence);
-void						print_unknown(uint8_t *pkt, uint16_t sequence);
+void						print_ttl_exceeded(t_data *param, uint8_t *pkt, uint16_t sequence);
+void						print_unreachable(t_data *param, uint8_t *pkt, uint8_t code,
+								uint16_t sequence);
+void						print_unknown(t_data *param, uint8_t *pkt, uint16_t sequence);
 void						init_param(t_data *param);
 void						init_signals(t_signals *signals);
 uint32_t					list_received(t_list *list_header);

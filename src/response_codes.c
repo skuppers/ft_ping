@@ -32,20 +32,25 @@ void	resp_code_zero(t_runtime *rt, uint8_t *pkt, t_meta *pm)
 void	resp_code_eleven(t_runtime *rt, uint8_t *pkt, t_meta *pm)
 {
 	if (!(rt->param->options & OPT_QUIET))
-		print_ttl_exceeded(pkt, pm->sequence);
+		print_ttl_exceeded(rt->param, pkt, pm->sequence);
 	register_response(rt, pkt, pm->received_bytes, NULL);
 }
 
 void	resp_code_three(t_runtime *rt, uint8_t *pkt, t_meta *pm)
 {
+	int8_t				response_code;
+	struct s_icmpv4_hdr	*icmp;
+
+	icmp = (struct s_icmpv4_hdr *)(pkt + sizeof(struct s_ipv4_hdr));
+	response_code = icmp->icmp_code;
 	if (!(rt->param->options & OPT_QUIET))
-		print_unreachable(pkt, pm->sequence);
+		print_unreachable(rt->param, pkt, response_code, pm->sequence);
 	register_response(rt, pkt, pm->received_bytes, NULL);
 }
 
 void	resp_code_unknown(t_runtime *rt, uint8_t *pkt, t_meta *pm)
 {
 	if (!(rt->param->options & OPT_QUIET))
-		print_unknown(pkt, pm->sequence);
+		print_unknown(rt->param, pkt, pm->sequence);
 	register_response(rt, pkt, pm->received_bytes, NULL);
 }

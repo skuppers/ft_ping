@@ -10,7 +10,7 @@
 #                                                                              #
 # **************************************************************************** #
 
-CC = clang
+CC = gcc
 COMPILE = $(CC) -fPIE -c
 DEBUG = $(CC) -g3 -c #-fsanitize=address,undefined
 

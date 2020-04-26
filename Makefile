@@ -53,7 +53,6 @@ PATH_SRCS = src/
 SRCS += main.c
 SRCS += resolve.c
 SRCS += options.c
-SRCS += interface.c
 SRCS += ft_ping.c
 SRCS += sockets.c
 SRCS += packet_builder.c

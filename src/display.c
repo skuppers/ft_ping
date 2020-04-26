@@ -12,7 +12,32 @@
 
 #include "ft_ping.h"
 
-void					print_unknown(uint8_t *pkt, uint16_t sequence)
+void					print_unreachable(t_data *param, 
+							uint8_t *pkt, uint8_t code, uint16_t sequence)
+{
+	char				src[16];
+	struct s_ipv4_hdr	*ip;
+	char				*node;
+
+	ft_bzero(src, 16);
+	ip = (struct s_ipv4_hdr *)pkt;
+	inet_ntop(AF_INET, &ip->ip_src, src, 16);
+	node = reverse_target(src);
+	if (param->options & OPT_NUMERIC)
+		printf("From %s: ", src);
+	else
+		printf("From %s (%s): ", (node == NULL) ? src : node, src);
+	printf("icmp_seq=%u ", sequence);
+	if (code == 0)
+		printf("Destination network unreachable\n");
+	else if (code == 1)
+		printf("Destination host unreachable\n");
+	else
+		printf("Destination unreachable\n");
+	ft_strdel(&node);
+}
+
+void					print_unknown(t_data *param, uint8_t *pkt, uint16_t sequence)
 {
 	char				src[16];
 	struct s_ipv4_hdr	*ip;
@@ -24,16 +49,18 @@ void					print_unknown(uint8_t *pkt, uint16_t sequence)
 	icmp = (struct s_icmpv4_hdr *)(pkt + IP4_HDRLEN);
 	inet_ntop(AF_INET, &ip->ip_src, src, 16);
 	node = reverse_target(src);
-	printf("From %s (%s) icmp_seq=%u Unknown error: type:%u code:%u\n",
-		(node == NULL) ? src : node,
-		src,
+	if (param->options & OPT_NUMERIC)
+		printf("From %s: ", src);
+	else
+		printf("From %s (%s): ", (node == NULL) ? src : node, src);
+	printf("icmp_seq=%u Unknown error: type:%u code:%u\n",
 		sequence,
 		icmp->icmp_type,
 		icmp->icmp_code);
 	ft_strdel(&node);
 }
 
-void					print_unreachable(uint8_t *pkt, uint16_t sequence)
+void					print_ttl_exceeded(t_data *param, uint8_t *pkt, uint16_t sequence)
 {
 	char				src[16];
 	struct s_ipv4_hdr	*ip;
@@ -43,26 +70,11 @@ void					print_unreachable(uint8_t *pkt, uint16_t sequence)
 	ip = (struct s_ipv4_hdr *)pkt;
 	inet_ntop(AF_INET, &ip->ip_src, src, 16);
 	node = reverse_target(src);
-	printf("From %s (%s) icmp_seq=%u Destination unreachable\n",
-		(node == NULL) ? src : node,
-		src,
-		sequence);
-	ft_strdel(&node);
-}
-
-void					print_ttl_exceeded(uint8_t *pkt, uint16_t sequence)
-{
-	char				src[16];
-	struct s_ipv4_hdr	*ip;
-	char				*node;
-
-	ft_bzero(src, 16);
-	ip = (struct s_ipv4_hdr *)pkt;
-	inet_ntop(AF_INET, &ip->ip_src, src, 16);
-	node = reverse_target(src);
-	printf("From %s (%s) icmp_seq=%u Time to live exceeded\n",
-		(node == NULL) ? src : node,
-		src,
+	if (param->options & OPT_NUMERIC)
+		printf("From %s: ", src);
+	else
+		printf("From %s (%s): ", (node == NULL) ? src : node, src);
+	printf("icmp_seq=%u Time to live exceeded\n",
 		sequence);
 	ft_strdel(&node);
 }
@@ -82,7 +94,7 @@ void					print_ping(t_data *param, uint8_t *pkt, t_timer *tm,
 	if (param->options & OPT_TIMESTAMP)
 		printf("[%f] ", (double)tm->recv.tv_sec
 			+ (double)(0.001f * (double)tm->recv.tv_usec));
-	printf("%u bytes from ", ntohs(ip->ip_len));
+	printf("%u bytes from ", ntohs(ip->ip_len) - IP4_HDRLEN);
 	if (param->options & OPT_NUMERIC)
 		printf("%s: ", src);
 	else
