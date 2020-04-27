@@ -13,7 +13,7 @@
 #include <sys/time.h>
 #include "ft_ping.h"
 
-static void				setup_runtime(t_runtime *runtime, t_data *param, int socket)
+static void			setup_runtime(t_runtime *runtime, t_data *param, int socket)
 {
 	memset(runtime, 0, sizeof(struct s_runtime));
 	runtime->param = param;
@@ -37,6 +37,7 @@ static void			ping_while(t_runtime *runtime)
 	t_timer			timer;
 
 	sequence = 1;
+	packet = NULL;
 	while (g_signals->sigint == 0
 		&& is_paramcount_reached(sequence, runtime->param->count))
 	{

@@ -42,7 +42,7 @@ static uint8_t			getsocketresult(char *fqdn, struct addrinfo **results)
 
 	prepare_hints(&hints);
 	if ((code = getaddrinfo(fqdn, NULL, &hints, results)) != 0)
-	{	
+	{
 		if (code == -2)
 			printf("ft_ping: %s: Name or service not known\n", fqdn);
 		else
@@ -54,12 +54,11 @@ static uint8_t			getsocketresult(char *fqdn, struct addrinfo **results)
 
 int8_t					check_numeric(char *str)
 {
-	struct in_addr	test;
+	struct in_addr		test;
 
 	if (inet_pton(AF_INET, str, &test) != 1)
 		return (1);
 	return (0);
-	
 }
 
 int32_t					resolve_target(t_data *param)
@@ -72,7 +71,10 @@ int32_t					resolve_target(t_data *param)
 		param->options |= OPT_NUMERIC;
 	result = NULL;
 	if (getsocketresult(param->fqdn, &result))
+	{
+		ft_strdel(&param->fqdn);
 		return (-1);
+	}
 	param->sin = ((struct sockaddr_in*)result->ai_addr);
 	iadr = &(((struct sockaddr_in*)result->ai_addr)->sin_addr);
 	ft_bzero(buffer, INET_ADDRSTRLEN);

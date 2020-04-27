@@ -19,9 +19,15 @@ int		main(int ac, char **av)
 
 	if (ac < 2)
 		print_usage(42);
+	if (getuid() != 0)
+	{
+		printf("This program needs root privileges to create Raw sockets.\n");
+		return (-1);
+	}
 	init_param(&param);
 	init_signals(&signals);
-	parse_opt(ac, av, &param);
+	if (parse_opt(ac, av, &param) != 0)
+		return (-1);
 	if (param.fqdn == NULL)
 		print_usage(42);
 	if (resolve_target(&param) < 0)

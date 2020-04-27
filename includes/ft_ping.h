@@ -40,11 +40,11 @@
 # define OPT_SO_DEBUG		0x04
 # define OPT_TIMESTAMP		0x08
 # define OPT_NUMERIC		0x10
-# define BASE_TTL			128
+# define OPT_CHARSET		"c:i:Q:t:s:dDhqv"
+# define BASE_TTL			64
 # define IP4_HDRLEN			20
 # define ICMP_HDRLEN		8
 # define MTU				1500
-# define OPT_CHARSET		"c:i:Q:t:s:dDhqv"
 
 typedef struct				s_signals
 {
@@ -159,10 +159,11 @@ void						resp_code_unknown(t_runtime *rt, uint8_t *pkt,
 void						del_metadata(void *metadata);
 void						print_help(uint8_t exits);
 char						*reverse_target(char *src_addr);
-void						print_ttl_exceeded(t_data *param, uint8_t *pkt, uint16_t sequence);
-void						print_unreachable(t_data *param, uint8_t *pkt, uint8_t code,
-								uint16_t sequence);
-void						print_unknown(t_data *param, uint8_t *pkt, uint16_t sequence);
+void						print_ttl_exceeded(t_data *p, uint8_t *k,
+								uint16_t seq);
+void						print_unreachable(t_data *p, uint8_t *k, uint8_t c,
+								uint16_t s);
+void						print_unknown(t_data *p, uint8_t *k, uint16_t s);
 void						init_param(t_data *param);
 void						init_signals(t_signals *signals);
 uint32_t					list_received(t_list *list_header);
@@ -179,15 +180,13 @@ int8_t						send_packet(t_runtime *rt, uint8_t *packet,
 								t_timer *tv);
 void						extract_ipaddr(const struct sockaddr *sa, char *ip,
 								uint32_t maxlen);
-//uint8_t						is_interface_valid(t_data *param, char *interface);
-//uint8_t						select_dflt_interface(t_data *param);
 uint16_t					checksum(uint16_t *addr, int32_t len);
 uint8_t						*allocate_ucharlist(int32_t len);
 int32_t						*allocate_intlist(int32_t len);
 void						ping_fatal(const char *failed, const char *errbuff);
 int32_t						ft_ping(t_data *param);
 int32_t						resolve_target(t_data *param);
-int32_t						parse_opt(int ac, char **av, t_data *param);
+int8_t						parse_opt(int ac, char **av, t_data *param);
 int32_t						createsocket(t_data *param);
 uint8_t						*forge_packet(t_runtime *rt, uint8_t *pkt,
 								uint16_t seq);

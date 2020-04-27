@@ -22,9 +22,9 @@ void	print_usage(uint8_t exits)
 
 void	print_help(uint8_t exits)
 {
-	printf("Ft_ping:\n"
+	printf("ft_ping:\n"
 		"*	Possible options are:\n"
-		"*	-c <number>     Send <number of packets and quit.\n"
+		"*	-c <number>     Send <number> of packets and quit.\n"
 		"*	-d      	Set the SO_DEBUG flag on the socket.\n"
 		"*	-D		Print the timestamp.\n"
 		"*	-h		Shows this page.\n"

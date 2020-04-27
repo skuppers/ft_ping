@@ -12,7 +12,7 @@
 
 #include "ft_ping.h"
 
-void					print_unreachable(t_data *param, 
+void					print_unreachable(t_data *param,
 							uint8_t *pkt, uint8_t code, uint16_t sequence)
 {
 	char				src[16];
@@ -37,7 +37,8 @@ void					print_unreachable(t_data *param,
 	ft_strdel(&node);
 }
 
-void					print_unknown(t_data *param, uint8_t *pkt, uint16_t sequence)
+void					print_unknown(t_data *param, uint8_t *pkt,
+							uint16_t sequence)
 {
 	char				src[16];
 	struct s_ipv4_hdr	*ip;
@@ -60,7 +61,8 @@ void					print_unknown(t_data *param, uint8_t *pkt, uint16_t sequence)
 	ft_strdel(&node);
 }
 
-void					print_ttl_exceeded(t_data *param, uint8_t *pkt, uint16_t sequence)
+void					print_ttl_exceeded(t_data *param, uint8_t *pkt,
+							uint16_t sequence)
 {
 	char				src[16];
 	struct s_ipv4_hdr	*ip;
@@ -88,9 +90,7 @@ void					print_ping(t_data *param, uint8_t *pkt, t_timer *tm,
 
 	ip = (struct s_ipv4_hdr *)pkt;
 	inet_ntop(AF_INET, &ip->ip_src, src, 16);
-
 	hostdns = reverse_target(src);
-
 	if (param->options & OPT_TIMESTAMP)
 		printf("[%f] ", (double)tm->recv.tv_sec
 			+ (double)(0.001f * (double)tm->recv.tv_usec));

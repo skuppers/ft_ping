@@ -17,8 +17,6 @@ float		plot_timer(t_timer *timer)
 	double	send;
 	double	recv;
 
-	send = 0;
-	recv = 0;
 	send = ((double)timer->send.tv_sec)
 		+ ((double)(0.000001f * (double)timer->send.tv_usec));
 	recv = ((double)timer->recv.tv_sec)
@@ -31,7 +29,6 @@ static void	get_stddev(t_runtime *rt, t_stats *s)
 	t_list	*ptr;
 	float	dev;
 
-	dev = 0;
 	ptr = rt->rpacketlist_head;
 	while (ptr != NULL)
 	{

@@ -12,13 +12,13 @@
 
 #include "ft_ping.h"
 
-void		invalid_count(char * oarg)
+void		invalid_count(char *oarg)
 {
 	printf("ft_ping: invalid argument '%s': out of range: 1-65535\n", oarg);
 	exit(42);
 }
 
-void		invalid_timing(char * oarg)
+void		invalid_timing(char *oarg)
 {
 	printf("ft_ping: bad timing interval: %s\n", oarg);
 	exit(42);
@@ -32,7 +32,8 @@ void		invalid_size(char *oarg)
 
 void		invalid_tos(char *oarg)
 {
-	printf("ft_ping: the decimal value of TOS bits must be in range 0-255: %s\n", oarg);
+	printf("ft_ping: the value of TOS bits must be in range 0-255: %s\n",
+		oarg);
 	exit(42);
 }
 
