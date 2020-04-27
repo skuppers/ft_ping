@@ -16,9 +16,9 @@ int				g_optind = -1;
 int				g_optopt = 0;
 char			*g_optarg = NULL;
 
-int8_t		opt_needs_argument(char *opt, char *charset)
+int8_t			opt_needs_argument(char *opt, char *charset)
 {
-	char	*target;
+	char		*target;
 
 	if (opt[0] != '-')
 		return (-2);
@@ -27,7 +27,7 @@ int8_t		opt_needs_argument(char *opt, char *charset)
 	target = ft_strchr(charset, *opt);
 	if (target != NULL)
 	{
-		if (target + 1 == '\0')
+		if (*(target + 1) == '\0')
 			return (0);
 		else if (*(target + 1) == ':')
 			return (1);
@@ -42,7 +42,7 @@ int32_t			extract_option(char *option, char *charset)
 	if (ft_strbeginswith(option, "-"))
 	{
 		if (ft_strchr(charset, *(option + 1)) == NULL)
-			return ('?');
+			return (*(option + 1));
 		if (opt_needs_argument(option, charset) == 1)
 		{
 			option++;
@@ -61,14 +61,12 @@ int32_t			extract_option(char *option, char *charset)
 
 int32_t			ft_getopt(int ac, char **av, char *charset)
 {
-	static char		*option;
-	
+	static char	*option;
+
 	if (ac < 2 || charset == NULL || ft_strlen(charset) == 0)
 		return (-1);
-
 	option = av[g_optopt++];
 	if (option == NULL)
 		return (-1);
-
 	return (extract_option(option, charset));
 }

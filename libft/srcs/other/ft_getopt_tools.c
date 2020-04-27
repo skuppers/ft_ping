@@ -25,7 +25,7 @@ int8_t		option_needs_argument(char *opt, char *charset)
 	target = ft_strchr(charset, *opt);
 	if (target != NULL)
 	{
-		if (target + 1 == '\0')
+		if (*(target + 1) == '\0')
 			return (0);
 		else if (*(target + 1) == ':')
 			if (*(opt + 1) == '\0')
@@ -34,16 +34,7 @@ int8_t		option_needs_argument(char *opt, char *charset)
 	return (-1);
 }
 
-void	ft_lstiter_elem_ctx(t_list *lst, void *context, void (*f)(void *data, void *ctx))
-{
-	if (lst)
-	{
-		f(lst, context);
-		ft_lstiter_elem_ctx(lst->next, context, f);
-	}
-}
-
-void	merge_option_arguments(void *data, void *context)
+void		merge_option_arguments(void *data, void *context)
 {
 	t_list	*current;
 	t_list	*next;
@@ -54,7 +45,7 @@ void	merge_option_arguments(void *data, void *context)
 	{
 		next = current->next;
 		if (next == NULL)
-			return ;	
+			return ;
 		tmp = ft_strjoin(current->data, next->data);
 		ft_strdel((char **)&(current->data));
 		current->data = tmp;
@@ -63,7 +54,7 @@ void	merge_option_arguments(void *data, void *context)
 	}
 }
 
-t_list	*arrange_options(int ac, char **av, char *charset)
+t_list		*arrange_options(int ac, char **av, char *charset)
 {
 	t_list	*options;
 
@@ -73,32 +64,7 @@ t_list	*arrange_options(int ac, char **av, char *charset)
 	return (options);
 }
 
-int	is_option_or_not(void *opt1, void *opt2)
-{
-	if (opt1 == NULL || opt2 == NULL)
-		return (0);
-	if (ft_strbeginswith((char *)opt1, "-")
-		&& ft_strbeginswith((char *)opt2, "-"))
-		return (0);
-	else
-	{
-		if (ft_strbeginswith((char *)opt1, "-"))
-			return (-1);
-		return (1);
-	}
-}
-
-int is_option_or_argument(void *opt1, void *opt2)
-{
-	if (opt1 == NULL || opt2 == NULL)
-		return (0);
-	if (ft_strlen((char *)opt1) > ft_strlen((char *)opt2))
-		return (1);
-	else
-		return (-1);
-}
-
-char	*ft_strdup2(void *s, size_t size)
+char		*ft_strdup2(void *s, size_t size)
 {
 	char	*dst;
 	char	*s1;
@@ -112,8 +78,7 @@ char	*ft_strdup2(void *s, size_t size)
 	return (ft_strncpy(dst, s1, size));
 }
 
-
-char	**ft_getopt_order_arguments(int ac, char **av, char *charset)
+char		**ft_getopt_order_arguments(int ac, char **av, char *charset)
 {
 	char	**sorted_avs;
 	t_list	*options;
