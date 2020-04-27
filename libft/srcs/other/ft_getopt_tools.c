@@ -78,7 +78,7 @@ char		*ft_strdup2(void *s, size_t size)
 	return (ft_strncpy(dst, s1, size));
 }
 
-char		**ft_getopt_order_arguments(int ac, char **av, char *charset)
+char			**ft_getopt_order_arguments(int ac, char **av, char *charset)
 {
 	char	**sorted_avs;
 	t_list	*options;
