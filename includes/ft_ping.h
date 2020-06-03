@@ -202,4 +202,5 @@ void						invalid_tos(char *oarg);
 void						invalid_size(char *oarg);
 void						invalid_timing(char *oarg);
 void						invalid_count(char *oarg);
+void						option_not_supported(int32_t arg);
 #endif

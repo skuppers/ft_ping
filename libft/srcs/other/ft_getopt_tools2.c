@@ -43,6 +43,8 @@ int		is_option_or_argument(void *opt1, void *opt2)
 {
 	if (opt1 == NULL || opt2 == NULL)
 		return (0);
+	if (ft_strequ((char*)opt1, "--") == 0)
+		return (0);
 	if (ft_strlen((char *)opt1) > ft_strlen((char *)opt2))
 		return (1);
 	else

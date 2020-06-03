@@ -37,8 +37,14 @@ int8_t			opt_needs_argument(char *opt, char *charset)
 
 int32_t			extract_option(char *option, char *charset)
 {
-	int32_t		option_char;
+	int32_t			option_char;
 
+	if (ft_strequ(option, "--") == 0)
+	{
+		if (g_optind == -1)
+			g_optind = g_optopt;
+		return (-1);
+	}
 	if (ft_strbeginswith(option, "-"))
 	{
 		if (ft_strchr(charset, *(option + 1)) == NULL)

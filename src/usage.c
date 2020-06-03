@@ -12,6 +12,12 @@
 
 #include "ft_ping.h"
 
+void	option_not_supported(int32_t arg)
+{
+	printf("ft_ping: invalid option -- '%c'\n\n", arg);
+	print_help(42);
+}
+
 void	print_usage(uint8_t exits)
 {
 	printf("Usage: ft_ping [-dDhqv] [-c count] [-i interval]\n"

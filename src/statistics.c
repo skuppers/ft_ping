@@ -29,6 +29,10 @@ static void	get_stddev(t_runtime *rt, t_stats *s)
 	t_list	*ptr;
 	float	dev;
 
+	if (s->pkt_recvd == 0)
+		s->rtt_avg = 0;
+	else
+		s->rtt_avg = s->rtt_avg / s->pkt_recvd;
 	ptr = rt->rpacketlist_head;
 	while (ptr != NULL)
 	{
@@ -41,7 +45,10 @@ static void	get_stddev(t_runtime *rt, t_stats *s)
 		}
 		ptr = ptr->next;
 	}
-	s->std_deviation = (float)(s->std_deviation / s->pkt_recvd);
+	if (s->pkt_recvd == 0)
+		s->std_deviation = 0;
+	else
+		s->std_deviation = (float)(s->std_deviation / s->pkt_recvd);
 }
 
 void		update_statistics(t_runtime *rt, t_stats *s)
@@ -69,6 +76,5 @@ void		update_statistics(t_runtime *rt, t_stats *s)
 		}
 		p = p->next;
 	}
-	s->rtt_avg = s->rtt_avg / s->pkt_recvd;
 	get_stddev(rt, s);
 }

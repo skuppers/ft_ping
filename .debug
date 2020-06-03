@@ -1,0 +1,59 @@
+/*	printf("Forged a %u bytes ipv4 packet\n", ntohs(((struct s_ipv4_hdr *)packet)->ip_len));
+		printf(" ----------------- \n");
+		printf("hdr->hdr_len:\t%u\n", ((struct s_ipv4_hdr *)packet)->ip_header_length);
+		printf("hdr->version:\t%u\n", ((struct s_ipv4_hdr *)packet)->ip_version);
+		printf("hdr->tos    :\t%u\n", ((struct s_ipv4_hdr *)packet)->ip_tos);
+		printf("hdr->len    :\t%u\n", ntohs(((struct s_ipv4_hdr *)packet)->ip_len));
+		printf("hdr->id      :\t%u\n", ntohs(((struct s_ipv4_hdr *)packet)->ip_id));
+		printf("hdr->ttl     :\t%u\n", ((struct s_ipv4_hdr *)packet)->ip_ttl);
+		printf("hdr->type    :\t%u\n", ((struct s_ipv4_hdr *)packet)->ip_type);
+		printf("hdr->checksum:\t%x\n", ((struct s_ipv4_hdr *)packet)->ip_checksum);
+		char *src = ft_strnew(16);
+		inet_ntop(AF_INET, &((struct s_ipv4_hdr *)packet)->ip_src, src, 16);
+		printf("hdr->src	 :\t%s\n", src);
+		char *dst = ft_strnew(16);
+		inet_ntop(AF_INET, &((struct s_ipv4_hdr *)packet)->ip_dst, dst, 16);
+		printf("hdr->dst	 :\t%s\n", dst);
+		printf(" ----------------- \n");
+		printf("icmp->type     :\t%u\n", ((struct s_icmpv4_hdr *)packet + IP4_HDRLEN)->icmp_type);
+		printf("icmp->code    :\t%u\n", ((struct s_icmpv4_hdr *)packet + IP4_HDRLEN)->icmp_code);
+	printf(" ----------------- \n\n");
+*/
+
+/*
+uint8_t check_response(uint8_t *pkt)
+{	
+		struct s_icmpv4_hdr *icmp =  (struct s_icmpv4_hdr *)(pkt + sizeof(struct s_ipv4_hdr));
+
+		printf("%u bytes from %s: icmp_seq=%u ttl=%u time= ms\n",
+			ntohs(((struct s_ipv4_hdr *)pkt)->ip_len) - IP4_HDRLEN,
+			src,
+			ntohs(icmp->icmp_sequence),
+			((struct s_ipv4_hdr *)pkt)->ip_ttl);
+
+		printf("\nReceived a %u bytes IPv4 packet\n", ntohs(((struct s_ipv4_hdr *)pkt)->ip_len));
+		printf(" ----------------- \n");
+		printf("hdr->hdr_len:\t%u\n", ((struct s_ipv4_hdr *)pkt)->ip_header_length);
+		printf("hdr->version:\t%u\n", ((struct s_ipv4_hdr *)pkt)->ip_version);
+		printf("hdr->tos    :\t%u\n", ((struct s_ipv4_hdr *)pkt)->ip_tos);
+		printf("hdr->len    :\t%u\n", ntohs(((struct s_ipv4_hdr *)pkt)->ip_len));
+		printf("hdr->id      :\t%u\n", ntohs(((struct s_ipv4_hdr *)pkt)->ip_id));
+		printf("hdr->ttl     :\t%u\n", ((struct s_ipv4_hdr *)pkt)->ip_ttl);
+		printf("hdr->type    :\t%u\n", ((struct s_ipv4_hdr *)pkt)->ip_type);
+		printf("hdr->checksum:\t%x\n", ((struct s_ipv4_hdr *)pkt)->ip_checksum);
+		char *srcs = ft_strnew(16);
+		inet_ntop(AF_INET, &((struct s_ipv4_hdr *)pkt)->ip_src, srcs, 16);
+		printf("hdr->src	 :\t%s\n", srcs);
+		char *dst = ft_strnew(16);
+		inet_ntop(AF_INET, &((struct s_ipv4_hdr *)pkt)->ip_dst, dst, 16);
+		printf("hdr->dst	 :\t%s\n", dst);
+		printf(" ----------------- \n");
+		
+		printf("icmp->type     :\t%u\n", ((struct s_icmpv4_hdr *)(pkt + IP4_HDRLEN))->icmp_type);
+		printf("icmp->code    :\t%u\n", ((struct s_icmpv4_hdr *)(pkt + IP4_HDRLEN))->icmp_code);
+		printf("icmp->seq     :\t%u\n", ntohs(icmp->icmp_sequence));
+		printf("icmp->id      :\t%u\n", ntohs(icmp->icmp_identifier));
+		printf(" ----------------- \n\n");
+		return (0);
+}
+*/
