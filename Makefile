@@ -12,6 +12,8 @@
 
 #---------------------------------- GENERAL -----------------------------------#
 
+.SUFFIXES:
+
 NAME=ft_ping
 DEBUG_NAME=ft_pingdbg
 
@@ -24,11 +26,36 @@ LIBFTDB= $(PATH_LIB)libftdb.a
 
 CFLAGS += -Wall
 CFLAGS += -Wextra
-#CFLAGS += -Werror
 
-DBFLAGS += $(CFLAGS)
-DBFLAGS += -fsanitize=address,undefined
-DBFLAGS += -ggdb3
+# Compiler Debug Flags
+ifeq ($(d), 0)
+	CFLAGS += -g3
+else ifeq ($(d), 1)
+	CFLAGS += -g3
+	CFLAGS += -fsanitize=address,undefined
+else ifeq ($(d), 2)
+	CFLAGS += -g3
+	CFLAGS += -fsanitize=address,undefined
+	CFLAGS += -Wpadded
+else ifeq ($(d), 3)
+	CFLAGS += -g3
+	CFLAGS += -fsanitize=address,undefined
+	CFLAGS += -Wpadded
+	CFLAGS += -pedantic
+else ifeq ($(d), 4)
+	CFLAGS += -g3
+	CFLAGS += -fsanitize=address,undefined
+	CFLAGS += -Wpadded
+	CFLAGS += -pedantic
+	CFLAGS += -Weverything
+endif
+ifneq ($(err), no)
+	CFLAGS += -Werror
+endif
+
+# Debug Dir
+DSYM += $(NAME).dSYM
+DSYM += $(DBNAME).dSYM
 
 #---------------------------------- INCLUDES ----------------------------------#
 

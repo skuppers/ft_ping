@@ -35,12 +35,16 @@
 # include <net/if.h>
 # include <bits/endian.h>
 # include "libft.h"
-# define OPT_VERBOSE		0x01
-# define OPT_QUIET			0x02
-# define OPT_SO_DEBUG		0x04
-# define OPT_TIMESTAMP		0x08
-# define OPT_NUMERIC		0x10
-# define OPT_CHARSET		"c:i:Q:t:s:dDhqv"
+
+# define OPT_HELP			0x001
+# define OPT_SO_DEBUG		0x002
+# define OPT_TIMESTAMP		0x004
+# define OPT_QUIET			0x008
+# define OPT_VERBOSE		0x010
+
+
+# define OPT_NUMERIC		0x20
+
 # define BASE_TTL			64
 # define IP4_HDRLEN			20
 # define ICMP_HDRLEN		8
@@ -141,6 +145,8 @@ typedef struct				s_runtime
 	t_list					*rpacketlist_head;
 }							t_runtime;
 
+void						handle_standalone_options(int32_t option, t_data *param);
+void						handle_custom_options(int32_t opt, t_data *prm, char *oarg);
 void						free_packetlist(t_list *pkt_list);
 t_packetdata				*pktdatanew(uint8_t *packet,
 								size_t size, t_timer *timer);

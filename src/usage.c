@@ -20,8 +20,7 @@ void	option_not_supported(int32_t arg)
 
 void	print_usage(uint8_t exits)
 {
-	printf("Usage: ft_ping [-dDhqv] [-c count] [-i interval]\n"
-			"\t[-s packetsize] [-Q tos] [-t TTL] <host>\n");
+	printf("Usage: ft_ping [options] <destination>\n");
 	if (exits != 0)
 		exit(exits);
 }

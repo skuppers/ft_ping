@@ -18,21 +18,23 @@ int8_t		send_packet(t_runtime *runtime, uint8_t *packet, t_timer *tv)
 	size_t	packet_size;
 
 	packet_size = ICMP_HDRLEN + runtime->param->pkt_size;
+	gettimeofday(&(tv->send), NULL);
+	alarm(1);
 	if ((sent_bytes = sendto(runtime->socket, packet, packet_size, 0,
 		(struct sockaddr *)runtime->param->sin, sizeof(struct sockaddr))) < 0)
 	{
 		if (errno == EPERM)
 			printf("ft_ping: sendto: Operation not permitted\n");
 		else if (errno == 90)
-			printf("ft_ping: sendto: message too long\n");
+			printf("ft_ping: sendto: Message too long\n");
 		else if (errno == EACCES)
-			printf("ft_ping: sendto: permission denied\n");
+			printf("ft_ping: sendto: Permission denied\n");
 		else
-			printf("ft_ping: sendto: error code %d\n", errno);
+			printf("ft_ping: sendto: Error code %d\n", errno);
+		return (FAILURE);
 	}
+//	printf("Sent %d bytes\n", sent_bytes);
 	free(packet);
 	packet = NULL;
-	gettimeofday(&(tv->send), NULL);
-	alarm(1);
 	return (SUCCESS);
 }

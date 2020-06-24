@@ -42,6 +42,7 @@ void					handle_response(t_runtime *rt, uint8_t *pkt,
 static void				handle_timeout(t_runtime *runtime, uint8_t *pkt,
 							t_meta *packetmeta)
 {
+//	printf("sku\n");
 	free(pkt);
 	register_response(runtime, NULL, 0, packetmeta->timer);
 }
@@ -70,11 +71,13 @@ void					receive_packet(t_runtime *runtime, uint8_t *pkt,
 	packetmeta.sequence = sequence;
 	packetmeta.timer = tm;
 	pkt = (uint8_t *)ft_memalloc(MTU);
+
 	while (g_signals->sigalrm == 0 && packetmeta.received_bytes <= 0)
 		if ((packetmeta.received_bytes = recvfrom(runtime->socket,
 			(void*)pkt, MTU, MSG_DONTWAIT, NULL,
-			(socklen_t*)sizeof(struct sockaddr))) <= 0)
+			NULL)) <= 0) //(socklen_t*)sizeof(struct sockaddr)
 		{
+			//printf("Receiving\n");
 		}
 	if (packetmeta.received_bytes <= 0)
 		handle_timeout(runtime, pkt, &packetmeta);
