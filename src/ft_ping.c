@@ -42,15 +42,11 @@ static void			ping_while(t_runtime *runtime)
 		&& is_paramcount_reached(sequence, runtime->param->count))
 	{
 		packet = forge_packet(runtime, packet, sequence);
-
 		if (send_packet(runtime, packet, &timer) == SUCCESS)
 			receive_packet(runtime, packet, &timer, sequence);
-
 		++sequence;
-
-	//	if (g_signals->sigalrm != 1)
+		if (g_signals->sigalrm != 1)
 			ping_timer(runtime->param->interval);
-
 		g_signals->sigalrm = 0;
 	}
 }
@@ -59,12 +55,6 @@ int32_t				ft_ping(t_data *param)
 {
 	int				socket;
 	t_runtime		runtime;
-
-	printf("Count: %d\n", param->count);
-	printf("Qos: %d\n", param->tos);
-	printf("Interval: %d\n", param->interval);
-	printf("TTL: %d\n", param->ttl);
-	printf("Size: %d\n", param->pkt_size);
 
 	if ((socket = createsocket(param)) < 0)
 	{

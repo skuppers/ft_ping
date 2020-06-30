@@ -26,7 +26,8 @@ void					handle_response(t_runtime *rt, uint8_t *pkt,
 	response_id = ntohs(icmp->icmp_identifier);
 	if (response_code == 0)
 	{
-		if (response_seq != pm->sequence || response_id != getpid())
+		if (response_seq != pm->sequence
+				|| response_id != ntohs(htons(getpid())))
 			id_seq_mismatch(rt, pkt, pm->timer, pm->sequence);
 		else
 			resp_code_zero(rt, pkt, pm);
@@ -42,7 +43,6 @@ void					handle_response(t_runtime *rt, uint8_t *pkt,
 static void				handle_timeout(t_runtime *runtime, uint8_t *pkt,
 							t_meta *packetmeta)
 {
-//	printf("sku\n");
 	free(pkt);
 	register_response(runtime, NULL, 0, packetmeta->timer);
 }
@@ -71,13 +71,10 @@ void					receive_packet(t_runtime *runtime, uint8_t *pkt,
 	packetmeta.sequence = sequence;
 	packetmeta.timer = tm;
 	pkt = (uint8_t *)ft_memalloc(MTU);
-
 	while (g_signals->sigalrm == 0 && packetmeta.received_bytes <= 0)
 		if ((packetmeta.received_bytes = recvfrom(runtime->socket,
-			(void*)pkt, MTU, MSG_DONTWAIT, NULL,
-			NULL)) <= 0) //(socklen_t*)sizeof(struct sockaddr)
+			(void*)pkt, MTU, MSG_DONTWAIT, NULL, NULL)) <= 0)
 		{
-			//printf("Receiving\n");
 		}
 	if (packetmeta.received_bytes <= 0)
 		handle_timeout(runtime, pkt, &packetmeta);

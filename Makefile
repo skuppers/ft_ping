@@ -15,14 +15,12 @@
 .SUFFIXES:
 
 NAME=ft_ping
-DEBUG_NAME=ft_pingdbg
 
 CC=clang
 
 PATH_LIB=libft/
 
 LIBFT= $(PATH_LIB)libft.a
-LIBFTDB= $(PATH_LIB)libftdb.a
 
 CFLAGS += -Wall
 CFLAGS += -Wextra
@@ -109,7 +107,7 @@ DEBUG_PATH_OBJS = objs_debug/
 DEBUG_OBJS = $(patsubst %.c, $(DEBUG_PATH_OBJS)%.o, $(SRCS))
 
 
-#---------------------------------- THA RULES ---------------------------------#
+#-----------------------------------  RULES  -----------------------------------#
 
 all: $(PATH_OBJS) $(NAME)
 
@@ -126,23 +124,6 @@ $(PATH_OBJS):
 $(LIBFT): FORCE 
 	$(MAKE) -C $(PATH_LIB)
 
-#---------------------------------- DEBUGGING ---------------------------------#
-
-
-debug: $(DEBUG_PATH_OBJS) $(DEBUG_NAME)
-
-$(DEBUG_NAME): $(LIBFTDB) $(DEBUG_OBJS)
-	$(CC) $(DBFLAGS) $(I_INCLUDES) $(DEBUG_OBJS) $(LIBFTDB) -o $@
-	printf "$@ is ready.\n"
-
-$(DEBUG_OBJS): $(DEBUG_PATH_OBJS)%.o: %.c $(HEADER) Makefile
-	$(CC) $(DBFLAGS) $(I_INCLUDES) -c $< -o $@
-
-$(DEBUG_PATH_OBJS):
-	mkdir $@
-
-$(LIBFTDB): FORCE
-	$(MAKE) debug -C $(PATH_LIB)
 
 #---------------------------------- CLEANING ----------------------------------#
 
@@ -150,14 +131,12 @@ clean:
 	$(RM) $(OBJS)
 	$(RM) $(DEBUG_OBJS)
 	$(RM) -R $(PATH_OBJS)
-	$(RM) -R $(DEBUG_PATH_OBJS)
 	$(RM) -R $(DSYM)
 	$(MAKE) -C $(PATH_LIB) clean
 	printf "Objs from $(NAME) removed\n"
 
 fclean: clean
 	$(RM) $(NAME)
-	$(RM) $(DEBUG_NAME)
 	$(MAKE) -C $(PATH_LIB) fclean
 	printf "$(NAME) removed\n"
 

@@ -36,6 +36,9 @@
 # include <bits/endian.h>
 # include "libft.h"
 
+# define NB_OPT 10
+# define OPT_WITHOUT_ARG 5
+
 # define OPT_HELP			0x001
 # define OPT_SO_DEBUG		0x002
 # define OPT_TIMESTAMP		0x004
@@ -61,6 +64,7 @@ t_signals					*g_signals;
 typedef struct				s_data
 {
 	uint16_t				options;
+	char					padding[2];
 	unsigned int			count;
 	uint32_t				interval;
 	uint16_t				pkt_size;
@@ -109,6 +113,7 @@ typedef struct				s_packetdata
 {
 	void					*data;
 	uint32_t				data_size;
+	char					padding[4];
 	struct timeval			*timestamp;
 	double					rtt;
 }							t_packetdata;
@@ -118,6 +123,7 @@ typedef struct				s_stats
 	uint32_t				pkt_send;
 	uint32_t				pkt_recvd;
 	uint16_t				icmp_errors;
+	char					padding[2];
 	float					rtt_min;
 	float					rtt_max;
 	float					rtt_avg;
@@ -133,14 +139,16 @@ typedef struct				s_timer
 typedef	struct				s_meta
 {
 	int32_t					received_bytes;
+	char					padding[4];
 	struct s_timer			*timer;
 	uint16_t				sequence;
-
+	char					paddings[6];
 }							t_meta;
 
 typedef struct				s_runtime
 {
 	int						socket;
+	char					padding[4];
 	t_data					*param;
 	t_list					*rpacketlist_head;
 }							t_runtime;
@@ -192,7 +200,7 @@ int32_t						*allocate_intlist(int32_t len);
 void						ping_fatal(const char *failed, const char *errbuff);
 int32_t						ft_ping(t_data *param);
 int32_t						resolve_target(t_data *param);
-int8_t						parse_opt(int ac, char **av, t_data *param);
+int8_t						parse_opt(char **av, t_data *param);
 int32_t						createsocket(t_data *param);
 uint8_t						*forge_packet(t_runtime *rt, uint8_t *pkt,
 								uint16_t seq);

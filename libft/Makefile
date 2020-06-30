@@ -46,7 +46,6 @@ INCS += memory.h
 INCS += list.h
 INCS += test.h
 INCS += other.h
-INCS += ft_getopt.h
 INCS += hashmap.h
 INCS += vector.h
 INCS += get_next_line.h
@@ -197,9 +196,6 @@ SRCS += ft_putstr.c
 SRCS += ft_putnstr.c
 SRCS += ft_putstr_fd.c
 SRCS += ft_ringbuffer.c
-SRCS += ft_getopt.c
-SRCS += ft_getopt_tools.c
-SRCS += ft_getopt_tools2.c
 SRCS += ft_getdelim.c
 SRCS += ft_getargslst.c
 

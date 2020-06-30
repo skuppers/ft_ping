@@ -24,16 +24,12 @@ int		main(int ac, char **av)
 		printf("This program needs root privileges to create Raw sockets.\n");
 		return (-1);
 	}
-	
 	init_param(&param);
 	init_signals(&signals);
-	
-	if (parse_opt(ac, av, &param) != 0)
+	if (parse_opt(av, &param) != 0)
 		return (-1);
-	
 	if (param.fqdn == NULL)
 		print_usage(42);
-	
 	if (resolve_target(&param) < 0)
 		return (-1);
 	else

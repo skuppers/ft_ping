@@ -82,11 +82,12 @@ void					print_ttl_exceeded(t_data *param, uint8_t *pkt,
 }
 
 void					print_ping(t_data *param, uint8_t *pkt, t_timer *tm,
-							uint16_t sequence)
+										uint16_t sequence)
 {
 	char				src[16];
 	struct s_ipv4_hdr	*ip;
 	char				*hostdns;
+	float				ff;
 
 	ip = (struct s_ipv4_hdr *)pkt;
 	inet_ntop(AF_INET, &ip->ip_src, src, 16);
@@ -99,8 +100,17 @@ void					print_ping(t_data *param, uint8_t *pkt, t_timer *tm,
 		printf("%s: ", src);
 	else
 		printf("%s (%s): ", (hostdns == NULL) ? src : hostdns, src);
-	printf("icmp_seq=%u ttl=%d time=%.3fms\n", sequence, ip->ip_ttl,
-					plot_timer(tm));
+	
+	// print resolution
+	ff = plot_timer(tm);
+	if (ff < 1.0)
+		printf("icmp_seq=%u ttl=%d time=%.3f ms\n", sequence, ip->ip_ttl, ff);
+	else if (ff >= 1.0 && ff < 10.0)
+		printf("icmp_seq=%u ttl=%d time=%.2f ms\n", sequence, ip->ip_ttl, ff);
+	else if (ff >= 10.0 && ff < 100.0)
+		printf("icmp_seq=%u ttl=%d time=%.1f ms\n", sequence, ip->ip_ttl, ff);
+	else
+		printf("icmp_seq=%u ttl=%d time=%.0f ms\n", sequence, ip->ip_ttl, ff);
 	ft_strdel(&hostdns);
 }
 
