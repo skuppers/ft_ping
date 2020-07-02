@@ -15,7 +15,7 @@ A recreation of the ping program.
 
 ![image](https://user-images.githubusercontent.com/29956389/86371350-10fc6180-bc81-11ea-814e-02592dc17a0c.png)
 
-
+![image](https://user-images.githubusercontent.com/29956389/86371654-70f30800-bc81-11ea-8c9f-106e89ec8b2c.png)
 
 
 
