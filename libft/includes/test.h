@@ -36,7 +36,7 @@ typedef struct	s_result
 	int			sigabort;
 	int			sigkill;
 	int			sigfpe;
-	char			padding[4];
+	char		padding[4];
 }				t_result;
 
 t_result		g_test_results;

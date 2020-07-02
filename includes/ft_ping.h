@@ -38,16 +38,12 @@
 
 # define NB_OPT 10
 # define OPT_WITHOUT_ARG 5
-
 # define OPT_HELP			0x001
 # define OPT_SO_DEBUG		0x002
 # define OPT_TIMESTAMP		0x004
 # define OPT_QUIET			0x008
 # define OPT_VERBOSE		0x010
-
-
 # define OPT_NUMERIC		0x20
-
 # define BASE_TTL			64
 # define IP4_HDRLEN			20
 # define ICMP_HDRLEN		8
@@ -153,8 +149,10 @@ typedef struct				s_runtime
 	t_list					*rpacketlist_head;
 }							t_runtime;
 
-void						handle_standalone_options(int32_t option, t_data *param);
-void						handle_custom_options(int32_t opt, t_data *prm, char *oarg);
+void						handle_standalone_options(int32_t option,
+								t_data *param);
+void						handle_custom_options(int32_t opt, t_data *prm,
+								char *oarg);
 void						free_packetlist(t_list *pkt_list);
 t_packetdata				*pktdatanew(uint8_t *packet,
 								size_t size, t_timer *timer);
@@ -195,8 +193,6 @@ int8_t						send_packet(t_runtime *rt, uint8_t *packet,
 void						extract_ipaddr(const struct sockaddr *sa, char *ip,
 								uint32_t maxlen);
 uint16_t					checksum(uint16_t *addr, int32_t len);
-uint8_t						*allocate_ucharlist(int32_t len);
-int32_t						*allocate_intlist(int32_t len);
 void						ping_fatal(const char *failed, const char *errbuff);
 int32_t						ft_ping(t_data *param);
 int32_t						resolve_target(t_data *param);
@@ -217,4 +213,7 @@ void						invalid_size(char *oarg);
 void						invalid_timing(char *oarg);
 void						invalid_count(char *oarg);
 void						option_not_supported(int32_t arg);
+void						invalid_opt(char *arg);
+void						print_resolution(float ff, uint16_t seq,
+								unsigned char ip_ttl);
 #endif

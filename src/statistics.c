@@ -12,6 +12,18 @@
 
 #include "ft_ping.h"
 
+void		print_resolution(float ff, uint16_t seq, unsigned char ip_ttl)
+{
+	if (ff < 1.0)
+		printf("icmp_seq=%u ttl=%d time=%.3f ms\n", seq, ip_ttl, ff);
+	else if (ff >= 1.0 && ff < 10.0)
+		printf("icmp_seq=%u ttl=%d time=%.2f ms\n", seq, ip_ttl, ff);
+	else if (ff >= 10.0 && ff < 100.0)
+		printf("icmp_seq=%u ttl=%d time=%.1f ms\n", seq, ip_ttl, ff);
+	else
+		printf("icmp_seq=%u ttl=%d time=%.0f ms\n", seq, ip_ttl, ff);
+}
+
 float		plot_timer(t_timer *timer)
 {
 	double	send;

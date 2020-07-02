@@ -12,7 +12,7 @@
 
 #include "ft_ping.h"
 
-void				ping_exit(int exitcode, const char *message, ...)
+void			ping_exit(int exitcode, const char *message, ...)
 {
 	va_list			args;
 
@@ -23,41 +23,31 @@ void				ping_exit(int exitcode, const char *message, ...)
 	exit(exitcode);
 }
 
-static void		get_arg_opt(char *arg, const char *opt_str[],
+static uint8_t	check_valid(char *arg, size_t len, int min, int max)
+{
+	if (ft_isnumeric(arg) == 0)
+		invalid_opt(arg);
+	if (ft_strlen(arg) > len || ft_atoi(arg) < min || ft_atoi(arg) > max)
+		invalid_count(arg);
+	return (1);
+}
+
+static int		get_arg_opt(char *arg, const char *opt_str[],
 								const int count, t_data *param)
 {
 	if (arg == NULL)
 		ping_exit(42, "option requires an argument -- '%s'\n", opt_str[count]);
-	if (ft_strequ(opt_str[count], "-c") == 1)
-	{
-		if (ft_strlen(arg) > 6 || ft_atoi(arg) < 1 || ft_atoi(arg) > 65535)
-			invalid_count(arg);
+	if (ft_strequ(opt_str[count], "-c") == 1 && check_valid(arg, 6, 1, 65535))
 		param->count = ft_atoi(arg);
-	}
-	if (ft_strequ(opt_str[count], "-Q") == 1)
-	{
-		if (ft_strlen(arg) > 3 || ft_atoi(arg) < 0 || ft_atoi(arg) > 255)
-			invalid_tos(arg);
+	if (ft_strequ(opt_str[count], "-Q") == 1 && check_valid(arg, 3, 0, 255))
 		param->tos = ft_atoi(arg);
-	}
-	if (ft_strequ(opt_str[count], "-i") == 1)
-	{
-		if (ft_strlen(arg) > 6 || ft_atoi(arg) < 1 || ft_atoi(arg) > 65535)
-			invalid_timing(arg);
+	if (ft_strequ(opt_str[count], "-i") == 1 && check_valid(arg, 6, 1, 65535))
 		param->interval = ft_atoi(arg);
-	}
-	if (ft_strequ(opt_str[count], "-t") == 1)
-	{
-		if (ft_strlen(arg) > 6 || ft_atoi(arg) < 1 || ft_atoi(arg) > 255)
-			invalid_ttl(arg);
+	if (ft_strequ(opt_str[count], "-t") == 1 && check_valid(arg, 6, 1, 255))
 		param->ttl = ft_atoi(arg);
-	}
-	if (ft_strequ(opt_str[count], "-s") == 1)
-	{
-		if (ft_strlen(arg) > 6 || ft_atoi(arg) < 0 || ft_atoi(arg) > 65535)
-			invalid_size(arg);
+	if (ft_strequ(opt_str[count], "-s") == 1 && check_valid(arg, 6, 0, 65535))
 		param->pkt_size = ft_atoi(arg);
-	}
+	return (2);
 }
 
 static int		get_one_opt(char **av, int i, t_data *param)
@@ -65,7 +55,7 @@ static int		get_one_opt(char **av, int i, t_data *param)
 	int			count;
 	const char	*opt_str[] = {"-h", "-d", "-D", "-q", "-v",
 							"-c", "-Q", "-i", "-t", "-s" };
-	
+
 	count = 0;
 	while (count < NB_OPT)
 	{
@@ -79,10 +69,7 @@ static int		get_one_opt(char **av, int i, t_data *param)
 				return (1);
 			}
 			else
-			{
-				get_arg_opt(av[i + 1], opt_str, count, param);
-				return (2);
-			}
+				return (get_arg_opt(av[i + 1], opt_str, count, param));
 		}
 		count++;
 	}
@@ -100,13 +87,8 @@ int8_t			parse_opt(char **av, t_data *param)
 	{
 		if (av[i][0] == '-')
 		{
-			if (av[i][1] != '\0' && av[i][1] == '-')
-				i += 1;
-			else
-			{
-				i += get_one_opt(av, i, param);
-				continue ;
-			}
+			i += get_one_opt(av, i, param);
+			continue ;
 		}
 		if (param->fqdn == NULL)
 		{

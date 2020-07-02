@@ -100,17 +100,8 @@ void					print_ping(t_data *param, uint8_t *pkt, t_timer *tm,
 		printf("%s: ", src);
 	else
 		printf("%s (%s): ", (hostdns == NULL) ? src : hostdns, src);
-	
-	// print resolution
 	ff = plot_timer(tm);
-	if (ff < 1.0)
-		printf("icmp_seq=%u ttl=%d time=%.3f ms\n", sequence, ip->ip_ttl, ff);
-	else if (ff >= 1.0 && ff < 10.0)
-		printf("icmp_seq=%u ttl=%d time=%.2f ms\n", sequence, ip->ip_ttl, ff);
-	else if (ff >= 10.0 && ff < 100.0)
-		printf("icmp_seq=%u ttl=%d time=%.1f ms\n", sequence, ip->ip_ttl, ff);
-	else
-		printf("icmp_seq=%u ttl=%d time=%.0f ms\n", sequence, ip->ip_ttl, ff);
+	print_resolution(ff, sequence, ip->ip_ttl);
 	ft_strdel(&hostdns);
 }
 

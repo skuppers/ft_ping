@@ -12,6 +12,12 @@
 
 #include "ft_ping.h"
 
+void	invalid_opt(char *arg)
+{
+	printf("ft_ping: invalid argument '%s'\n", arg);
+	exit(42);
+}
+
 void	option_not_supported(int32_t arg)
 {
 	printf("ft_ping: invalid option -- '%c'\n\n", arg);
