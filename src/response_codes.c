@@ -24,8 +24,10 @@ void	id_seq_mismatch(t_runtime *rt, uint8_t *pkt, t_timer *tm, uint16_t seq)
 
 void	resp_code_zero(t_runtime *rt, uint8_t *pkt, t_meta *pm)
 {
+
 	if (!(rt->param->options & OPT_QUIET))
 		print_ping(rt->param, pkt, pm->timer, pm->sequence);
+
 	register_response(rt, pkt, pm->received_bytes, pm->timer);
 }
 

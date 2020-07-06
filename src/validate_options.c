@@ -14,31 +14,31 @@
 
 void		invalid_count(char *oarg)
 {
-	printf("ft_ping: invalid argument '%s': out of range: 1-65535\n", oarg);
+	dprintf(2, "ft_ping: invalid argument '%s': out of range: 1-65535\n", oarg);
 	exit(42);
 }
 
 void		invalid_timing(char *oarg)
 {
-	printf("ft_ping: bad timing interval: %s\n", oarg);
+	dprintf(2, "ft_ping: bad timing interval: %s\n", oarg);
 	exit(42);
 }
 
 void		invalid_size(char *oarg)
 {
-	printf("ft_ping: invalid argument '%s': out of range: 0-65507\n", oarg);
+	dprintf(2, "ft_ping: invalid argument '%s': out of range: 0-65507\n", oarg);
 	exit(42);
 }
 
 void		invalid_tos(char *oarg)
 {
-	printf("ft_ping: the value of TOS bits must be in range 0-255: %s\n",
+	dprintf(2, "ft_ping: the value of TOS bits must be in range 0-255: %s\n",
 		oarg);
 	exit(42);
 }
 
 void		invalid_ttl(char *oarg)
 {
-	printf("ft_ping: invalid argument: '%s': out of range: 1-255\n", oarg);
+	dprintf(2, "ft_ping: invalid argument: '%s': out of range: 1-255\n", oarg);
 	exit(42);
 }

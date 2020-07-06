@@ -20,7 +20,7 @@ void				print_resolve(t_data *param)
 		host = "127.0.0.1";
 	else
 		host = param->ipv4_str;
-	printf("PING %s (%s) %d(%d) bytes of data.\n", param->fqdn,
+	dprintf(2, "PING %s (%s) %d(%d) bytes of data.\n", param->fqdn,
 		host, param->pkt_size,
 		param->pkt_size + IP4_HDRLEN + ICMP_HDRLEN);
 }
@@ -67,7 +67,7 @@ void				ping_timer(int interval)
 	struct timeval	tv_next;
 
 	if (gettimeofday(&tv_current, NULL) < 0)
-		printf(" [Error retrieving time ] - ");
+		dprintf(2, " [Error retrieving time ] - ");
 	tv_next = tv_current;
 	tv_next.tv_sec += interval;
 	while ((tv_current.tv_sec < tv_next.tv_sec ||
@@ -75,6 +75,6 @@ void				ping_timer(int interval)
 			g_signals->sigint == 0)
 	{
 		if (gettimeofday(&tv_current, NULL) < 0)
-			printf(" [Error retrieving time ] - ");
+			dprintf(2, " [Error retrieving time ] - ");
 	}
 }

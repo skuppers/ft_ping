@@ -14,7 +14,7 @@
 
 static void				prepare_hints(struct addrinfo *hints)
 {
-	memset(hints, 0, sizeof(struct addrinfo));
+	ft_memset(hints, 0, sizeof(struct addrinfo));
 	hints->ai_family = AF_INET;
 	hints->ai_socktype = 0;
 	hints->ai_flags = AI_V4MAPPED | AI_ADDRCONFIG;
@@ -22,16 +22,21 @@ static void				prepare_hints(struct addrinfo *hints)
 
 char					*reverse_target(char *src_addr)
 {
-	struct sockaddr_in	sa;
+	struct sockaddr_in	*sa;
 	char				hostname[256];
 
-	memset(&sa, 0, sizeof(sa));
-	sa.sin_family = AF_INET;
-	inet_pton(AF_INET, src_addr, &sa.sin_addr);
-	if (getnameinfo((struct sockaddr*)&sa, sizeof(sa),
+	sa = malloc(sizeof(struct sockaddr_in));
+	ft_bzero(sa, sizeof(struct sockaddr_in));
+	sa->sin_family = AF_INET;
+	inet_pton(AF_INET, src_addr, &sa->sin_addr);
+	if (getnameinfo((struct sockaddr*)sa, sizeof(sa),
 			hostname, sizeof(hostname),
 			NULL, 0, NI_NAMEREQD))
+	{
+		free(sa);
 		return (NULL);
+	}
+	free(sa);
 	return (ft_strdup(hostname));
 }
 

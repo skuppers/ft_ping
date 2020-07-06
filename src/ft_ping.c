@@ -42,8 +42,16 @@ static void			ping_while(t_runtime *runtime)
 		&& is_paramcount_reached(sequence, runtime->param->count))
 	{
 		packet = forge_packet(runtime, packet, sequence);
+	/*	dprintf(2, "rt->param->count: %d\n", runtime->param->count);
+		dprintf(2, "rt->param->interval: %d\n", runtime->param->interval);
+		dprintf(2, "rt->param->pkt_size: %d\n", runtime->param->pkt_size);
+		dprintf(2, "rt->param->tos: %d\n", runtime->param->tos);
+		dprintf(2, "rt->param->ttl: %d\n", runtime->param->ttl);
+		dprintf(2, "rt->param->fqdn: %s\n", runtime->param->fqdn);
+		dprintf(2, "rt->param->ipv4_str: %s\n", runtime->param->ipv4_str);*/
 		if (send_packet(runtime, packet, &timer) == SUCCESS)
 			receive_packet(runtime, packet, &timer, sequence);
+		
 		++sequence;
 		if (g_signals->sigalrm != 1)
 			ping_timer(runtime->param->interval);

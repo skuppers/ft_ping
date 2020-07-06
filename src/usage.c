@@ -14,26 +14,26 @@
 
 void	invalid_opt(char *arg)
 {
-	printf("ft_ping: invalid argument '%s'\n", arg);
+	dprintf(2, "ft_ping: invalid argument '%s'\n", arg);
 	exit(42);
 }
 
 void	option_not_supported(int32_t arg)
 {
-	printf("ft_ping: invalid option -- '%c'\n\n", arg);
+	dprintf(2, "ft_ping: invalid option -- '%c'\n\n", arg);
 	print_help(42);
 }
 
 void	print_usage(uint8_t exits)
 {
-	printf("Usage: ft_ping [options] <destination>\n");
+	dprintf(2, "Usage: ft_ping [options] <destination>\n");
 	if (exits != 0)
 		exit(exits);
 }
 
 void	print_help(uint8_t exits)
 {
-	printf("ft_ping:\n"
+	dprintf(2, "ft_ping:\n"
 		"*	Possible options are:\n"
 		"*	-c <number>     Send <number> of packets and quit.\n"
 		"*	-d      	Set the SO_DEBUG flag on the socket.\n"

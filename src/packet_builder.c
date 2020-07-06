@@ -15,7 +15,7 @@
 static uint8_t			*forge_ipv4(t_runtime *runtime, uint8_t *packet,
 									uint32_t seq)
 {
-	char				data[65508];
+	char				data[2048];
 	struct s_icmpv4_hdr	icmp_header;
 	uint16_t			datalen;
 
