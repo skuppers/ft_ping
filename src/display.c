@@ -91,15 +91,25 @@ void					print_ping(t_data *param, uint8_t *pkt, t_timer *tm,
 
 	ip = (struct s_ipv4_hdr *)pkt;
 	inet_ntop(AF_INET, &ip->ip_src, src, 16);
-	hostdns = reverse_target(src);
+
+	hostdns = NULL;
+	if (!(param->options & OPT_NUMERIC))
+		hostdns = reverse_target(src);
+	
+//	dprintf(2, "hostname is %s\n", hostdns);
+
+/*	char *ips = ft_strnew(256);
+	extract_ipaddr((struct sockaddr*)param->sin, ips, 256);
+	dprintf(2, "IP is: %s\n", ips);
+*/
 	if (param->options & OPT_TIMESTAMP)
-		printf("[%f] ", (double)tm->recv.tv_sec
+		dprintf(2, "[%f] ", (double)tm->recv.tv_sec
 			+ (double)(0.001f * (double)tm->recv.tv_usec));
-	printf("%u bytes from ", ntohs(ip->ip_len) - IP4_HDRLEN);
+	dprintf(2, "%u bytes from ", ntohs(ip->ip_len) - IP4_HDRLEN);
 	if (param->options & OPT_NUMERIC)
-		printf("%s: ", src);
+		dprintf(2, "%s: ", src);
 	else
-		printf("%s (%s): ", (hostdns == NULL) ? src : hostdns, src);
+		dprintf(2, "%s (%s): ", (hostdns == NULL) ? src : hostdns, src);
 	ff = plot_timer(tm);
 	print_resolution(ff, sequence, ip->ip_ttl);
 	ft_strdel(&hostdns);

@@ -72,9 +72,6 @@ void					receive_packet(t_runtime *runtime, uint8_t *pkt,
 	packetmeta.timer = tm;
 	pkt = (uint8_t *)ft_memalloc(MTU);
 
-
-
-
 	while (g_signals->sigalrm == 0 && packetmeta.received_bytes <= 0)
 		if ((packetmeta.received_bytes = recvfrom(runtime->socket,
 			(void*)pkt, MTU, MSG_DONTWAIT, NULL, (socklen_t*)sizeof(struct sockaddr))) <= 0)

@@ -22,22 +22,28 @@ static void				prepare_hints(struct addrinfo *hints)
 
 char					*reverse_target(char *src_addr)
 {
-	struct sockaddr_in	*sa;
-	char				hostname[256];
+	struct sockaddr_in	sa;
+	char				*hostname;
 
-	sa = malloc(sizeof(struct sockaddr_in));
-	ft_bzero(sa, sizeof(struct sockaddr_in));
-	sa->sin_family = AF_INET;
-	inet_pton(AF_INET, src_addr, &sa->sin_addr);
-	if (getnameinfo((struct sockaddr*)sa, sizeof(sa),
-			hostname, sizeof(hostname),
-			NULL, 0, NI_NAMEREQD))
+	hostname = ft_strnew(256);
+//	sa = ft_memalloc(sizeof(struct sockaddr_in) + 2);
+	ft_bzero(&sa, sizeof(sa));
+	sa.sin_family = AF_INET;
+	inet_pton(AF_INET, src_addr, &sa.sin_addr);
+
+//	dprintf(2, "Fam: %d\n", sa.sin_family);
+
+	if (getnameinfo((struct sockaddr*)&sa, sizeof(sa),
+			hostname, 255,
+			NULL, 0, 0) != 0)
 	{
-		free(sa);
+		//free(sa);
+		ft_strdel(&hostname);
+		dprintf(2, "Getnameinfo failed: %s\n", strerror(errno));
 		return (NULL);
 	}
-	free(sa);
-	return (ft_strdup(hostname));
+	//free(sa);
+	return (hostname);
 }
 
 static uint8_t			getsocketresult(char *fqdn, struct addrinfo **results)

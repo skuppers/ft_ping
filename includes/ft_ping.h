@@ -66,7 +66,9 @@ typedef struct				s_data
 	uint16_t				pkt_size;
 	uint8_t					tos;
 	uint8_t					ttl;
+	char pad[4];
 	struct sockaddr_in		*sin;
+	char padd[4];
 	char					*fqdn;
 	char					*ipv4_str;
 }							t_data;
