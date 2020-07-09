@@ -28,13 +28,13 @@ int8_t		send_packet(t_runtime *runtime, uint8_t *packet, t_timer *tv)
 		(struct sockaddr *)runtime->param->sin, sizeof(struct sockaddr))) < 0)
 	{
 		if (errno == EPERM)
-			printf("ft_ping: sendto: Operation not permitted\n");
+			dprintf(2, "ft_ping: sendto: Operation not permitted\n");
 		else if (errno == EMSGSIZE)
-			printf("ft_ping: sendto: Message too long\n");
+			dprintf(2, "ft_ping: sendto: Message too long\n");
 		else if (errno == EACCES)
-			printf("ft_ping: sendto: Permission denied\n");
+			dprintf(2, "ft_ping: sendto: Permission denied\n");
 		else
-			printf("ft_ping: sendto: Error code %d\n", errno);
+			dprintf(2, "ft_ping: sendto: Error code %d\n", errno);
 		register_error(runtime, packet);
 		return (FAILURE);
 	}

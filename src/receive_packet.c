@@ -22,12 +22,11 @@ void					handle_response(t_runtime *rt, uint8_t *pkt,
 
 	icmp = (struct s_icmpv4_hdr *)(pkt + sizeof(struct s_ipv4_hdr));
 	response_code = icmp->icmp_type;
-	response_seq = ntohs(icmp->icmp_sequence);
-	response_id = ntohs(icmp->icmp_identifier);
+	response_seq = icmp->icmp_sequence;//ntohs(icmp->icmp_sequence);
+	response_id = icmp->icmp_identifier;//ntohs(icmp->icmp_identifier);
 	if (response_code == 0)
 	{
-		if (response_seq != pm->sequence
-				|| response_id != ntohs(htons(getpid())))
+		if (response_seq != pm->sequence)
 			id_seq_mismatch(rt, pkt, pm->timer, pm->sequence);
 		else
 			resp_code_zero(rt, pkt, pm);
@@ -65,7 +64,33 @@ void					receive_packet(t_runtime *runtime, uint8_t *pkt,
 							t_timer *tm, uint16_t sequence)
 {
 	t_meta				packetmeta;
+	struct msghdr		msg;
+	struct iovec		iov[1];
 	uint16_t			response_code;
+
+	packetmeta.received_bytes = -1;
+	packetmeta.sequence = sequence;
+	packetmeta.timer = tm;
+	pkt = (uint8_t *)ft_memalloc(MTU);
+	ft_memset(&msg, '\0', sizeof(msg));
+	iov[0].iov_base = (char *)pkt;
+	iov[0].iov_len = MTU;
+	msg.msg_iov = iov;
+	msg.msg_iovlen = 1;
+	msg.msg_name = runtime->param->sin;
+	msg.msg_namelen = sizeof(runtime->param->sin);
+	msg.msg_flags = 0;
+
+	while (g_signals->sigalrm == 0 && packetmeta.received_bytes <= 0)
+	 	if ((packetmeta.received_bytes = recvmsg(runtime->socket, &msg, MSG_DONTWAIT)) <= 0)
+		{
+
+		}
+
+/*	//if (ret_recv > 0)
+	//	pkt_received(msg.msg_iov[0].iov_base, ret_recv);
+	t_meta				packetmeta;
+	
 
 	packetmeta.received_bytes = -1;
 	packetmeta.sequence = sequence;
@@ -73,10 +98,16 @@ void					receive_packet(t_runtime *runtime, uint8_t *pkt,
 	pkt = (uint8_t *)ft_memalloc(MTU);
 
 	while (g_signals->sigalrm == 0 && packetmeta.received_bytes <= 0)
-		if ((packetmeta.received_bytes = recvfrom(runtime->socket,
-			(void*)pkt, MTU, MSG_DONTWAIT, NULL, (socklen_t*)sizeof(struct sockaddr))) <= 0)
+		if ((packetmeta.received_bytes = recvfrom(
+			runtime->socket,
+			(void*)pkt,
+			MTU,
+			MSG_DONTWAIT,
+			NULL, (socklen_t*)sizeof(struct sockaddr))) <= 0)
 		{
 		}
+*/
+
 	if (packetmeta.received_bytes <= 0)
 		handle_timeout(runtime, pkt, &packetmeta);
 	else

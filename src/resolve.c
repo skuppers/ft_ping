@@ -39,7 +39,7 @@ char					*reverse_target(char *src_addr)
 	{
 		//free(sa);
 		ft_strdel(&hostname);
-		dprintf(2, "Getnameinfo failed: %s\n", strerror(errno));
+	//	dprintf(2, "Getnameinfo failed: %s\n", strerror(errno));
 		return (NULL);
 	}
 	//free(sa);
@@ -55,9 +55,9 @@ static uint8_t			getsocketresult(char *fqdn, struct addrinfo **results)
 	if ((code = getaddrinfo(fqdn, NULL, &hints, results)) != 0)
 	{
 		if (code == -2)
-			printf("ft_ping: %s: Name or service not known\n", fqdn);
+			dprintf(2, "ft_ping: %s: Name or service not known\n", fqdn);
 		else
-			printf("ft_ping: %s: Temporary failure in name resolution\n", fqdn);
+			dprintf(2, "ft_ping: %s: Temporary failure in name resolution\n", fqdn);
 		return (1);
 	}
 	return (0);
@@ -86,7 +86,12 @@ int32_t					resolve_target(t_data *param)
 		ft_strdel(&param->fqdn);
 		return (-1);
 	}
-	param->sin = ((struct sockaddr_in*)result->ai_addr);
+
+	struct sockaddr_in *sisi = malloc(sizeof(struct sockaddr_in));
+	ft_memcpy(sisi, result->ai_addr, sizeof(struct sockaddr_in));
+	param->sin = sisi;
+	//param->sin = ((struct sockaddr_in*)result->ai_addr);
+
 	iadr = &(((struct sockaddr_in*)result->ai_addr)->sin_addr);
 	ft_bzero(buffer, INET_ADDRSTRLEN);
 	if (inet_ntop(AF_INET, iadr, buffer, INET_ADDRSTRLEN) == NULL)
@@ -94,7 +99,14 @@ int32_t					resolve_target(t_data *param)
 		ping_fatal("inet_ntop", "undefined");
 		return (-1);
 	}
-	freeaddrinfo(result);
+
+	struct addrinfo *tmp;
+	while (result != NULL)
+	{
+		tmp = result->ai_next;
+		free(result);
+		result = tmp;
+	}
 	param->ipv4_str = ft_strdup(buffer);
 	return (0);
 }

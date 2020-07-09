@@ -14,5 +14,5 @@
 
 void	ping_fatal(const char *failed_here, const char *errbuff)
 {
-	printf("Fatal error in %s: %s\n", failed_here, errbuff);
+	dprintf(2, "Fatal error in %s: %s\n", failed_here, errbuff);
 }

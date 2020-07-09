@@ -21,7 +21,7 @@ int		main(int ac, char **av)
 		print_usage(42);
 	if (getuid() != 0)
 	{
-		printf("This program needs root privileges to create Raw sockets.\n");
+		dprintf(2, "This program needs root privileges to create Raw sockets.\n");
 		return (-1);
 	}
 	init_param(&param);

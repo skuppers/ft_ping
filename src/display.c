@@ -105,7 +105,7 @@ void					print_ping(t_data *param, uint8_t *pkt, t_timer *tm,
 	if (param->options & OPT_TIMESTAMP)
 		dprintf(2, "[%f] ", (double)tm->recv.tv_sec
 			+ (double)(0.001f * (double)tm->recv.tv_usec));
-	dprintf(2, "%u bytes from ", ntohs(ip->ip_len) - IP4_HDRLEN);
+	dprintf(2, "%u bytes from ", ip->ip_len - IP4_HDRLEN); //ntohs(ip->ip_len) - IP4_HDRLEN);
 	if (param->options & OPT_NUMERIC)
 		dprintf(2, "%s: ", src);
 	else

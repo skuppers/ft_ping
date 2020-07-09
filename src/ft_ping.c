@@ -71,5 +71,6 @@ int32_t				ft_ping(t_data *param)
 	print_stats(&runtime);
 	ft_strdel(&param->ipv4_str);
 	ft_strdel(&param->fqdn);
+	free(param->sin);
 	return (0);
 }
