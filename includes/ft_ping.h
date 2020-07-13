@@ -36,8 +36,6 @@
 # include <bits/endian.h>
 # include "libft.h"
 
-# define NB_OPT 10
-# define OPT_WITHOUT_ARG 5
 # define OPT_HELP			0x001
 # define OPT_SO_DEBUG		0x002
 # define OPT_TIMESTAMP		0x004
@@ -134,7 +132,7 @@ typedef struct				s_timer
 
 typedef	struct				s_meta
 {
-	int32_t					received_bytes;
+	int32_t					r_bts;
 	char					padding[4];
 	struct s_timer			*timer;
 	uint16_t				sequence;
@@ -203,8 +201,7 @@ uint8_t						*forge_packet(t_runtime *rt, uint8_t *pkt,
 void						setup_icmpv4_header(struct s_icmpv4_hdr *hdr,
 								uint16_t seq);
 uint16_t					setup_message_body(t_data *param, char *data);
-void						print_ping(t_data *param, uint8_t *pkt, t_timer *tm,
-								uint16_t sequence);
+void						print_ping(t_data *param, uint8_t *pkt, t_meta *tm);
 void						print_usage(uint8_t exit);
 void						print_resolve(t_data *param);
 void						invalid_ttl(char *oarg);
@@ -216,4 +213,8 @@ void						option_not_supported(int32_t arg);
 void						invalid_opt(char *arg);
 void						print_resolution(float ff, uint16_t seq,
 								unsigned char ip_ttl);
+void    					print_timestamp(t_data *param, t_timer *tm);
+void    					print_reverse(t_data *params, char *src);
+void						ft_freeaddrinfo(struct addrinfo *todel);
+int8_t						is_loopback_duplicate(uint16_t code);
 #endif

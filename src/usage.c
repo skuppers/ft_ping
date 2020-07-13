@@ -31,6 +31,8 @@ void	print_usage(uint8_t exits)
 		exit(exits);
 }
 
+#ifdef BONUS_H
+
 void	print_help(uint8_t exits)
 {
 	dprintf(2, "ft_ping:\n"
@@ -47,3 +49,15 @@ void	print_help(uint8_t exits)
 		"*	-s <number>	Specify the packet size.\n\n");
 	print_usage(exits);
 }
+
+#else
+
+void	print_help(uint8_t exits)
+{
+	dprintf(2, "ft_ping:\n"
+		"*	Possible options are:\n"
+		"*	-h		Shows this page.\n"
+		"*	-v		Verbose	output.\n");
+	print_usage(exits);
+}
+#endif

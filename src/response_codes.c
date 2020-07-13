@@ -24,18 +24,16 @@ void	id_seq_mismatch(t_runtime *rt, uint8_t *pkt, t_timer *tm, uint16_t seq)
 
 void	resp_code_zero(t_runtime *rt, uint8_t *pkt, t_meta *pm)
 {
-
 	if (!(rt->param->options & OPT_QUIET))
-		print_ping(rt->param, pkt, pm->timer, pm->sequence);
-
-	register_response(rt, pkt, pm->received_bytes, pm->timer);
+		print_ping(rt->param, pkt, pm);
+	register_response(rt, pkt, pm->r_bts, pm->timer);
 }
 
 void	resp_code_eleven(t_runtime *rt, uint8_t *pkt, t_meta *pm)
 {
 	if (!(rt->param->options & OPT_QUIET))
 		print_ttl_exceeded(rt->param, pkt, pm->sequence);
-	register_response(rt, pkt, pm->received_bytes, NULL);
+	register_response(rt, pkt, pm->r_bts, NULL);
 }
 
 void	resp_code_three(t_runtime *rt, uint8_t *pkt, t_meta *pm)
@@ -47,12 +45,12 @@ void	resp_code_three(t_runtime *rt, uint8_t *pkt, t_meta *pm)
 	response_code = icmp->icmp_code;
 	if (!(rt->param->options & OPT_QUIET))
 		print_unreachable(rt->param, pkt, response_code, pm->sequence);
-	register_response(rt, pkt, pm->received_bytes, NULL);
+	register_response(rt, pkt, pm->r_bts, NULL);
 }
 
 void	resp_code_unknown(t_runtime *rt, uint8_t *pkt, t_meta *pm)
 {
 	if (!(rt->param->options & OPT_QUIET))
 		print_unknown(rt->param, pkt, pm->sequence);
-	register_response(rt, pkt, pm->received_bytes, NULL);
+	register_response(rt, pkt, pm->r_bts, NULL);
 }

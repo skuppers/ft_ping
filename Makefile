@@ -15,6 +15,7 @@
 .SUFFIXES:
 
 NAME=ft_ping
+BONUS=ft_ping_bonus
 
 CC=clang
 
@@ -95,6 +96,7 @@ SRCS += statistics.c
 SRCS += response_codes.c
 SRCS += listutils.c
 SRCS += validate_options.c
+SRCS += display_tools.c
 
 vpath %.c $(PATH_SRCS)
 
@@ -103,9 +105,8 @@ vpath %.c $(PATH_SRCS)
 PATH_OBJS = objs/
 OBJS = $(patsubst %.c, $(PATH_OBJS)%.o, $(SRCS))
 
-DEBUG_PATH_OBJS = objs_debug/
-DEBUG_OBJS = $(patsubst %.c, $(DEBUG_PATH_OBJS)%.o, $(SRCS))
-
+PATH_OBJS_B = objs_b/
+OBJS_BONUS = $(patsubst %.c, $(PATH_OBJS_B)%.o, $(SRCS))
 
 #-----------------------------------  RULES  -----------------------------------#
 
@@ -121,15 +122,28 @@ $(OBJS): $(PATH_OBJS)%.o: %.c $(HEADER) Makefile
 $(PATH_OBJS):
 	mkdir $@
 
+bonus: $(PATH_OBJS_B) $(BONUS)
+
+$(BONUS): $(LIBFT) $(OBJS_BONUS)
+	$(CC) $(CFLAGS) $(I_INCLUDES) $(OBJS_BONUS) $(LIBFT) -o $@
+	printf "$@ is ready.\n"
+
+$(OBJS_BONUS): $(PATH_OBJS_B)%.o: %.c $(HEADER) Makefile
+	$(CC) $(CFLAGS) -DBONUS_H $(I_INCLUDES) -c $< -o $@
+
+
+$(PATH_OBJS_B):
+	mkdir $@
+
 $(LIBFT): FORCE 
 	$(MAKE) -C $(PATH_LIB)
-
 
 #---------------------------------- CLEANING ----------------------------------#
 
 clean:
 	$(RM) $(OBJS)
-	$(RM) $(DEBUG_OBJS)
+	$(RM) $(OBJS_BONUS)
+	$(RM) -R $(PATH_OBJS_B)
 	$(RM) -R $(PATH_OBJS)
 	$(RM) -R $(DSYM)
 	$(MAKE) -C $(PATH_LIB) clean
@@ -137,6 +151,7 @@ clean:
 
 fclean: clean
 	$(RM) $(NAME)
+	$(RM) $(BONUS)	
 	$(MAKE) -C $(PATH_LIB) fclean
 	printf "$(NAME) removed\n"
 
