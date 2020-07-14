@@ -147,6 +147,7 @@ typedef struct				s_runtime
 	t_list					*rpacketlist_head;
 }							t_runtime;
 
+void						print_reverse(t_data *param, char *src);
 void						handle_standalone_options(int32_t option,
 								t_data *param);
 void						handle_custom_options(int32_t opt, t_data *prm,
@@ -213,8 +214,17 @@ void						option_not_supported(int32_t arg);
 void						invalid_opt(char *arg);
 void						print_resolution(float ff, uint16_t seq,
 								unsigned char ip_ttl);
-void    					print_timestamp(t_data *param, t_timer *tm);
-void    					print_reverse(t_data *params, char *src);
+void						print_timestamp(t_data *param, t_timer *tm);
+void						print_reverse(t_data *params, char *src);
 void						ft_freeaddrinfo(struct addrinfo *todel);
 int8_t						is_loopback_duplicate(uint16_t code);
+uint8_t						check_valid(char *arg, size_t len, int min,
+								int max);
+void						prep_meta(uint16_t seq, t_meta *pktmeta,
+								t_timer *tm);
+int							get_arg_opt(char *arg, const char *opt_str[],
+								const int count, t_data *param);
+uint8_t						check_valid(char *arg, size_t len, int min,
+								int max);
+void						ping_exit(int exitcode, const char *message, ...);
 #endif

@@ -20,25 +20,6 @@ static void				prepare_hints(struct addrinfo *hints)
 	hints->ai_flags = AI_V4MAPPED | AI_ADDRCONFIG;
 }
 
-char					*reverse_target(char *src_addr)
-{
-	struct sockaddr_in	sa;
-	char				*hostname;
-
-	hostname = ft_strnew(256);
-	ft_bzero(&sa, sizeof(sa));
-	sa.sin_family = AF_INET;
-	inet_pton(AF_INET, src_addr, &sa.sin_addr);
-	if (getnameinfo((struct sockaddr*)&sa, sizeof(sa),
-			hostname, 255,
-			NULL, 0, 0) != 0)
-	{
-		ft_strdel(&hostname);
-		return (NULL);
-	}
-	return (hostname);
-}
-
 static uint8_t			getsocketresult(char *fqdn, struct addrinfo **results)
 {
 	int32_t				code;
@@ -66,11 +47,20 @@ int8_t					check_numeric(char *str)
 	return (0);
 }
 
+static struct in_addr	*set_sin(t_data *param, struct sockaddr_in *ai_addr)
+{
+	struct sockaddr_in	*sisi;
+
+	sisi = malloc(sizeof(struct sockaddr_in));
+	ft_memcpy(sisi, ai_addr, sizeof(struct sockaddr_in));
+	param->sin = sisi;
+	return (&sisi->sin_addr);
+}
+
 int32_t					resolve_target(t_data *param)
 {
 	struct in_addr		*iadr;
 	char				buffer[INET_ADDRSTRLEN];
-	struct sockaddr_in	*sisi;
 	struct addrinfo		*result;
 
 	if (check_numeric(param->fqdn) == 0)
@@ -81,10 +71,7 @@ int32_t					resolve_target(t_data *param)
 		ft_strdel(&param->fqdn);
 		return (-1);
 	}
-	sisi = malloc(sizeof(struct sockaddr_in));
-	ft_memcpy(sisi, result->ai_addr, sizeof(struct sockaddr_in));
-	param->sin = sisi;
-	iadr = &sisi->sin_addr;
+	iadr = set_sin(param, (struct sockaddr_in*)result->ai_addr);
 	ft_bzero(buffer, INET_ADDRSTRLEN);
 	if (inet_ntop(AF_INET, iadr, buffer, INET_ADDRSTRLEN) == NULL)
 	{
@@ -92,5 +79,6 @@ int32_t					resolve_target(t_data *param)
 		return (-1);
 	}
 	param->ipv4_str = ft_strdup(buffer);
+	ft_freeaddrinfo(result);
 	return (0);
 }

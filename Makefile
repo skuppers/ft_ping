@@ -97,6 +97,7 @@ SRCS += response_codes.c
 SRCS += listutils.c
 SRCS += validate_options.c
 SRCS += display_tools.c
+SRCS += option_tools.c
 
 vpath %.c $(PATH_SRCS)
 

@@ -12,12 +12,7 @@
 
 #include "ft_ping.h"
 
-void	print_timestamp(t_data *param, t_timer *tm)
-{
-	if (param->options & OPT_TIMESTAMP)
-		dprintf(2, "[%f] ", (double)tm->recv.tv_sec
-			+ (double)(0.001f * (double)tm->recv.tv_usec));
-}
+#ifdef BONUS_H
 
 void	print_reverse(t_data *param, char *src)
 {
@@ -31,6 +26,23 @@ void	print_reverse(t_data *param, char *src)
 		dprintf(2, "%s (%s): ", (hostdns == NULL) ? src : hostdns, src);
 		ft_strdel(&hostdns);
 	}
+}
+
+#else
+
+void	print_reverse(t_data *param, char *src)
+{
+	(void)param;
+	dprintf(2, "%s: ", src);
+}
+
+#endif
+
+void	print_timestamp(t_data *param, t_timer *tm)
+{
+	if (param->options & OPT_TIMESTAMP)
+		dprintf(2, "[%f] ", (double)tm->recv.tv_sec
+			+ (double)(0.001f * (double)tm->recv.tv_usec));
 }
 
 void	ft_freeaddrinfo(struct addrinfo *todel)

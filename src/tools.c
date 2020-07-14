@@ -78,3 +78,11 @@ void				ping_timer(int interval)
 			dprintf(2, " [Error retrieving time ] - ");
 	}
 }
+
+void				prep_meta(uint16_t seq, t_meta *pktmeta,
+						t_timer *tm)
+{
+	pktmeta->r_bts = -1;
+	pktmeta->sequence = seq;
+	pktmeta->timer = tm;
+}

@@ -12,11 +12,7 @@
 
 #include "ft_ping.h"
 
-/*
-** Filter icmp sequence and identifier with ntohs
-*/
-
-void			handle_response(t_runtime *rt, uint8_t *pkt,
+void					handle_response(t_runtime *rt, uint8_t *pkt,
 							t_meta *pm)
 {
 	int8_t				response_code;
@@ -43,26 +39,25 @@ void			handle_response(t_runtime *rt, uint8_t *pkt,
 		resp_code_unknown(rt, pkt, pm);
 }
 
-static void		handle_timeout(t_runtime *runtime, uint8_t *pkt,
+static void				handle_timeout(t_runtime *runtime, uint8_t *pkt,
 							t_meta *packetmeta)
 {
 	free(pkt);
 	register_response(runtime, NULL, 0, packetmeta->timer);
 }
 
-static void		discard_duplicate(t_runtime *runtime, uint8_t *pkt,
+static void				discard_duplicate(t_runtime *runtime, uint8_t *pkt,
 							t_meta *packetmeta)
 {
 	free(pkt);
 	receive_packet(runtime, NULL, packetmeta->timer, packetmeta->sequence);
 }
 
-void			prep_msg(struct msghdr *msg, uint8_t *pkt, struct iovec	iov[1])
+void					prep_msg(struct msghdr *msg, struct iovec *iov,
+							uint8_t *pkt)
 {
-	pkt = (uint8_t *)ft_memalloc(MTU);
-	ft_bzero(pkt, MTU);
-	iov[0].iov_base = (char *)pkt;
 	iov[0].iov_len = MTU;
+	iov[0].iov_base = (char *)pkt;
 	msg->msg_iov = iov;
 	msg->msg_iovlen = 1;
 	msg->msg_name = NULL;
@@ -70,7 +65,7 @@ void			prep_msg(struct msghdr *msg, uint8_t *pkt, struct iovec	iov[1])
 	msg->msg_flags = 0;
 }
 
-void			receive_packet(t_runtime *runtime, uint8_t *pkt,
+void					receive_packet(t_runtime *runtime, uint8_t *pkt,
 							t_timer *tm, uint16_t sequence)
 {
 	t_meta				packetmeta;
@@ -78,11 +73,10 @@ void			receive_packet(t_runtime *runtime, uint8_t *pkt,
 	struct iovec		iov[1];
 	uint16_t			response_code;
 
-	packetmeta.r_bts = -1;
-	packetmeta.sequence = sequence;
-	packetmeta.timer = tm;
-	ft_bzero(&msg, sizeof(msg));
-	prep_msg(&msg, pkt, iov);
+	pkt = (uint8_t *)ft_memalloc(MTU);
+	ft_memset(&msg, '\0', sizeof(msg));
+	prep_meta(sequence, &packetmeta, tm);
+	prep_msg(&msg, iov, pkt);
 	while (g_signals->sigalrm == 0 && packetmeta.r_bts <= 0)
 		if ((packetmeta.r_bts = recvmsg(runtime->socket, &msg, 0x40)) <= 0)
 			;

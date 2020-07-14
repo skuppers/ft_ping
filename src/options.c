@@ -12,47 +12,9 @@
 
 #include "ft_ping.h"
 
-void			ping_exit(int exitcode, const char *message, ...)
-{
-	va_list			args;
-
-	dprintf(STDERR_FILENO, "ft_ping: ");
-	va_start(args, message);
-	vdprintf(STDERR_FILENO, message, args);
-	va_end(args);
-	exit(exitcode);
-}
-
-static uint8_t	check_valid(char *arg, size_t len, int min, int max)
-{
-	if (ft_isnumeric(arg) == 0)
-		invalid_opt(arg);
-	if (ft_strlen(arg) > len || ft_atoi(arg) < min || ft_atoi(arg) > max)
-		invalid_count(arg);
-	return (1);
-}
-
-static int		get_arg_opt(char *arg, const char *opt_str[],
-								const int count, t_data *param)
-{
-	if (arg == NULL)
-		ping_exit(42, "option requires an argument -- '%s'\n", opt_str[count]);
-	if (ft_strequ(opt_str[count], "-c") == 1 && check_valid(arg, 6, 1, 65535))
-		param->count = ft_atoi(arg);
-	if (ft_strequ(opt_str[count], "-Q") == 1 && check_valid(arg, 3, 0, 255))
-		param->tos = ft_atoi(arg);
-	if (ft_strequ(opt_str[count], "-i") == 1 && check_valid(arg, 6, 1, 65535))
-		param->interval = ft_atoi(arg);
-	if (ft_strequ(opt_str[count], "-t") == 1 && check_valid(arg, 6, 1, 255))
-		param->ttl = ft_atoi(arg);
-	if (ft_strequ(opt_str[count], "-s") == 1 && check_valid(arg, 6, 0, 65535))
-		param->pkt_size = ft_atoi(arg);
-	return (2);
-}
-
 #ifdef BONUS_H
 
-static int	get_bns_opt(char **av, int i, t_data *param)
+static int		get_bns_opt(char **av, int i, t_data *param)
 {
 	int			count;
 	const char	*opt_str[] = {"-h", "-d", "-D", "-q", "-v",
@@ -86,7 +48,7 @@ static int		get_one_opt(char **av, int i, t_data *param)
 
 #else
 
-static int	get_std_opt(char **av, int i, t_data *param)
+static int		get_std_opt(char **av, int i, t_data *param)
 {
 	int			count;
 	const char	*opt_str[] = {"-h", "-v"};

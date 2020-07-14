@@ -22,9 +22,11 @@ uint16_t	setup_message_body(t_data *param, char *data)
 	data[i] = '\0';
 	return (i);
 }
+
 /*
 **	HTONS
 */
+
 void		setup_icmpv4_header(struct s_icmpv4_hdr *header, uint16_t sequence)
 {
 	ft_memset(header, 0, ICMP_HDRLEN);
