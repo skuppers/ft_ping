@@ -13,6 +13,8 @@
 #include <sys/time.h>
 #include "ft_ping.h"
 
+t_signals	*g_signals;
+
 static void			setup_runtime(t_runtime *runtime, t_data *param, int socket)
 {
 	ft_memset(runtime, 0, sizeof(struct s_runtime));

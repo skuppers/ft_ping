@@ -17,13 +17,11 @@ void					handle_response(t_runtime *rt, uint8_t *pkt,
 {
 	int8_t				response_code;
 	int					response_seq;
-	int					response_id;
 	struct s_icmpv4_hdr	*icmp;
 
 	icmp = (struct s_icmpv4_hdr *)(pkt + sizeof(struct s_ipv4_hdr));
 	response_code = icmp->icmp_type;
 	response_seq = icmp->icmp_sequence;
-	response_id = icmp->icmp_identifier;
 	if (response_code == 0)
 	{
 		if (response_seq != pm->sequence)
@@ -79,7 +77,8 @@ void					receive_packet(t_runtime *runtime, uint8_t *pkt,
 	prep_msg(&msg, iov, pkt);
 	while (g_signals->sigalrm == 0 && packetmeta.r_bts <= 0)
 		if ((packetmeta.r_bts = recvmsg(runtime->socket, &msg, 0x40)) <= 0)
-			;
+		{
+		}
 	if (packetmeta.r_bts <= 0)
 		handle_timeout(runtime, pkt, &packetmeta);
 	else

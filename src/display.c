@@ -17,9 +17,7 @@ void					print_unreachable(t_data *param,
 {
 	char				src[16];
 	struct s_ipv4_hdr	*ip;
-	char				*n;
 
-	n = NULL;
 	ft_bzero(src, 16);
 	ip = (struct s_ipv4_hdr *)pkt;
 	inet_ntop(AF_INET, &ip->ip_src, src, 16);
@@ -40,9 +38,7 @@ void					print_unknown(t_data *param, uint8_t *pkt,
 	char				src[16];
 	struct s_ipv4_hdr	*ip;
 	struct s_icmpv4_hdr	*icmp;
-	char				*node;
 
-	node = NULL;
 	ft_bzero(src, 16);
 	ip = (struct s_ipv4_hdr *)pkt;
 	icmp = (struct s_icmpv4_hdr *)(pkt + IP4_HDRLEN);
@@ -60,9 +56,7 @@ void					print_ttl_exceeded(t_data *param, uint8_t *pkt,
 {
 	char				src[16];
 	struct s_ipv4_hdr	*ip;
-	char				*node;
 
-	node = NULL;
 	ft_bzero(src, 16);
 	ip = (struct s_ipv4_hdr *)pkt;
 	inet_ntop(AF_INET, &ip->ip_src, src, 16);

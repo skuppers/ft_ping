@@ -53,7 +53,7 @@ typedef struct				s_signals
 	volatile sig_atomic_t	sigint;
 }							t_signals;
 
-t_signals					*g_signals;
+extern t_signals			*g_signals;
 
 typedef struct				s_data
 {
